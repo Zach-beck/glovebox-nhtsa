@@ -1,6 +1,6 @@
 # ADR 0001: Language and runtime
 
-- Status: Accepted on 2026-11-22. Package name is `glovebox-mcp`. Complaints are counts only. Offline data is the investigations file, not Postgres.
+- Status: Accepted on 2026-11-22. Package name is `glovebox-nhtsa`. Complaints are counts only. Offline data is the investigations file, not Postgres.
 - Date: 2026-11-22
 - Deciders: Zacharias Beck, after this recommendation.
 
@@ -131,7 +131,7 @@ Client notes, so the "same" cell is sourced:
 ## Consequences
 
 - v1 depends on `mcp` and a small HTTP client. No FastMCP, no web framework beyond what the SDK pulls in for the optional HTTP transport.
-- The package name is `glovebox-mcp`. PyPI had no project by that name on 2026-11-22. GitHub already has an unrelated `segentic-lab/glovebox-mcp`. This repo does not publish.
+- The distribution and command name is `glovebox-nhtsa`. PyPI returned 404 for that name on 2026-11-22, and a GitHub name search found no repository. The rejected name `glovebox-mcp` belongs to the unrelated segentic-lab computer-use server. This repo does not publish.
 - CI installs with uv, runs pytest, and does not call NHTSA or a model. See the evals doc.
 - Docker is a release artifact, not the development loop.
 - We pin the SDK and re-read its transport notes when implementation starts, because 2.x is new and the 2026-07-28 migration is the kind of change that breaks idle clients.

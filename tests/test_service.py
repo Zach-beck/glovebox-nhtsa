@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from glovebox_mcp.investigations import parse_lines, search_rows
+from glovebox_nhtsa.investigations import parse_lines, search_rows
 from tests.conftest import run
 
 
@@ -27,9 +27,12 @@ def test_check_digit_still_returns_the_vehicle(service):
 
 def test_recalls_convert_dates_and_do_not_claim_repair(service):
     result = run(service.get_recalls, "acura", "rdx", 2012)
+    assert result["count"] == 2
+    numbers = {item["campaign_number"] for item in result["campaigns"]}
+    assert numbers == {"19V182000", "16V061000"}
     assert result["campaigns"][0]["campaign_number"] == "19V182000"
     assert result["campaigns"][0]["report_received"]["iso"] == "2019-03-06"
-    assert result["campaigns"][0]["park_outside"] is True
+    assert all(item["park_outside"] is False for item in result["campaigns"])
     assert "repaired" in result["note"]
     assert "remedy" not in result["campaigns"][0]
 

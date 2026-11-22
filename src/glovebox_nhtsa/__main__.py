@@ -10,13 +10,13 @@ import uvicorn
 from starlette.responses import JSONResponse
 from starlette.types import ASGIApp, Receive, Scope, Send
 
-from glovebox_mcp import __version__
-from glovebox_mcp.config import Settings
-from glovebox_mcp.server import create_server
+from glovebox_nhtsa import __version__
+from glovebox_nhtsa.config import Settings
+from glovebox_nhtsa.server import create_server
 
 
 def _parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="glovebox-mcp", description="Local NHTSA vehicle data for MCP clients.")
+    parser = argparse.ArgumentParser(prog="glovebox-nhtsa", description="Local NHTSA vehicle data for MCP clients.")
     parser.add_argument("--transport", choices=("stdio", "http"), default=None)
     parser.add_argument("--version", action="store_true")
     return parser

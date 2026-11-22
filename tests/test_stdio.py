@@ -10,7 +10,7 @@ from tests.conftest import FIXTURES, INVESTIGATIONS, ROOT
 def test_stdio_client_lists_and_calls_tools(tmp_path):
     params = StdioServerParameters(
         command=sys.executable,
-        args=["-m", "glovebox_mcp"],
+        args=["-m", "glovebox_nhtsa"],
         cwd=str(ROOT),
         env={
             "GLOVEBOX_FIXTURES": str(FIXTURES),

@@ -12,7 +12,7 @@ from collections import Counter
 from datetime import date
 from typing import Any
 
-from glovebox_mcp.text import COMPLAINT_NOTE, REPAIR_NOTE, SPEC_NOTE, SPELLING_NOTICE
+from glovebox_nhtsa.text import COMPLAINT_NOTE, REPAIR_NOTE, SPEC_NOTE, SPELLING_NOTICE
 
 _CORE_FIELDS = (
     ("Make", "make"),

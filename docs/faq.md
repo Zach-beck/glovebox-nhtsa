@@ -36,6 +36,6 @@ The zip is about 4 MB. Unzipped, the text file we measured on 2026-11-22 was abo
 
 Fuel economy (that is the Department of Energy and the EPA), title and accident history, manufacturer communications, FARS crash counts, and per-VIN repair status.
 
-## Why is the GitHub name already taken?
+## Why is the name glovebox-nhtsa?
 
-`glovebox-mcp` on GitHub is an unrelated computer-use project, `segentic-lab/glovebox-mcp`. The PyPI name `glovebox-mcp` was free when this was built. This repo does not publish to either place.
+The product name is Glovebox. `glovebox-mcp` is already [segentic-lab/glovebox-mcp](https://github.com/segentic-lab/glovebox-mcp), an unrelated computer-use server. The repo, image, package, and command are `glovebox-nhtsa` instead. On 2026-11-22 PyPI had no `glovebox-nhtsa` project (HTTP 404) and a GitHub name search found no repository with that name. This repo does not publish either place.

@@ -11,7 +11,7 @@ OpenCode's current docs are [MCP servers](https://opencode.ai/docs/mcp-servers/)
     "servers": {
       "glovebox": {
         "type": "local",
-        "command": ["uv", "run", "glovebox-mcp"],
+        "command": ["uv", "run", "glovebox-nhtsa"],
         "cwd": "."
       }
     }
@@ -26,7 +26,7 @@ Code Mode is on by default in OpenCode, which hides tools behind a code wrapper.
 Remote URLs are Streamable HTTP. Glovebox's HTTP transport is for localhost debugging:
 
 ```bash
-uv run glovebox-mcp --transport http
+uv run glovebox-nhtsa --transport http
 ```
 
 It listens on `127.0.0.1:8741` at `/mcp`. Do not expose that port. If `GLOVEBOX_HTTP_TOKEN` is set, send `Authorization: Bearer <token>`.

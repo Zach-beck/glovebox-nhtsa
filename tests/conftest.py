@@ -6,8 +6,8 @@ import pytest
 
 import anyio
 
-from glovebox_mcp.config import Settings
-from glovebox_mcp.service import build_service
+from glovebox_nhtsa.config import Settings
+from glovebox_nhtsa.service import build_service
 
 
 def run(async_fn, *args, **kwargs):

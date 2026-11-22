@@ -61,7 +61,7 @@ class Settings:
     def resolved_cache_dir(self) -> Path:
         if self.cache_dir is not None:
             return self.cache_dir
-        return Path.home() / ".cache" / "glovebox-mcp"
+        return Path.home() / ".cache" / "glovebox-nhtsa"
 
     def resolved_data_dir(self) -> Path:
         if self.data_dir is not None:

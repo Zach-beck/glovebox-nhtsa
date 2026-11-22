@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir .
 ENV GLOVEBOX_CACHE_DIR=/tmp/glovebox-cache
 ENV GLOVEBOX_DATA_DIR=/tmp/glovebox-data
 USER nobody
-ENTRYPOINT ["glovebox-mcp"]
+ENTRYPOINT ["glovebox-nhtsa"]

@@ -10,7 +10,7 @@ Workspace file:
     "glovebox": {
       "type": "stdio",
       "command": "uv",
-      "args": ["run", "glovebox-mcp"]
+      "args": ["run", "glovebox-nhtsa"]
     }
   }
 }
@@ -20,4 +20,4 @@ The working directory is the workspace folder, so this file belongs in the Glove
 
 Enable Copilot for the chat, then ask it to use Glovebox and expand the tool call. A profile that never calls a tool is not a successful setup.
 
-VS Code can also add a server by command from the palette ("MCP: Add Server", then Command). Paste `uv run glovebox-mcp` only when the workspace is this repo.
+VS Code can also add a server by command from the palette ("MCP: Add Server", then Command). Paste `uv run glovebox-nhtsa` only when the workspace is this repo.

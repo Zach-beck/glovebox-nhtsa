@@ -13,8 +13,8 @@ from urllib.parse import quote, urlencode, urlparse
 
 import httpx
 
-from glovebox_mcp import __version__
-from glovebox_mcp.shaping import error_body
+from glovebox_nhtsa import __version__
+from glovebox_nhtsa.shaping import error_body
 
 ALLOWED_HOSTS = frozenset({"vpic.nhtsa.dot.gov", "api.nhtsa.gov", "static.nhtsa.gov"})
 USER_AGENT = f"Glovebox/{__version__} (local MCP; public NHTSA data)"

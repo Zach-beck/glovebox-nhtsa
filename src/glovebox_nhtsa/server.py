@@ -6,10 +6,10 @@ from contextlib import asynccontextmanager
 
 from mcp.server import MCPServer
 
-from glovebox_mcp import __version__
-from glovebox_mcp.config import Settings
-from glovebox_mcp.service import Service, build_service
-from glovebox_mcp.text import INSTRUCTIONS, REPAIR_NOTE, SPEC_NOTE
+from glovebox_nhtsa import __version__
+from glovebox_nhtsa.config import Settings
+from glovebox_nhtsa.service import Service, build_service
+from glovebox_nhtsa.text import INSTRUCTIONS, REPAIR_NOTE, SPEC_NOTE
 
 
 def create_server(settings: Settings | None = None) -> MCPServer:

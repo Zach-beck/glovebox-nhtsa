@@ -10,7 +10,7 @@ From a checkout of Glovebox:
     "glovebox": {
       "type": "stdio",
       "command": "uv",
-      "args": ["run", "glovebox-mcp"],
+      "args": ["run", "glovebox-nhtsa"],
       "cwd": "${workspaceFolder}"
     }
   }
@@ -23,4 +23,4 @@ Reload MCP servers from the Cursor MCP settings after saving the file. Then ask:
 
 Do not put an API key in this file. Glovebox does not use one. A future model eval key belongs in `.env`, which is gitignored.
 
-Streamable HTTP is off unless you start `glovebox-mcp --transport http`. That binds `127.0.0.1:8741` by default. Leave it off for normal use.
+Streamable HTTP is off unless you start `glovebox-nhtsa --transport http`. That binds `127.0.0.1:8741` by default. Leave it off for normal use.

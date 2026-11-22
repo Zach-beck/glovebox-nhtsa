@@ -5,13 +5,13 @@ Claude Code adds a stdio server with `claude mcp add`. The official instructions
 From the Glovebox checkout:
 
 ```bash
-claude mcp add --transport stdio glovebox -- uv run glovebox-mcp
+claude mcp add --transport stdio glovebox -- uv run glovebox-nhtsa
 ```
 
 Run that inside the checkout so `uv run` finds this project. To pin the directory from anywhere:
 
 ```bash
-claude mcp add --transport stdio glovebox -- uv run --directory /absolute/path/to/this/checkout glovebox-mcp
+claude mcp add --transport stdio glovebox -- uv run --directory /absolute/path/to/this/checkout glovebox-nhtsa
 ```
 
 `uv run --directory` is uv's flag. If your uv is older and rejects it, `cd` to the checkout and use the first command.

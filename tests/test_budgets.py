@@ -2,10 +2,10 @@ import json
 
 import anyio
 
-from glovebox_mcp.config import Settings
-from glovebox_mcp.server import create_server
-from glovebox_mcp.shaping import BUDGETS, estimate_tokens
-from glovebox_mcp.text import INSTRUCTIONS
+from glovebox_nhtsa.config import Settings
+from glovebox_nhtsa.server import create_server
+from glovebox_nhtsa.shaping import BUDGETS, estimate_tokens
+from glovebox_nhtsa.text import INSTRUCTIONS
 from tests.conftest import FIXTURES, INVESTIGATIONS, run
 
 

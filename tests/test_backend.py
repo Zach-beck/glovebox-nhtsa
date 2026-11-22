@@ -1,7 +1,7 @@
 import httpx
 import anyio
 
-from glovebox_mcp.backend import LiveBackend, build_url
+from glovebox_nhtsa.backend import LiveBackend, build_url
 
 
 async def _noop(_seconds: float) -> None:

@@ -51,4 +51,4 @@ def test_scripted_set_covers_the_planned_categories():
         "investigation_link",
     }
     assert required <= present
-    assert len(CASES) >= 24
+    assert len(CASES) >= 40

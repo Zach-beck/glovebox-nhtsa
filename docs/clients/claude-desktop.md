@@ -13,7 +13,7 @@ If the file is not there, create it from the app's developer or MCP settings. Tr
   "mcpServers": {
     "glovebox": {
       "command": "uv",
-      "args": ["run", "glovebox-mcp"],
+      "args": ["run", "glovebox-nhtsa"],
       "cwd": "/absolute/path/to/this/checkout"
     }
   }

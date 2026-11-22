@@ -96,5 +96,5 @@ Acceptance:
 
 1. **Language.** Python 3.12 and the official MCP SDK. `uv` for a checkout. `uvx` after a future publish. Docker is optional and local.
 2. **Complaints.** Counts and component totals only. No narratives and no VIN field.
-3. **Name and license.** Project name Glovebox. Package name `glovebox-mcp`. MIT. PyPI had no `glovebox-mcp` project on 2026-11-22. GitHub already has an unrelated repository with that name. Nothing was published.
+3. **Name and license.** Product name Glovebox. Repository, image, PyPI distribution, and command are `glovebox-nhtsa`, because `glovebox-mcp` is the unrelated segentic-lab project. MIT. PyPI returned 404 for `glovebox-nhtsa` on 2026-11-22, and a GitHub name search found no such repository. Nothing was published.
 4. **Offline data.** Investigations from `FLAT_INV.zip` only. No Postgres. The zip is small. The text inside is hundreds of megabytes, so the loader indexes the short columns.

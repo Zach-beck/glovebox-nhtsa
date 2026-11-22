@@ -15,7 +15,7 @@ from typing import Any
 
 import httpx
 
-from glovebox_mcp.backend import ALLOWED_HOSTS, USER_AGENT, UpstreamError
+from glovebox_nhtsa.backend import ALLOWED_HOSTS, USER_AGENT, UpstreamError
 
 INV_URL = "https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip"
 INDEX_NAME = "inv_index.json"

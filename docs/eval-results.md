@@ -9,7 +9,7 @@ Deterministic pytest, no network, no model key.
 | Item | Result |
 | --- | --- |
 | Tests | 26 passed, 0 failed |
-| Scripted traces | 27 cases, all passing inside that suite |
+| Scripted traces | 40 cases, all passing inside that suite |
 | Categories covered | decode (partial, invalid, check digit, missing means unknown, Not Applicable dropped), recalls (hit, spelling, not repair status), complaints (summary and redaction), ratings (Not Rated and variants), profile partial failure, investigations, out of scope |
 | Token budgets | All seven shaped samples and the instruction block are under the character estimate (length divided by 4) |
 | Model calls | None |
@@ -22,7 +22,7 @@ Re-run with `uv run pytest`. A future GitHub Actions run uses `.github/workflows
 
 Not run against a provider. No key was in the environment. `evals/local.py` exits 0 with `status: skipped` in that case.
 
-If `OPENAI_API_KEY` is set, the runner sends each scripted case id to OpenAI and scores whether the reply names the expected tool. That HTTP path was checked with a fake response in `tests/test_eval_openai_fake.py`. It was not executed against OpenAI, so there is no live tool-selection rate to publish. An `ANTHROPIC_API_KEY` without an OpenAI key still skips. Do not read the 27 scripted traces as a model score. They check a canned caller against frozen fixtures.
+If `OPENAI_API_KEY` is set, the runner sends each scripted case id to OpenAI and scores whether the reply names the expected tool. That HTTP path was checked with a fake response in `tests/test_eval_openai_fake.py`. It was not executed against OpenAI, so there is no live tool-selection rate to publish. An `ANTHROPIC_API_KEY` without an OpenAI key still skips. Do not read the 40 scripted traces as a model score. They check a canned caller against frozen fixtures.
 
 ## Live smoke, separate from the gate
 

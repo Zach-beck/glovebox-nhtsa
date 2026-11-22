@@ -21,7 +21,7 @@ async def main() -> int:
     )
     params = StdioServerParameters(
         command=sys.executable,
-        args=["-m", "glovebox_mcp"],
+        args=["-m", "glovebox_nhtsa"],
         cwd=str(ROOT),
         env={
             "GLOVEBOX_FIXTURES": fixtures,

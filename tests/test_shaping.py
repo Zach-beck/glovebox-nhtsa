@@ -1,6 +1,6 @@
 import json
 
-from glovebox_mcp.shaping import (
+from glovebox_nhtsa.shaping import (
     estimate_tokens,
     parse_nhtsa_date,
     shape_complaints,

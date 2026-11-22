@@ -1,5 +1,5 @@
 [project]
-name = "glovebox-mcp"
+name = "glovebox-nhtsa"
 version = "0.1.0"
 description = "Local MCP server for public NHTSA vehicle specs, recalls, complaint counts, and safety ratings."
 readme = "README.md"
@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-glovebox-mcp = "glovebox_mcp.__main__:main"
+glovebox-nhtsa = "glovebox_nhtsa.__main__:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

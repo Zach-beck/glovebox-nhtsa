@@ -6,17 +6,17 @@ import asyncio
 from pathlib import Path
 from typing import Any
 
-from glovebox_mcp.backend import (
+from glovebox_nhtsa.backend import (
     FixtureBackend,
     LiveBackend,
     OfflineBackend,
     UpstreamError,
     request_key,
 )
-from glovebox_mcp.cache import DiskCache
-from glovebox_mcp.config import Settings
-from glovebox_mcp.investigations import InvestigationIndex
-from glovebox_mcp.shaping import (
+from glovebox_nhtsa.cache import DiskCache
+from glovebox_nhtsa.config import Settings
+from glovebox_nhtsa.investigations import InvestigationIndex
+from glovebox_nhtsa.shaping import (
     SPEC_NOTE,
     REPAIR_NOTE,
     drive_matches,
@@ -29,7 +29,7 @@ from glovebox_mcp.shaping import (
     shape_rating_variants,
     shape_recalls,
 )
-from glovebox_mcp.text import SPELLING_NOTICE
+from glovebox_nhtsa.text import SPELLING_NOTICE
 
 TTL_DECODE = 30 * 24 * 3600
 TTL_RECALLS = 12 * 3600

@@ -6,11 +6,15 @@ The server shapes those answers before a model sees them. That work is Context E
 
 Glovebox is not affiliated with, endorsed by, or published by NHTSA or the U.S. Department of Transportation. NHTSA's terms say the site is public information that may be copied, and they disclaim accuracy. See [their terms](https://www.nhtsa.gov/about-nhtsa/terms-use).
 
-This package is not on PyPI. `uvx glovebox-mcp` will work only after a release, and this repo does not publish one. Install from a checkout.
+This package is not on PyPI. `uvx glovebox-nhtsa` will work only after a release, and this repo does not publish one. Install from a checkout.
 
-## Name collision
+## Names
 
-`glovebox-mcp` is free on PyPI (the project URL returns 404). It is not free on GitHub. [segentic-lab/glovebox-mcp](https://github.com/segentic-lab/glovebox-mcp) is a different MIT project: a sandboxed computer-use server. It is also listed in the official MCP registry. An unrelated PyPI project named `glovebox` (0.0.5) exists and is not this server. Nothing here was registered or published.
+The product is Glovebox. The repository, Docker image, PyPI distribution, and command are `glovebox-nhtsa`.
+
+`glovebox-mcp` is already a GitHub repository: [segentic-lab/glovebox-mcp](https://github.com/segentic-lab/glovebox-mcp), an unrelated sandboxed computer-use server, also listed in the MCP registry. That is why this project does not use that name.
+
+Checked on 2026-11-22 and not registered by us: PyPI `glovebox-nhtsa` returned 404. A GitHub search for repositories named `glovebox-nhtsa` returned none. An unrelated PyPI project named `glovebox` (0.0.5) still exists. Nothing here was published.
 
 ## Quickstart
 
@@ -18,7 +22,7 @@ Requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
 
 ```bash
 uv sync
-uv run glovebox-mcp
+uv run glovebox-nhtsa
 ```
 
 That process speaks MCP on stdin and stdout. Point a client at it:
@@ -28,7 +32,7 @@ That process speaks MCP on stdin and stdout. Point a client at it:
   "mcpServers": {
     "glovebox": {
       "command": "uv",
-      "args": ["run", "glovebox-mcp"],
+      "args": ["run", "glovebox-nhtsa"],
       "cwd": "/absolute/path/to/this/checkout"
     }
   }
@@ -38,8 +42,8 @@ That process speaks MCP on stdin and stdout. Point a client at it:
 Docker, still local, still stdio:
 
 ```bash
-docker build -t glovebox-mcp .
-docker run -i --rm glovebox-mcp
+docker build -t glovebox-nhtsa .
+docker run -i --rm glovebox-nhtsa
 ```
 
 Ask for a profile of a VIN. A useful answer quotes `error_code`, names the vehicle, and does not claim a recall was repaired.

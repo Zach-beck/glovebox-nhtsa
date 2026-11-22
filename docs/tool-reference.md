@@ -99,7 +99,7 @@ These are user-chosen templates, not hidden instructions.
 | `GLOVEBOX_HTTP_HOST` | `127.0.0.1` | HTTP bind address |
 | `GLOVEBOX_HTTP_PORT` | `8741` | HTTP port |
 | `GLOVEBOX_HTTP_TOKEN` | unset | If set, HTTP requires `Authorization: Bearer` |
-| `GLOVEBOX_CACHE_DIR` | `~/.cache/glovebox-mcp` | Shaped results |
+| `GLOVEBOX_CACHE_DIR` | `~/.cache/glovebox-nhtsa` | Shaped results |
 | `GLOVEBOX_DATA_DIR` | under the cache dir | Downloaded investigations zip |
 | `GLOVEBOX_OFFLINE` | off | No live calls. Investigations still work from a local file. |
 | `GLOVEBOX_FIXTURES` | unset | Directory of frozen JSON. Tests set this. Do not set it for real use. |

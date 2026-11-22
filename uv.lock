@@ -222,7 +222,7 @@ wheels = [
 ]
 
 [[package]]
-name = "glovebox-mcp"
+name = "glovebox-nhtsa"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [

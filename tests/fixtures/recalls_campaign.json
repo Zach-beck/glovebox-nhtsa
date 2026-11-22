@@ -13,7 +13,7 @@
         "Manufacturer": "Honda (American Honda Motor Co.)",
         "NHTSACampaignNumber": "19V182000",
         "parkIt": false,
-        "parkOutSide": true,
+        "parkOutSide": false,
         "overTheAirUpdate": false,
         "ReportReceivedDate": "06/03/2019",
         "Component": "AIR BAGS:FRONTAL",
@@ -21,7 +21,8 @@
         "PotentialNumberofUnitsAffected": 1000,
         "ModelYear": "2012",
         "Make": "ACURA",
-        "Model": "RDX"
+        "Model": "RDX",
+        "NHTSAActionNumber": "EA15001"
       }
     ]
   }

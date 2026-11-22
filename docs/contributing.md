@@ -14,7 +14,7 @@ The suite uses `tests/fixtures`. It does not call NHTSA. A socket opened during 
 What the tests lock:
 
 - Shaper contracts: dates, `Not Applicable`, complaint redaction, empty recall notice.
-- Token budgets: each shaped sample stays under the character estimate in `glovebox_mcp.shaping.BUDGETS` (characters divided by 4).
+- Token budgets: each shaped sample stays under the character estimate in `glovebox_nhtsa.shaping.BUDGETS` (characters divided by 4).
 - Scripted traces: `tests/golden_cases.py`. A canned caller checks `must_include` and `must_not_include`. That is not a model score.
 - stdio: an MCP client in legacy mode lists the tools and calls `decode_vin` and `vehicle_profile`.
 
