@@ -1,0 +1,101 @@
+{
+  "observed_at": "2026-11-22T00:58:49Z to 2026-11-22T01:00:44Z",
+  "user_agent": "vehicle-specs-agent-research/0.1",
+  "concurrency": 1,
+  "saved_run_requests": 188,
+  "saved_run_breakdown": {
+    "probes": 71,
+    "paced": 117
+  },
+  "follow_up_requests_same_day": 12,
+  "earlier_unsaved_probe_pass_approx": 55,
+  "approx_total_requests": 255,
+  "throttle_responses_seen": [],
+  "paced": [
+    {
+      "name": "vpic_decode",
+      "n": 50,
+      "gap_s": 0.3,
+      "statuses": {
+        "200": 50
+      },
+      "latency_ms": {
+        "min": 143.1,
+        "p50": 220.0,
+        "p95": 906.0,
+        "max": 1024.1,
+        "mean": 306.7
+      }
+    },
+    {
+      "name": "recalls",
+      "n": 25,
+      "gap_s": 0.4,
+      "statuses": {
+        "200": 25
+      },
+      "latency_ms": {
+        "min": 85.4,
+        "p50": 155.5,
+        "p95": 288.8,
+        "max": 927.5,
+        "mean": 183.7
+      }
+    },
+    {
+      "name": "ratings_vehicle",
+      "n": 15,
+      "gap_s": 0.4,
+      "statuses": {
+        "200": 15
+      },
+      "latency_ms": {
+        "min": 92.5,
+        "p50": 129.2,
+        "p95": 153.2,
+        "max": 162.6,
+        "mean": 127.0
+      }
+    },
+    {
+      "name": "complaints",
+      "n": 12,
+      "gap_s": 0.5,
+      "statuses": {
+        "200": 12
+      },
+      "latency_ms": {
+        "min": 363.6,
+        "p50": 389.2,
+        "p95": 487.9,
+        "max": 519.6,
+        "mean": 407.9
+      }
+    },
+    {
+      "name": "vpic_decode_faster",
+      "n": 15,
+      "gap_s": 0.1,
+      "statuses": {
+        "200": 15
+      },
+      "latency_ms": {
+        "min": 180.8,
+        "p50": 480.3,
+        "p95": 1142.5,
+        "max": 1312.2,
+        "mean": 518.2
+      }
+    }
+  ],
+  "notable_statuses": {
+    "GetMakesForManufacturer": 404,
+    "GetEquipmentPlantCodes_path_year": 404,
+    "GetEquipmentPlantCodes_query": 200,
+    "recallsByVin": 403,
+    "guessed_investigations_route": 403,
+    "guessed_manufacturer_communications_route": 403
+  },
+  "rate_limit_headers_seen": false,
+  "notes": "No response bodies with complaint narratives, consumer contact details, or manufacturer staff details are stored in this file."
+}
