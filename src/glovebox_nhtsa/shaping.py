@@ -48,6 +48,7 @@ BUDGETS = {
     "search_investigations": 1200,
     "list_model_names": 800,
     "vehicle_profile": 2000,
+    "vehicle_report": 2600,
     "instructions_and_tools": 1500,
 }
 

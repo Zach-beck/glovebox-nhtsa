@@ -110,7 +110,34 @@ def create_server(settings: Settings | None = None) -> MCPServer:
         return await service.list_model_names(make, model_year)
 
     @mcp.tool(description=(
+        "One VIN vehicle dossier: decode, recalls with remedy text, complaint counts by component, "
+        "NCAP ratings, investigations, and coverage disclaimers. "
+        "Each section has its own status (ok, empty, unavailable, not_applicable) and a source_url. "
+        "format json (default) or html. HTML can be written when GLOVEBOX_REPORT_DIR is set. "
+        "This is not a repair-status check."
+    ))
+    async def vehicle_report(
+        vin: str,
+        model_year: int | None = None,
+        format: str = "json",
+    ) -> dict:
+        return await service.vehicle_report(
+            vin,
+            model_year,
+            format=format,
+            report_dir=settings.report_dir,
+        )
+
+    @mcp.tool(description=(
+        "Render vehicle_report as a self-contained HTML string. "
+        "When GLOVEBOX_REPORT_DIR is set, also writes the file and returns file_path."
+    ))
+    async def render_vehicle_report_html(vin: str, model_year: int | None = None) -> dict:
+        return await service.render_vehicle_report_html(vin, model_year, report_dir=settings.report_dir)
+
+    @mcp.tool(description=(
         "One vehicle profile: decode if a VIN is given, then recalls, complaint counts, ratings, and investigations. "
+        "Prefer vehicle_report for a sourced dossier with HTML. "
         "Call this first. section_status tells you which parts failed. "
         "A failed section does not erase the others. This is not a repair-status check."
     ))

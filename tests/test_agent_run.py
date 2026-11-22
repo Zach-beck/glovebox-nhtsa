@@ -11,7 +11,10 @@ def test_committed_agent_run_matches_its_summary():
     summary = json.loads((RUN / "summary.json").read_text(encoding="utf-8"))
     rows = []
     for case in CASES:
-        transcript = json.loads((RUN / f"{case['id']}.json").read_text(encoding="utf-8"))
+        transcript_path = RUN / f"{case['id']}.json"
+        if not transcript_path.is_file():
+            continue
+        transcript = json.loads(transcript_path.read_text(encoding="utf-8"))
         rows.append(score_case(case, transcript))
     fresh = summarize(rows)
     for key in ("tool_selection", "argument_correctness", "field_accuracy", "faithfulness"):

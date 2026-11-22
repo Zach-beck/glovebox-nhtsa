@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glovebox report 2011 BMW X3</title>
+  <style>
+    :root {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, sans-serif;
+      line-height: 1.45;
+      color: #111;
+      background: #fafafa;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 52rem;
+      padding: 1rem 1.1rem 3rem;
+    }
+    header {
+      border-bottom: 1px solid #ddd;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+    }
+    h1 { font-size: 1.45rem; margin: 0 0 0.35rem; }
+    h2 { font-size: 1.1rem; margin: 1.6rem 0 0.6rem; }
+    h3 { font-size: 1rem; margin: 0 0 0.4rem; }
+    .meta { color: #444; font-size: 0.92rem; }
+    section { margin-bottom: 1.4rem; }
+    .card {
+      border: 1px solid #e2e2e2;
+      border-radius: 8px;
+      padding: 0.75rem 0.85rem;
+      margin: 0.65rem 0;
+      background: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      border-bottom: 1px solid #e8e8e8;
+      text-align: left;
+      padding: 0.35rem 0.25rem;
+      vertical-align: top;
+    }
+    .kv th { width: 34%; color: #333; font-weight: 600; }
+    .note { font-size: 0.9rem; color: #333; }
+    .muted { color: #666; }
+    .pill {
+      display: inline-block;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      border: 1px solid #ccc;
+      margin-left: 0.35rem;
+      vertical-align: middle;
+    }
+    .source { font-size: 0.82rem; word-break: break-all; }
+    a { color: #0b57d0; }
+    @media print {
+      body { background: #fff; max-width: none; }
+      .card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Vehicle report: 2011 BMW X3</h1>
+    <p class="meta">VIN 5UXWX7C5*BA · fetched 2026-11-22T02:59:26Z</p>
+  </header>
+  <section id="summary"><h2>Vehicle summary <span class="pill pill-ok">ok</span></h2><table class='kv'><tr><th>VIN</th><td>5UXWX7C5*BA</td></tr><tr><th>Make</th><td>BMW</td></tr><tr><th>Model</th><td>X3</td></tr><tr><th>Year</th><td>2011</td></tr><tr><th>Trim</th><td>xDrive35i</td></tr><tr><th>Body</th><td>Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)</td></tr><tr><th>Drive</th><td>AWD/All-Wheel Drive</td></tr><tr><th>Plant</th><td>MUNICH</td></tr><tr><th>Decode note</th><td>6 - Incomplete VIN</td></tr></table><p class="source"><a href="https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011">https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011</a></p></section>
+  <section id="recalls"><h2>Recalls <span class="pill pill-ok">ok</span></h2><article class='card'><h3>17V683000</h3><p><strong>Component:</strong> ENGINE AND ENGINE COOLING</p><p><strong>Date received:</strong> 2017-10-30</p><p>Fixture campaign summary for a public campaign number observed in research.</p><p><strong>Remedy:</strong> Fixture remedy.</p></article><p class='note'>These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA&#x27;s own recall lookup.</p><p class="source"><a href="https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011">https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></p></section>
+  <section id="complaints"><h2>Complaints by component <span class="pill pill-ok">ok</span></h2><p>Total complaints: <strong>2</strong></p><table class='data'><thead><tr><th>Component</th><th>Count</th><th>Crash</th><th>Fire</th></tr></thead><tbody><tr><td>ENGINE</td><td>2</td><td>1</td><td>0</td></tr></tbody></table><p class='note'>Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.</p><p class="source"><a href="https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011">https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></p></section>
+  <section id="ratings"><h2>Safety ratings <span class="pill pill-empty">empty</span></h2><p class='muted'>No rating detail returned.</p><p class="source"><a href="https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3">https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3</a></p></section>
+  <section id="investigations"><h2>Investigations <span class="pill pill-ok">ok</span></h2><article class='card'><h3>EA15001</h3><p>Fixture subject</p><p class='muted'>20150101 to </p></article><p class="source"><a href="https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip">https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip</a></p></section>
+  <section id="coverage"><h2>Coverage limits and disclaimers <span class="pill pill-ok">ok</span></h2><p>Glovebox is not NHTSA. Empty recall or complaint lists are not proof that nothing was filed. Recall campaigns do not show whether a specific VIN was repaired.</p><ul><li><strong>title or branded-title history:</strong> Glovebox does not have title history.</li><li><strong>fuel economy or MPG:</strong> Glovebox does not have fuel economy.</li><li><strong>whether a specific VIN finished recall work or dealer repair status:</strong> Glovebox does not show repair completion for a VIN.</li></ul><p class='note'>These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA&#x27;s own recall lookup.</p><p class="source"><a href="glovebox://coverage_limits">glovebox://coverage_limits</a></p></section>
+  <section id="sources"><h2>Sources <span class="pill pill-ok">ok</span></h2><ul><li><strong>decode:</strong> <a href='https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011'>https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011</a></li><li><strong>recalls:</strong> <a href='https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011'>https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></li><li><strong>complaints:</strong> <a href='https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011'>https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></li><li><strong>ratings:</strong> <a href='https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3'>https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3</a></li><li><strong>investigations:</strong> <a href='https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip'>https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip</a></li><li><strong>coverage_limits:</strong> <a href='glovebox://coverage_limits'>glovebox://coverage_limits</a></li></ul></section>
+  <footer class="muted"><p>Glovebox is not affiliated with NHTSA. Data is public NHTSA information, shaped before display.</p></footer>
+</body>
+</html>

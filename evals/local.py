@@ -61,7 +61,8 @@ def run_openai_cases(key: str, cases: list[dict], opener=None, model: str | None
                     "content": (
                         f"Reply with only the tool name. Question: {question}. "
                         f"Tools: decode_vin, get_recalls, summarize_complaints, "
-                        f"get_safety_ratings, search_investigations, list_model_names, vehicle_profile."
+                        f"get_safety_ratings, search_investigations, list_model_names, "
+                        f"vehicle_profile, vehicle_report, render_vehicle_report_html."
                     ),
                 }
             ],

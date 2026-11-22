@@ -13,7 +13,18 @@ from glovebox_nhtsa.backend import (
     UpstreamError,
     request_key,
 )
-from glovebox_nhtsa.cache import DiskCache
+from glovebox_nhtsa.cache import ResponseCache, build_response_cache
+from glovebox_nhtsa.report import (
+    coverage_limits_section,
+    identity_ready,
+    render_vehicle_report_html,
+    section_shell,
+    status_for_payload,
+    utc_now_iso,
+    write_report_file,
+    REPORT_SCHEMA,
+)
+from glovebox_nhtsa.sources import source_url
 from glovebox_nhtsa.config import Settings
 from glovebox_nhtsa.investigations import InvestigationIndex
 from glovebox_nhtsa.shaping import (
@@ -31,9 +42,9 @@ from glovebox_nhtsa.shaping import (
 )
 from glovebox_nhtsa.text import INVALID_CALL_NOTE, SPELLING_NOTICE
 
-TTL_DECODE = 30 * 24 * 3600
-TTL_RECALLS = 12 * 3600
-TTL_COMPLAINTS = 12 * 3600
+TTL_DECODE = 7 * 24 * 3600
+TTL_RECALLS = 6 * 3600
+TTL_COMPLAINTS = 6 * 3600
 TTL_RATINGS = 7 * 24 * 3600
 TTL_MODELS = 7 * 24 * 3600
 SCHEMA = "1"
@@ -53,7 +64,7 @@ class Service:
     def __init__(
         self,
         backend: FixtureBackend | LiveBackend | OfflineBackend,
-        cache: DiskCache,
+        cache: ResponseCache,
         investigations: InvestigationIndex,
     ) -> None:
         self.backend = backend
@@ -266,6 +277,154 @@ class Service:
             limit=20,
         )
 
+    def _emit_vehicle_report(
+        self,
+        report: dict[str, Any],
+        *,
+        format: str,
+        write_html_path: Path | None,
+        report_dir: Path | None,
+    ) -> dict[str, Any]:
+        if format.lower() != "html":
+            return report
+        html_text = render_vehicle_report_html(report)
+        output: dict[str, Any] = {
+            "schema": REPORT_SCHEMA,
+            "format": "html",
+            "vin": report.get("vin"),
+            "fetched_at": report.get("fetched_at"),
+            "html": html_text,
+        }
+        if write_html_path is not None:
+            write_html_path.parent.mkdir(parents=True, exist_ok=True)
+            write_html_path.write_text(html_text, encoding="utf-8")
+            output["file_path"] = str(write_html_path)
+        elif report_dir is not None:
+            path = write_report_file(report_dir, str(report.get("vin") or "report"), html_text)
+            output["file_path"] = str(path)
+        return output
+
+    async def vehicle_report(
+        self,
+        vin: str,
+        model_year: int | None = None,
+        *,
+        format: str = "json",
+        write_html_path: Path | None = None,
+        report_dir: Path | None = None,
+    ) -> dict[str, Any]:
+        normalized, problem = normalize_vin(vin)
+        if problem or normalized is None:
+            return problem or error_body("invalid_vin", "glovebox", False, "VIN is empty.")
+        fetched_at = utc_now_iso()
+        decode_params = {"vin": normalized}
+        if model_year:
+            decode_params["model_year"] = int(model_year)
+        decoded = await self.decode_vin(normalized, model_year)
+        decode_url = source_url("decode_vin", decode_params)
+        if decoded.get("error") == "invalid_vin":
+            skipped = {"error": "skipped", "detail": "Decode did not succeed."}
+            sections = {
+                "decode": section_shell("unavailable", decode_url, decoded),
+                "recalls": section_shell("not_applicable", None, skipped),
+                "complaints": section_shell("not_applicable", None, dict(skipped)),
+                "ratings": section_shell("not_applicable", None, dict(skipped)),
+                "investigations": section_shell("not_applicable", None, dict(skipped)),
+                "coverage_limits": coverage_limits_section(),
+            }
+            report = {
+                "schema": REPORT_SCHEMA,
+                "vin": normalized,
+                "fetched_at": fetched_at,
+                "sections": sections,
+                "notes": [SPEC_NOTE, REPAIR_NOTE],
+            }
+            return self._emit_vehicle_report(
+                report,
+                format=format,
+                write_html_path=write_html_path,
+                report_dir=report_dir,
+            )
+        applicable = identity_ready(decoded.get("specs") or {}, decoded.get("identity") or {})
+        make = (decoded.get("specs") or {}).get("make")
+        model = (decoded.get("specs") or {}).get("model")
+        year_raw = (decoded.get("specs") or {}).get("model_year")
+        model_year_int: int | None = None
+        if model_year is not None:
+            model_year_int = int(model_year)
+        elif year_raw and str(year_raw).isdigit():
+            model_year_int = int(year_raw)
+        drive = (decoded.get("specs") or {}).get("drive")
+        vehicle_params = (
+            {"make": make, "model": model, "model_year": model_year_int}
+            if make and model and model_year_int
+            else {}
+        )
+        skipped = {"error": "skipped", "detail": "Need make, model, and model year from decode."}
+        if applicable and vehicle_params:
+            recalls, complaints, ratings, investigations = await asyncio.gather(
+                self._section(lambda: self.get_recalls(make, model, model_year_int, include_remedy=True)),
+                self._section(lambda: self.summarize_complaints(make or "", model or "", model_year_int or 0)),
+                self._section(lambda: self.get_safety_ratings(make, model, model_year_int, drive_type=drive)),
+                self._section(lambda: self.search_investigations(make, model, model_year_int)),
+            )
+        else:
+            recalls = complaints = ratings = investigations = dict(skipped)
+        recall_params = vehicle_params
+        complaint_params = vehicle_params
+        ratings_params = dict(vehicle_params)
+        investigation_params = dict(vehicle_params)
+        sections = {
+            "decode": section_shell(
+                status_for_payload(decoded, applicable=True),
+                decode_url,
+                decoded,
+            ),
+            "recalls": section_shell(
+                status_for_payload(recalls, applicable=applicable),
+                source_url("recalls_by_vehicle", recall_params) if recall_params else None,
+                recalls,
+            ),
+            "complaints": section_shell(
+                status_for_payload(complaints, applicable=applicable),
+                source_url("complaints_by_vehicle", complaint_params) if complaint_params else None,
+                complaints,
+            ),
+            "ratings": section_shell(
+                status_for_payload(ratings, applicable=applicable),
+                source_url("ratings_model", ratings_params) if ratings_params else None,
+                ratings,
+            ),
+            "investigations": section_shell(
+                status_for_payload(investigations, applicable=applicable),
+                source_url("investigations_index", investigation_params) if investigation_params else None,
+                investigations,
+            ),
+            "coverage_limits": coverage_limits_section(),
+        }
+        report: dict[str, Any] = {
+            "schema": REPORT_SCHEMA,
+            "vin": normalized,
+            "fetched_at": fetched_at,
+            "sections": sections,
+            "notes": [SPEC_NOTE, REPAIR_NOTE],
+        }
+        return self._emit_vehicle_report(
+            report,
+            format=format,
+            write_html_path=write_html_path,
+            report_dir=report_dir,
+        )
+
+    async def render_vehicle_report_html(
+        self,
+        vin: str,
+        model_year: int | None = None,
+        *,
+        report_dir: Path | None = None,
+    ) -> dict[str, Any]:
+        return await self.vehicle_report(vin, model_year, format="html", report_dir=report_dir)
+
     async def vehicle_profile(
         self,
         vin: str | None = None,
@@ -342,8 +501,8 @@ def _status_of(payload: dict[str, Any]) -> str:
 
 
 def build_service(settings: Settings, *, cache_dir: Path | None = None) -> Service:
-    directory = cache_dir or settings.resolved_cache_dir()
-    cache = DiskCache(directory)
+    directory = cache_dir if cache_dir is not None else settings.cache_dir
+    cache = build_response_cache(directory, settings.resolved_cache_dir())
     if settings.fixtures_dir is not None:
         backend: FixtureBackend | LiveBackend | OfflineBackend = FixtureBackend(settings.fixtures_dir)
     elif settings.offline:
