@@ -8,6 +8,8 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from glovebox_nhtsa.shaping import component_arguments_equivalent
+
 
 def normalize_arguments(arguments: dict[str, Any] | None) -> dict[str, Any]:
     """Compare make and model without case. Drop empty and false defaults."""
@@ -34,6 +36,20 @@ def normalize_arguments(arguments: dict[str, Any] | None) -> dict[str, Any]:
     return normalized
 
 
+def _arguments_match(expected: dict[str, Any] | None, actual: dict[str, Any] | None) -> bool:
+    left = normalize_arguments(expected)
+    right = normalize_arguments(actual)
+    if left.keys() != right.keys():
+        return False
+    for key in left:
+        if key == "component":
+            if not component_arguments_equivalent(str(left[key]), str(right[key])):
+                return False
+        elif left[key] != right[key]:
+            return False
+    return True
+
+
 def score_case(case: dict[str, Any], transcript: dict[str, Any]) -> dict[str, Any]:
     calls = transcript.get("tool_calls") or []
     answer = transcript.get("answer") or ""
@@ -47,7 +63,7 @@ def score_case(case: dict[str, Any], transcript: dict[str, Any]) -> dict[str, An
     elif first is None:
         arguments_ok = False
     else:
-        arguments_ok = normalize_arguments(first.get("arguments")) == normalize_arguments(case.get("arguments"))
+        arguments_ok = _arguments_match(case.get("arguments"), first.get("arguments"))
 
     tool_blob = "\n".join(json.dumps(call.get("result"), ensure_ascii=False) for call in calls)
     must_include = case.get("must_include") or []

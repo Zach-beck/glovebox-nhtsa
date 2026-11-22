@@ -188,8 +188,25 @@ class LiveBackend:
                 continue
             if response.status_code == 403 and "Missing Authentication Token" in response.text:
                 raise UpstreamError("not_found", "NHTSA has no route at that path.", False)
+            if response.status_code == 400:
+                self._enforce_size(name, response)
+                try:
+                    maybe_empty = response.json()
+                except json.JSONDecodeError as exc:
+                    raise UpstreamError("upstream_unavailable", f"{name} did not return JSON.", True) from exc
+                if isinstance(maybe_empty, dict) and empty_nhtsa_payload(maybe_empty):
+                    return maybe_empty
+                raise UpstreamError(
+                    "upstream_unavailable",
+                    f"NHTSA returned HTTP 400 for {name}.",
+                    False,
+                )
             if response.status_code >= 400:
-                raise UpstreamError("upstream_unavailable", f"NHTSA returned HTTP {response.status_code} for {name}.", response.status_code >= 500)
+                raise UpstreamError(
+                    "upstream_unavailable",
+                    f"NHTSA returned HTTP {response.status_code} for {name}.",
+                    response.status_code >= 500,
+                )
             self._enforce_size(name, response)
             try:
                 payload = response.json()
@@ -215,3 +232,16 @@ def _retry_delay(response: httpx.Response, attempt: int) -> float:
     if header.isdigit():
         return float(header)
     return float(2**attempt)
+
+
+def empty_nhtsa_payload(payload: dict[str, Any]) -> bool:
+    """NHTSA sometimes returns HTTP 400 with a normal empty list body."""
+    count = payload.get("count", payload.get("Count"))
+    rows = payload.get("results", payload.get("Results"))
+    if rows is None or not isinstance(rows, list):
+        return False
+    try:
+        total = int(count) if count is not None else len(rows)
+    except (TypeError, ValueError):
+        return False
+    return total == 0 and len(rows) == 0

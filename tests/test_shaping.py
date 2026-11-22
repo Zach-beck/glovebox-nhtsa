@@ -1,6 +1,8 @@
 import json
 
 from glovebox_nhtsa.shaping import (
+    component_arguments_equivalent,
+    component_matches,
     estimate_tokens,
     parse_nhtsa_date,
     shape_complaints,
@@ -57,6 +59,15 @@ def test_complaint_shape_drops_narrative_and_vin():
     assert "Do not return this narrative" not in blob
     assert shaped["count"] == 1
     assert shaped["fire_reports"] == 1
+
+
+def test_component_filter_matches_plural_component_names():
+    assert component_matches("brake", "BRAKES")
+    assert component_matches("engine", "ENGINE AND ENGINE COOLING")
+    assert component_arguments_equivalent("BRAKES", "brake")
+    raw = json.loads((__import__("pathlib").Path("tests/fixtures/complaints_x3.json")).read_text())
+    shaped = shape_complaints(raw["body"], component="brake")
+    assert shaped["count"] == 0
 
 
 def test_recall_count_zero_is_a_spelling_notice():

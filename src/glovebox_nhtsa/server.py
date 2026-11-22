@@ -9,7 +9,7 @@ from mcp.server import MCPServer
 from glovebox_nhtsa import __version__
 from glovebox_nhtsa.config import Settings
 from glovebox_nhtsa.service import Service, build_service
-from glovebox_nhtsa.text import INSTRUCTIONS, REPAIR_NOTE, SPEC_NOTE
+from glovebox_nhtsa.text import COVERAGE_LIMITS, INSTRUCTIONS, INVALID_CALL_NOTE, REPAIR_NOTE, SENTINEL_NOTE, SPEC_NOTE
 
 
 def create_server(settings: Settings | None = None) -> MCPServer:
@@ -35,6 +35,8 @@ def create_server(settings: Settings | None = None) -> MCPServer:
         "Decode one VIN with NHTSA vPIC. "
         "HTTP success is not a clean decode: read error_code. "
         "Empty specs mean NHTSA has no value, not that equipment is missing. "
+        "NHTSA sentinel placeholders are omitted; do not quote those placeholder values when summarizing. "
+        "include_raw_filled adds other_filled_fields plus sentinel_note. "
         "model_year is optional. Partial VINs may use *."
     ))
     async def decode_vin(vin: str, model_year: int | None = None, include_raw_filled: bool = False) -> dict:
@@ -42,7 +44,8 @@ def create_server(settings: Settings | None = None) -> MCPServer:
 
     @mcp.tool(description=(
         "Recalls for a make, model, and model year, or one campaign number. "
-        "Do not pass a VIN. A campaign is not proof a specific car was repaired. "
+        "Do not pass a VIN. Do not pass campaign number together with make, model, or year. "
+        "A campaign is not proof a specific car was repaired. "
         "An empty list can be a spelling miss."
     ))
     async def get_recalls(
@@ -56,6 +59,8 @@ def create_server(settings: Settings | None = None) -> MCPServer:
 
     @mcp.tool(description=(
         "Complaint counts for a make, model, and model year. "
+        "Optional component filter: case-insensitive substring with simple singular/plural overlap "
+        "(for example brake matches BRAKES). "
         "Returns totals and components only. Never returns narratives or VINs. "
         "Counts are consumer reports, not findings."
     ))
@@ -69,13 +74,15 @@ def create_server(settings: Settings | None = None) -> MCPServer:
 
     @mcp.tool(description=(
         "NCAP star ratings. Pass make, model, and model year, or a vehicle_id from a previous variant list. "
+        "vehicle_id may be a string or integer (for example 7520). "
+        "Do not pass vehicle_id together with make, model, or year. "
         "Not Rated is a real value. An empty variant list can be a spelling miss."
     ))
     async def get_safety_ratings(
         make: str | None = None,
         model: str | None = None,
         model_year: int | None = None,
-        vehicle_id: str | None = None,
+        vehicle_id: int | str | None = None,
     ) -> dict:
         return await service.get_safety_ratings(make, model, model_year, vehicle_id)
 
@@ -115,6 +122,18 @@ def create_server(settings: Settings | None = None) -> MCPServer:
     ) -> dict:
         return await service.vehicle_profile(vin, make, model, model_year)
 
+    @mcp.tool(description=(
+        "Exact refusal phrases for questions Glovebox cannot answer. "
+        "Use these verbatim for title history, fuel economy, and per-VIN repair completion. "
+        "Do not guess from recall campaigns."
+    ))
+    async def coverage_limits() -> dict:
+        return {
+            "limits": COVERAGE_LIMITS,
+            "invalid_call_note": INVALID_CALL_NOTE,
+            "sentinel_note": SENTINEL_NOTE,
+        }
+
     @mcp.resource("nhtsa://about", mime_type="text/plain", description="What Glovebox will and will not claim.")
     def about() -> str:
         return (
@@ -136,6 +155,10 @@ def create_server(settings: Settings | None = None) -> MCPServer:
             "NCAP ratings: live API.\n"
             f"Investigations: {investigations}. No Postgres database in this version.\n"
             "Not included: fuel economy, title history, manufacturer communications, FARS.\n"
+            f"Title refusal phrase: {COVERAGE_LIMITS['title_history']['scorer_phrase']}.\n"
+            f"Fuel refusal phrase: {COVERAGE_LIMITS['fuel_economy']['scorer_phrase']}.\n"
+            f"Repair completion refusal phrase: {COVERAGE_LIMITS['repair_completion']['scorer_phrase']}.\n"
+            "Call coverage_limits for the full refusal sentences.\n"
             "Recall API dates are read as day/month/year."
         )
 

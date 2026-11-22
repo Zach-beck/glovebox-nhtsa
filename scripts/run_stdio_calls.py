@@ -22,13 +22,9 @@ ROOT = Path(__file__).resolve().parents[1]
 async def main() -> int:
     lines = [json.loads(line) for line in sys.stdin if line.strip()]
     fixtures = os.environ.get("GLOVEBOX_FIXTURES", str(ROOT / "tests" / "fixtures"))
-    investigations = os.environ.get(
-        "GLOVEBOX_INVESTIGATIONS_FILE",
-        str(ROOT / "tests" / "fixtures" / "investigations.txt"),
-    )
+    investigations = os.environ.get("GLOVEBOX_INVESTIGATIONS_FILE")
     env = {
         "GLOVEBOX_FIXTURES": fixtures,
-        "GLOVEBOX_INVESTIGATIONS_FILE": investigations,
         "GLOVEBOX_OFFLINE": "1",
         "GLOVEBOX_CACHE_DIR": os.environ.get("GLOVEBOX_CACHE_DIR", "/tmp/glovebox-agent-eval-cache"),
         "GLOVEBOX_REQUEST_GAP_SECONDS": "0",
@@ -37,6 +33,16 @@ async def main() -> int:
         env.pop("GLOVEBOX_FIXTURES")
         env["GLOVEBOX_OFFLINE"] = "0"
         env["GLOVEBOX_REQUEST_GAP_SECONDS"] = "0.4"
+        if investigations:
+            env["GLOVEBOX_INVESTIGATIONS_FILE"] = investigations
+        elif os.environ.get("GLOVEBOX_REQUIRE_LIVE_INVESTIGATIONS", "").strip() in {"1", "true", "yes"}:
+            print(
+                "live mode: GLOVEBOX_INVESTIGATIONS_FILE is unset; investigations will use live FLAT_INV.zip",
+                file=sys.stderr,
+            )
+    else:
+        inv_path = investigations or str(ROOT / "tests" / "fixtures" / "investigations.txt")
+        env["GLOVEBOX_INVESTIGATIONS_FILE"] = inv_path
     params = StdioServerParameters(
         command=sys.executable,
         args=["-m", "glovebox_nhtsa"],

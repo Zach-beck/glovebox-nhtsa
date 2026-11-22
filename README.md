@@ -118,11 +118,12 @@ The CI signal is offline pytest on frozen fixtures. On this tree that is 29 test
 I also ran those 40 cases myself, in this agent session, and scored 40/40. That run is not blinded: I wrote the golden set and then answered it. Treat 40/40 as an upper bound. The write-up, the categories, and the blinded rerun I want next are in [docs/eval-results.md](docs/eval-results.md). The method is [docs/evals.md](docs/evals.md).
 
 ```bash
-uv run pytest
+make eval-fixture   # same as uv run pytest, frozen fixtures
+make eval-live      # live tool calls for non-fixture-only golden cases (network)
 uv run python evals/local.py
 ```
 
-The second command skips unless you put `OPENAI_API_KEY` in a gitignored `.env`. I do not want that key in CI.
+`make eval-fixture` is the CI gate. `make eval-live` is a maintainer smoke against NHTSA, not a model score. The OpenAI helper skips unless you put `OPENAI_API_KEY` in a gitignored `.env`. I do not want that key in CI.
 
 ## Data, terms, and rate limits
 

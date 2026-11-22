@@ -33,7 +33,7 @@ Dates are converted from day/month/year to ISO. If both the day and the month ar
 | Argument | Required | Notes |
 | --- | --- | --- |
 | `make`, `model`, `model_year` | yes | |
-| `component` | no | Case-insensitive substring of the component string. |
+| `component` | no | Case-insensitive filter with simple singular/plural overlap (for example `brake` matches `BRAKES`). |
 
 Returns `count`, crash and fire report totals, injuries, deaths, and up to eight components. There is no narrative and no VIN field, including when you ask for examples. That argument does not exist.
 

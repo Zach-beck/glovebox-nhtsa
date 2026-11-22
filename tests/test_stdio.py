@@ -35,6 +35,7 @@ def test_stdio_client_lists_and_calls_tools(tmp_path):
 
     names, decoded, profile, prompts = anyio.run(run)
     assert names == [
+        "coverage_limits",
         "decode_vin",
         "get_recalls",
         "get_safety_ratings",
