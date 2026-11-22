@@ -1,0 +1,22 @@
+{
+  "id": "decode_rejects_overlong_vin",
+  "question": "Decode VIN 123456789012345678.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "decode_vin",
+      "arguments": {
+        "vin": "123456789012345678"
+      },
+      "result": {
+        "error": "invalid_vin",
+        "source": "glovebox",
+        "retryable": false,
+        "detail": "A VIN must be 1 to 17 letters, digits, or * characters."
+      }
+    }
+  ],
+  "answer": "That 18-character string is invalid_vin. No vehicle was decoded."
+}

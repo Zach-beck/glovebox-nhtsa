@@ -1,0 +1,53 @@
+{
+  "id": "model_names_gap",
+  "question": "Which model-name spellings does NHTSA use for BMW in 2011?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "list_model_names",
+      "arguments": {
+        "make": "BMW",
+        "model_year": 2011
+      },
+      "result": {
+        "make": "BMW",
+        "model_year": 2011,
+        "lists": [
+          {
+            "source": "vpic",
+            "count": 2,
+            "returned": 2,
+            "truncated": false,
+            "models": [
+              "328i",
+              "X3"
+            ]
+          },
+          {
+            "source": "recall_product_list",
+            "count": 2,
+            "returned": 2,
+            "truncated": false,
+            "models": [
+              "128I",
+              "328I"
+            ]
+          },
+          {
+            "source": "ncap",
+            "count": 1,
+            "returned": 1,
+            "truncated": false,
+            "models": [
+              "328I"
+            ]
+          }
+        ],
+        "note": "The recall product list is incomplete. An empty list is not proof a model has no campaigns. This spelling returned no rows. A different model string may still have records. This is not proof that nothing was filed or tested."
+      }
+    }
+  ],
+  "answer": "For BMW 2011, vPIC lists 328i and X3. The recall product list is incomplete: it lists 128I and 328I, and not X3. NCAP lists 328I."
+}

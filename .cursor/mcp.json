@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "glovebox-nhtsa": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "glovebox-nhtsa"]
+    }
+  }
+}

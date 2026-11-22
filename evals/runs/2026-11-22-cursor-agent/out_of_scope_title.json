@@ -1,0 +1,9 @@
+{
+  "id": "out_of_scope_title",
+  "question": "Can you tell me if a car has a clean title?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [],
+  "answer": "Glovebox does not have title history."
+}

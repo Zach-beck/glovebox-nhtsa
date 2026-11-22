@@ -1,0 +1,25 @@
+{
+  "id": "ratings_reject_mixed_arguments",
+  "question": "Call get_safety_ratings once with make Acura, model RDX, model year 2013, and vehicle id 7520 together.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_safety_ratings",
+      "arguments": {
+        "make": "Acura",
+        "model": "RDX",
+        "model_year": 2013,
+        "vehicle_id": "7520"
+      },
+      "result": {
+        "error": "invalid_arguments",
+        "source": "glovebox",
+        "retryable": false,
+        "detail": "Pass a vehicle id or a make, model, and model year, not both."
+      }
+    }
+  ],
+  "answer": "The tool returned invalid_arguments. It will not take a vehicle id together with make, model, and year."
+}

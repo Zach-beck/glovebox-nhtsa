@@ -1,0 +1,37 @@
+{
+  "id": "investigation_link",
+  "question": "What is NHTSA investigation EA15001?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "search_investigations",
+      "arguments": {
+        "nhtsa_id": "EA15001"
+      },
+      "result": {
+        "count": 1,
+        "returned": 1,
+        "truncated": false,
+        "file_modified": null,
+        "rows": [
+          {
+            "nhtsa_id": "EA15001",
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "component": "ENGINE",
+            "opened": "20150101",
+            "closed": null,
+            "campaign_number": "17V683000",
+            "subject": "Fixture subject",
+            "summary": "Fixture investigation summary stays in the file."
+          }
+        ],
+        "note": "Loaded from NHTSA's investigations flat file. There is no public investigations REST API."
+      }
+    }
+  ],
+  "answer": "EA15001 matches one fixture row: a 2011 BMW X3, linked campaign 17V683000."
+}

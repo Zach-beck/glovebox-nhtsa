@@ -1,0 +1,62 @@
+{
+  "id": "recalls_hit_rdx",
+  "question": "What safety recalls are filed for a 2012 Acura RDX?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_recalls",
+      "arguments": {
+        "make": "Acura",
+        "model": "RDX",
+        "model_year": 2012
+      },
+      "result": {
+        "count": 2,
+        "returned": 2,
+        "truncated": false,
+        "campaigns": [
+          {
+            "campaign_number": "19V182000",
+            "make": "ACURA",
+            "model": "RDX",
+            "model_year": "2012",
+            "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+            "manufacturer": "Honda (American Honda Motor Co.)",
+            "park_it": false,
+            "park_outside": false,
+            "over_the_air_update": false,
+            "report_received": {
+              "iso": "2019-03-06",
+              "raw": "06/03/2019",
+              "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+            },
+            "investigation_id": "EA15001",
+            "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+          },
+          {
+            "campaign_number": "16V061000",
+            "make": "ACURA",
+            "model": "RDX",
+            "model_year": "2012",
+            "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+            "manufacturer": "Honda (American Honda Motor Co.)",
+            "park_it": false,
+            "park_outside": false,
+            "over_the_air_update": false,
+            "report_received": {
+              "iso": "2016-02-03",
+              "raw": "03/02/2016",
+              "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+            },
+            "investigation_id": "EA15001",
+            "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+          }
+        ],
+        "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+      }
+    }
+  ],
+  "answer": "Two campaigns are filed for the 2012 Acura RDX: 19V182000, report received 2019-03-06, and 16V061000, report received 2016-02-03. park_outside is false on both. These rows do not show whether a specific VIN was repaired."
+}

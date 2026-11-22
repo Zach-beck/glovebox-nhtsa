@@ -1,0 +1,31 @@
+{
+  "cases": 40,
+  "tool_selection": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "argument_correctness": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "field_accuracy": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "faithfulness": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "failures": [],
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "date": "2026-11-22",
+  "data_source": "fixtures",
+  "label": "agent-run eval, not the CI gate",
+  "mcp_registration": "Wrote .cursor/mcp.json. This session's tool catalog did not include Glovebox, so the calls went through scripts/run_stdio_calls.py on stdio.",
+  "data_source_reason": "Every golden case is scored against the frozen fixtures. Complaint rows, the investigations sample, the NO-SUCH model, and OtherEngineInfo do not exist as live queries. Using live NHTSA would mix data drift into the model score.",
+  "blinding": "Not blinded. This agent wrote tests/golden_cases.py in an earlier turn and read the expected tool, arguments, and phrase lists again while adding questions. Tool selection and argument scores are therefore an upper bound, not an independent measurement. Answers were written after the tool calls returned, and they quote those results. A fresh session that sees only the question and the tool list would be the blinded rerun."
+}

@@ -1,0 +1,22 @@
+{
+  "id": "recalls_reject_incomplete_arguments",
+  "question": "Call get_recalls with only the make ACURA and no model or year.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_recalls",
+      "arguments": {
+        "make": "ACURA"
+      },
+      "result": {
+        "error": "invalid_arguments",
+        "source": "glovebox",
+        "retryable": false,
+        "detail": "Provide make, model, and model year, or a campaign number."
+      }
+    }
+  ],
+  "answer": "The tool returned invalid_arguments. Make alone is not enough."
+}

@@ -1,0 +1,20 @@
+{
+  "id": "investigations_require_a_filter",
+  "question": "Search defect investigations, but do not give any make, model, year, component, or id.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "search_investigations",
+      "arguments": {},
+      "result": {
+        "error": "invalid_arguments",
+        "source": "glovebox",
+        "retryable": false,
+        "detail": "Provide at least one investigation filter."
+      }
+    }
+  ],
+  "answer": "The tool returned invalid_arguments. It needs at least one filter."
+}

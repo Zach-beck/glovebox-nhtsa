@@ -1,6 +1,6 @@
 # Evals
 
-How we will know the server answers from NHTSA's data instead of from the model's habits. Nothing here runs yet. This is the design the implementation has to meet.
+How we will know the server answers from NHTSA's data instead of from the model's habits. The CI gate is the offline pytest suite. A model run is a separate measurement and is not that gate.
 
 The first sketch said "golden-set evals" and "a CI gate" as if those were one system. They should be two. CI can gate facts we can recompute with no network and no model. A live model is a different measurement, run locally, with a key that never enters the repo or the CI logs.
 
@@ -126,7 +126,7 @@ uv run pytest                 # no key, no network
 uv run python -m evals.local  # reads .env, uses fixtures, calls the model
 ```
 
-`evals.local` refuses to start if it cannot see a key, and it refuses to start if a test tries to open a socket to `nhtsa.gov`. The fixture transport is the only HTTP implementation in that process. A test that patches poorly and calls the network should fail closed.
+`evals/local.py` prints `status: skipped` and exits 0 when it cannot see a key. It does not prompt. CI calls it that way. A test that is supposed to stay on fixtures should not open a socket to `nhtsa.gov`.
 
 The model name comes from `EVAL_MODEL`, then from a default we document (one current small model, chosen at build time, not in this design). The report header prints the model id and the date. Results from different models are not pooled.
 
@@ -142,6 +142,51 @@ GitHub Actions, on pull request and on push:
 The job fails if any deterministic test fails. There is no flake budget. There is no coverage percentage gate in v1. Coverage of the shaper matters more than a number, and the fixtures are that coverage.
 
 A nightly job that calls live NHTSA and diffs fixtures is tempting and out of scope until v1 is stable. It would spend NHTSA's capacity from a data center and it would fail whenever a new recall is filed, which is the data working as intended. Refresh fixtures by hand.
+
+## Agent-run mode
+
+Use this when the model is a person or a coding agent that can call MCP tools, and you do not want a separate provider key. Cursor subscription usage is the model. An API key is a different path, below.
+
+1. Add a `question` to the case. The question is the only thing the model should need, plus the tool list.
+2. Start Glovebox. For a score against the frozen set, set `GLOVEBOX_FIXTURES` to `tests/fixtures` and `GLOVEBOX_INVESTIGATIONS_FILE` to `tests/fixtures/investigations.txt`. For a live run, leave the fixtures unset. The server already waits 0.25 seconds between calls to one NHTSA host. Do not point a bulk loop at the live complaints API.
+3. Register the server, or call it over stdio.
+
+Cursor, in `.cursor/mcp.json` at the checkout:
+
+```json
+{
+  "mcpServers": {
+    "glovebox-nhtsa": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "glovebox-nhtsa"]
+    }
+  }
+}
+```
+
+That file is for normal use and does not set fixtures. An eval session should start the process with the fixture env above, or pass those variables in the client's `env` block. This cloud agent wrote that file and the session tool list still did not include Glovebox, so the 2026-11-22 run used `scripts/run_stdio_calls.py` instead.
+
+Claude Code, from the checkout:
+
+```bash
+claude mcp add --transport stdio glovebox-nhtsa -- uv run glovebox-nhtsa
+```
+
+4. For each question, call the tools, then write the answer from the tool JSON. Save one transcript per case under `evals/runs/<date>-<model>/` with `question`, `model`, `tool_calls`, and `answer`.
+5. Score with `evals/score.py`. Tool selection is the first call's name. Arguments match after uppercasing make, model, and campaign number, and after removing spaces in a VIN. Field accuracy checks `must_include` against the tool JSON, and checks that `must_not_include` did not leak into that JSON. Faithfulness checks that the answer avoids `must_not_include` and does not cite a campaign number the tool did not return. Cases with no tool use the answer for the `must_include` check.
+6. Put the table in `docs/eval-results.md` and label it an agent-run eval, not the CI gate. Say whether the model had already seen the expected answers.
+
+Do not treat a run as blinded if the same agent wrote the golden set.
+
+## Own API key
+
+```text
+cp .env.example .env
+uv run python evals/local.py
+```
+
+With no key, the command prints `status: skipped` and exits 0. With `OPENAI_API_KEY` in `.env` or the environment, it asks OpenAI, for each case, to reply with a tool name, and counts how often that name matches. It does not run the full tool loop. `ANTHROPIC_API_KEY` alone still skips. The key stays out of git. CI does not set either variable.
 
 ## Publishing results
 

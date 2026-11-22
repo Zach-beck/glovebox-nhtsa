@@ -1,0 +1,40 @@
+{
+  "id": "decode_partial_bmw",
+  "question": "What vehicle is VIN 5UXWX7C5*BA if the model year is 2011?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "decode_vin",
+      "arguments": {
+        "vin": "5UXWX7C5*BA",
+        "model_year": 2011
+      },
+      "result": {
+        "identity": {
+          "vin": "5UXWX7C5*BA",
+          "error_code": "6",
+          "error_text": "6 - Incomplete VIN",
+          "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+        },
+        "specs": {
+          "make": "BMW",
+          "model": "X3",
+          "model_year": "2011",
+          "trim": "xDrive35i",
+          "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+          "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+          "doors": "4",
+          "drive": "AWD/All-Wheel Drive",
+          "engine_cylinders": "6",
+          "displacement_l": "3.0",
+          "fuel": "Gasoline",
+          "plant_country": "GERMANY",
+          "plant_city": "MUNICH"
+        }
+      }
+    }
+  ],
+  "answer": "VIN 5UXWX7C5*BA, model year 2011, decodes as a 2011 BMW X3 built in Munich. Error code 6: Incomplete VIN."
+}

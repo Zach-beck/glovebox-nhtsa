@@ -1,0 +1,25 @@
+{
+  "id": "decode_abc_multiple_error_codes",
+  "question": "Decode VIN ABC.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "decode_vin",
+      "arguments": {
+        "vin": "ABC"
+      },
+      "result": {
+        "identity": {
+          "vin": "ABC",
+          "error_code": "6,7,11",
+          "error_text": "6 - Incomplete VIN; 7 - Manufacturer is not registered with NHTSA for sale or importation in the U.S. for use on U.S roads; Please contact the manufacturer directly for more information; 11 - Incorrect Model Year",
+          "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+        },
+        "specs": {}
+      }
+    }
+  ],
+  "answer": "Error code 6,7,11. The text says the VIN is incomplete and the manufacturer is not registered with NHTSA for sale or importation in the U.S. No make or model was returned."
+}

@@ -1,0 +1,23 @@
+{
+  "id": "ratings_empty_spelling",
+  "question": "What is the NCAP star rating for a 2011 BMW X3?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_safety_ratings",
+      "arguments": {
+        "make": "BMW",
+        "model": "X3",
+        "model_year": 2011
+      },
+      "result": {
+        "count": 0,
+        "variants": [],
+        "notice": "This spelling returned no rows. A different model string may still have records. This is not proof that nothing was filed or tested."
+      }
+    }
+  ],
+  "answer": "The 2011 BMW X3 lookup returned count 0. This spelling returned no rows. That is not proof that nothing was tested."
+}

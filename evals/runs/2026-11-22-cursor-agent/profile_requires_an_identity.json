@@ -1,0 +1,20 @@
+{
+  "id": "profile_requires_an_identity",
+  "question": "Give me a vehicle profile. I am not telling you the VIN or the year, make, and model.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "vehicle_profile",
+      "arguments": {},
+      "result": {
+        "error": "invalid_arguments",
+        "source": "glovebox",
+        "retryable": false,
+        "detail": "Provide a VIN, or make, model, and model year."
+      }
+    }
+  ],
+  "answer": "The tool returned invalid_arguments. It needs a VIN, or a make, model, and model year."
+}

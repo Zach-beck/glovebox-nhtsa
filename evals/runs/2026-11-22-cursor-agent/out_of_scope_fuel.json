@@ -1,0 +1,9 @@
+{
+  "id": "out_of_scope_fuel",
+  "question": "What is the fuel economy of a 2011 BMW X3?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [],
+  "answer": "Glovebox does not have fuel economy. That figure is not in this server."
+}

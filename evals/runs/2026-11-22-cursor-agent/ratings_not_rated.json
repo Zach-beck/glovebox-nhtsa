@@ -1,0 +1,32 @@
+{
+  "id": "ratings_not_rated",
+  "question": "What NHTSA safety rating does vehicle id 7520 have?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_safety_ratings",
+      "arguments": {
+        "vehicle_id": "7520"
+      },
+      "result": {
+        "count": 1,
+        "rating": {
+          "overall_rating": "Not Rated",
+          "overall_front_crash_rating": "Not Rated",
+          "overall_side_crash_rating": "Not Rated",
+          "rollover_rating": "Not Rated",
+          "side_pole_crash_rating": "Not Rated",
+          "vehicle_description": "2013 Acura RDX SUV FWD",
+          "vehicle_id": 7520,
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2013
+        },
+        "note": "Not Rated is a published value. It is not zero stars and it is not a safety judgment."
+      }
+    }
+  ],
+  "answer": "Vehicle id 7520 is the 2013 Acura RDX SUV FWD. The overall rating is Not Rated. The tool says that is a published value, not a numeric star score."
+}

@@ -1,0 +1,38 @@
+{
+  "id": "investigation_by_vehicle",
+  "question": "Are there NHTSA defect investigations for a 2012 Acura RDX?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "search_investigations",
+      "arguments": {
+        "make": "ACURA",
+        "model": "RDX",
+        "model_year": 2012
+      },
+      "result": {
+        "count": 1,
+        "returned": 1,
+        "truncated": false,
+        "file_modified": null,
+        "rows": [
+          {
+            "nhtsa_id": "PE14001",
+            "make": "ACURA",
+            "model": "RDX",
+            "model_year": "2012",
+            "component": "AIR BAGS",
+            "opened": "20160101",
+            "closed": "20170101",
+            "campaign_number": "19V182000",
+            "subject": "Airbag subject"
+          }
+        ],
+        "note": "Loaded from NHTSA's investigations flat file. There is no public investigations REST API."
+      }
+    }
+  ],
+  "answer": "One row: PE14001 for a 2012 Acura RDX, linked campaign 19V182000."
+}

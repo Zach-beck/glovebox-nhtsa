@@ -1,0 +1,43 @@
+{
+  "id": "recalls_hit_x3",
+  "question": "What recalls are filed for a 2011 BMW X3?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_recalls",
+      "arguments": {
+        "make": "bmw",
+        "model": "x3",
+        "model_year": 2011
+      },
+      "result": {
+        "count": 1,
+        "returned": 1,
+        "truncated": false,
+        "campaigns": [
+          {
+            "campaign_number": "17V683000",
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "component": "ENGINE AND ENGINE COOLING",
+            "manufacturer": "BMW of North America, LLC",
+            "park_it": false,
+            "park_outside": false,
+            "over_the_air_update": false,
+            "report_received": {
+              "iso": "2017-10-30",
+              "raw": "30/10/2017"
+            },
+            "investigation_id": "EA15001",
+            "summary": "Fixture campaign summary for a public campaign number observed in research."
+          }
+        ],
+        "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+      }
+    }
+  ],
+  "answer": "One campaign is filed for the 2011 BMW X3: 17V683000, report received 2017-10-30. This is a model-level filing, not a repair record."
+}

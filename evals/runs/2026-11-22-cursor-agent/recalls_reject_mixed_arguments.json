@@ -1,0 +1,25 @@
+{
+  "id": "recalls_reject_mixed_arguments",
+  "question": "Call get_recalls once with both campaign number 19V182000 and the 2012 Acura RDX make, model, and year.",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_recalls",
+      "arguments": {
+        "make": "ACURA",
+        "model": "RDX",
+        "model_year": 2012,
+        "campaign_number": "19V182000"
+      },
+      "result": {
+        "error": "invalid_arguments",
+        "source": "glovebox",
+        "retryable": false,
+        "detail": "Pass a campaign number or a make, model, and model year, not both."
+      }
+    }
+  ],
+  "answer": "The tool returned invalid_arguments. It will not take a campaign number and a make, model, and year in one call."
+}

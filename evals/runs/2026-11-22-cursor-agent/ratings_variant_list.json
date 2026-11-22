@@ -1,0 +1,32 @@
+{
+  "id": "ratings_variant_list",
+  "question": "Which crash-test variants does NHTSA list for a 2013 Acura RDX?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "get_safety_ratings",
+      "arguments": {
+        "make": "ACURA",
+        "model": "RDX",
+        "model_year": 2013
+      },
+      "result": {
+        "count": 2,
+        "variants": [
+          {
+            "vehicle_id": "7731",
+            "description": "2013 Acura RDX SUV 4WD"
+          },
+          {
+            "vehicle_id": "7520",
+            "description": "2013 Acura RDX SUV FWD"
+          }
+        ],
+        "note": "More than one tested variant. Pass vehicle_id for a single rating."
+      }
+    }
+  ],
+  "answer": "NHTSA lists two variants: vehicle id 7731, 2013 Acura RDX SUV 4WD, and vehicle id 7520, 2013 Acura RDX SUV FWD. I am not choosing one."
+}

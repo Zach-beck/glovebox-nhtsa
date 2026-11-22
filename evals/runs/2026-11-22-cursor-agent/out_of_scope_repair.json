@@ -1,0 +1,9 @@
+{
+  "id": "out_of_scope_repair",
+  "question": "Can you confirm the dealer finished the recall repair on my car?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [],
+  "answer": "Glovebox does not show repair completion for a VIN."
+}

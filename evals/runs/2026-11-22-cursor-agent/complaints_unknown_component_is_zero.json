@@ -1,0 +1,29 @@
+{
+  "id": "complaints_unknown_component_is_zero",
+  "question": "How many brake complaints are filed for a 2011 BMW X3?",
+  "model": "Cursor Grok 4.7 (this cloud agent session)",
+  "data_source": "fixtures",
+  "blinding": "not blinded; this agent wrote the golden set and reread it while adding questions",
+  "tool_calls": [
+    {
+      "name": "summarize_complaints",
+      "arguments": {
+        "make": "BMW",
+        "model": "X3",
+        "model_year": 2011,
+        "component": "BRAKES"
+      },
+      "result": {
+        "count": 0,
+        "crash_reports": 0,
+        "fire_reports": 0,
+        "injuries": 0,
+        "deaths": 0,
+        "components": [],
+        "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+        "component_filter": "BRAKES"
+      }
+    }
+  ],
+  "answer": "The brake filter returned count 0. No component rows matched."
+}

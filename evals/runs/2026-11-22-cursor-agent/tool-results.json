@@ -1,0 +1,1379 @@
+[
+  {
+    "id": "decode_partial_bmw",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "5UXWX7C5*BA",
+          "model_year": 2011
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_partial_lower",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "5uxwx7c5*ba",
+          "model_year": 2011
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_invalid_symbols",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "VIN!"
+        },
+        "result": {
+          "error": "invalid_vin",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "A VIN must be 1 to 17 letters, digits, or * characters."
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_invalid_empty",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "   "
+        },
+        "result": {
+          "error": "invalid_vin",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "A VIN must be 1 to 17 letters, digits, or * characters."
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_check_digit",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "3GNDA13D76S000000"
+        },
+        "result": {
+          "identity": {
+            "vin": "3GNDA13D76S000000",
+            "error_code": "1",
+            "error_text": "1 - Check Digit (9th position) does not calculate properly",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "CHEVROLET",
+            "model": "HHR",
+            "model_year": "2006",
+            "trim": "LS",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "plant_country": "MEXICO",
+            "plant_city": "RAMOS ARIZPE"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "missing_means_unknown",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "5UXWX7C5*BA",
+          "model_year": 2011
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "not_applicable_dropped",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "5UXWX7C5*BA",
+          "model_year": 2011
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_hit_rdx",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "Acura",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 2,
+          "returned": 2,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "19V182000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2019-03-06",
+                "raw": "06/03/2019",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+            },
+            {
+              "campaign_number": "16V061000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2016-02-03",
+                "raw": "03/02/2016",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_hit_x3",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "bmw",
+          "model": "x3",
+          "model_year": 2011
+        },
+        "result": {
+          "count": 1,
+          "returned": 1,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "17V683000",
+              "make": "BMW",
+              "model": "X3",
+              "model_year": "2011",
+              "component": "ENGINE AND ENGINE COOLING",
+              "manufacturer": "BMW of North America, LLC",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2017-10-30",
+                "raw": "30/10/2017"
+              },
+              "investigation_id": "EA15001",
+              "summary": "Fixture campaign summary for a public campaign number observed in research."
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_campaign",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "campaign_number": "19v182000"
+        },
+        "result": {
+          "count": 1,
+          "returned": 1,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "19V182000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2019-03-06",
+                "raw": "06/03/2019",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Fixture airbag campaign summary.",
+              "potential_units": 1000
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_spelling_miss",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "BMW",
+          "model": "NO-SUCH",
+          "model_year": 2011
+        },
+        "result": {
+          "count": 0,
+          "returned": 0,
+          "truncated": false,
+          "campaigns": [],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup.",
+          "notice": "This spelling returned no rows. A different model string may still have records. This is not proof that nothing was filed or tested."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_not_repair_phrase",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 2,
+          "returned": 2,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "19V182000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2019-03-06",
+                "raw": "06/03/2019",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+            },
+            {
+              "campaign_number": "16V061000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2016-02-03",
+                "raw": "03/02/2016",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "complaints_x3_counts",
+    "tool_calls": [
+      {
+        "name": "summarize_complaints",
+        "arguments": {
+          "make": "BMW",
+          "model": "X3",
+          "model_year": 2011
+        },
+        "result": {
+          "count": 2,
+          "crash_reports": 1,
+          "fire_reports": 0,
+          "injuries": 1,
+          "deaths": 0,
+          "components": [
+            {
+              "component": "ENGINE",
+              "count": 2,
+              "crash": 1,
+              "fire": 0,
+              "injuries": 1,
+              "deaths": 0
+            }
+          ],
+          "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+          "filed_from": "2011-06-01",
+          "filed_to": "2012-02-02"
+        }
+      }
+    ]
+  },
+  {
+    "id": "complaints_rdx_fire",
+    "tool_calls": [
+      {
+        "name": "summarize_complaints",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 1,
+          "crash_reports": 0,
+          "fire_reports": 1,
+          "injuries": 0,
+          "deaths": 0,
+          "components": [
+            {
+              "component": "AIR BAGS",
+              "count": 1,
+              "crash": 0,
+              "fire": 1,
+              "injuries": 0,
+              "deaths": 0
+            }
+          ],
+          "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+          "filed_from": "2013-04-04",
+          "filed_to": "2013-04-04"
+        }
+      }
+    ]
+  },
+  {
+    "id": "complaints_component_filter",
+    "tool_calls": [
+      {
+        "name": "summarize_complaints",
+        "arguments": {
+          "make": "BMW",
+          "model": "X3",
+          "model_year": 2011,
+          "component": "engine"
+        },
+        "result": {
+          "count": 2,
+          "crash_reports": 1,
+          "fire_reports": 0,
+          "injuries": 1,
+          "deaths": 0,
+          "components": [
+            {
+              "component": "ENGINE",
+              "count": 2,
+              "crash": 1,
+              "fire": 0,
+              "injuries": 1,
+              "deaths": 0
+            }
+          ],
+          "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+          "filed_from": "2011-06-01",
+          "filed_to": "2012-02-02",
+          "component_filter": "engine"
+        }
+      }
+    ]
+  },
+  {
+    "id": "complaints_redaction_keys",
+    "tool_calls": [
+      {
+        "name": "summarize_complaints",
+        "arguments": {
+          "make": "BMW",
+          "model": "X3",
+          "model_year": 2011
+        },
+        "result": {
+          "count": 2,
+          "crash_reports": 1,
+          "fire_reports": 0,
+          "injuries": 1,
+          "deaths": 0,
+          "components": [
+            {
+              "component": "ENGINE",
+              "count": 2,
+              "crash": 1,
+              "fire": 0,
+              "injuries": 1,
+              "deaths": 0
+            }
+          ],
+          "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+          "filed_from": "2011-06-01",
+          "filed_to": "2012-02-02"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ratings_not_rated",
+    "tool_calls": [
+      {
+        "name": "get_safety_ratings",
+        "arguments": {
+          "vehicle_id": "7520"
+        },
+        "result": {
+          "count": 1,
+          "rating": {
+            "overall_rating": "Not Rated",
+            "overall_front_crash_rating": "Not Rated",
+            "overall_side_crash_rating": "Not Rated",
+            "rollover_rating": "Not Rated",
+            "side_pole_crash_rating": "Not Rated",
+            "vehicle_description": "2013 Acura RDX SUV FWD",
+            "vehicle_id": 7520,
+            "make": "ACURA",
+            "model": "RDX",
+            "model_year": 2013
+          },
+          "note": "Not Rated is a published value. It is not zero stars and it is not a safety judgment."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ratings_variant_list",
+    "tool_calls": [
+      {
+        "name": "get_safety_ratings",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2013
+        },
+        "result": {
+          "count": 2,
+          "variants": [
+            {
+              "vehicle_id": "7731",
+              "description": "2013 Acura RDX SUV 4WD"
+            },
+            {
+              "vehicle_id": "7520",
+              "description": "2013 Acura RDX SUV FWD"
+            }
+          ],
+          "note": "More than one tested variant. Pass vehicle_id for a single rating."
+        }
+      }
+    ]
+  },
+  {
+    "id": "ratings_empty_spelling",
+    "tool_calls": [
+      {
+        "name": "get_safety_ratings",
+        "arguments": {
+          "make": "BMW",
+          "model": "X3",
+          "model_year": 2011
+        },
+        "result": {
+          "count": 0,
+          "variants": [],
+          "notice": "This spelling returned no rows. A different model string may still have records. This is not proof that nothing was filed or tested."
+        }
+      }
+    ]
+  },
+  {
+    "id": "profile_partial",
+    "tool_calls": [
+      {
+        "name": "vehicle_profile",
+        "arguments": {
+          "vin": "5UXWX7C5*BA",
+          "model_year": 2011
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          },
+          "recalls": {
+            "count": 1,
+            "returned": 1,
+            "truncated": false,
+            "campaigns": [
+              {
+                "campaign_number": "17V683000",
+                "make": "BMW",
+                "model": "X3",
+                "model_year": "2011",
+                "component": "ENGINE AND ENGINE COOLING",
+                "manufacturer": "BMW of North America, LLC",
+                "park_it": false,
+                "park_outside": false,
+                "over_the_air_update": false,
+                "report_received": {
+                  "iso": "2017-10-30",
+                  "raw": "30/10/2017"
+                },
+                "investigation_id": "EA15001",
+                "summary": "Fixture campaign summary for a public campaign number observed in research."
+              }
+            ],
+            "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+          },
+          "complaints": {
+            "count": 2,
+            "crash_reports": 1,
+            "fire_reports": 0,
+            "injuries": 1,
+            "deaths": 0,
+            "components": [
+              {
+                "component": "ENGINE",
+                "count": 2,
+                "crash": 1,
+                "fire": 0,
+                "injuries": 1,
+                "deaths": 0
+              }
+            ],
+            "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+            "filed_from": "2011-06-01",
+            "filed_to": "2012-02-02"
+          },
+          "ratings": {
+            "count": 0,
+            "variants": [],
+            "notice": "This spelling returned no rows. A different model string may still have records. This is not proof that nothing was filed or tested."
+          },
+          "investigations": {
+            "count": 1,
+            "returned": 1,
+            "truncated": false,
+            "file_modified": null,
+            "rows": [
+              {
+                "nhtsa_id": "EA15001",
+                "make": "BMW",
+                "model": "X3",
+                "model_year": "2011",
+                "component": "ENGINE",
+                "opened": "20150101",
+                "closed": null,
+                "campaign_number": "17V683000",
+                "subject": "Fixture subject"
+              }
+            ],
+            "note": "Loaded from NHTSA's investigations flat file. There is no public investigations REST API."
+          },
+          "section_status": {
+            "identity": "ok",
+            "specs": "ok",
+            "recalls": "ok",
+            "complaints": "ok",
+            "ratings": "empty",
+            "investigations": "ok"
+          },
+          "notes": [
+            "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment.",
+            "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "profile_by_name",
+    "tool_calls": [
+      {
+        "name": "vehicle_profile",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "identity": {
+            "make": "ACURA",
+            "model": "RDX",
+            "model_year": 2012
+          },
+          "specs": {},
+          "recalls": {
+            "count": 2,
+            "returned": 2,
+            "truncated": false,
+            "campaigns": [
+              {
+                "campaign_number": "19V182000",
+                "make": "ACURA",
+                "model": "RDX",
+                "model_year": "2012",
+                "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+                "manufacturer": "Honda (American Honda Motor Co.)",
+                "park_it": false,
+                "park_outside": false,
+                "over_the_air_update": false,
+                "report_received": {
+                  "iso": "2019-03-06",
+                  "raw": "06/03/2019",
+                  "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+                },
+                "investigation_id": "EA15001",
+                "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+              },
+              {
+                "campaign_number": "16V061000",
+                "make": "ACURA",
+                "model": "RDX",
+                "model_year": "2012",
+                "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+                "manufacturer": "Honda (American Honda Motor Co.)",
+                "park_it": false,
+                "park_outside": false,
+                "over_the_air_update": false,
+                "report_received": {
+                  "iso": "2016-02-03",
+                  "raw": "03/02/2016",
+                  "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+                },
+                "investigation_id": "EA15001",
+                "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+              }
+            ],
+            "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+          },
+          "complaints": {
+            "count": 1,
+            "crash_reports": 0,
+            "fire_reports": 1,
+            "injuries": 0,
+            "deaths": 0,
+            "components": [
+              {
+                "component": "AIR BAGS",
+                "count": 1,
+                "crash": 0,
+                "fire": 1,
+                "injuries": 0,
+                "deaths": 0
+              }
+            ],
+            "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+            "filed_from": "2013-04-04",
+            "filed_to": "2013-04-04"
+          },
+          "ratings": {
+            "error": "not_found",
+            "source": "fixture",
+            "retryable": false,
+            "detail": "No fixture for ratings_model."
+          },
+          "investigations": {
+            "count": 1,
+            "returned": 1,
+            "truncated": false,
+            "file_modified": null,
+            "rows": [
+              {
+                "nhtsa_id": "PE14001",
+                "make": "ACURA",
+                "model": "RDX",
+                "model_year": "2012",
+                "component": "AIR BAGS",
+                "opened": "20160101",
+                "closed": "20170101",
+                "campaign_number": "19V182000",
+                "subject": "Airbag subject"
+              }
+            ],
+            "note": "Loaded from NHTSA's investigations flat file. There is no public investigations REST API."
+          },
+          "section_status": {
+            "identity": "ok",
+            "specs": "empty",
+            "recalls": "ok",
+            "complaints": "ok",
+            "ratings": "unavailable",
+            "investigations": "ok"
+          },
+          "notes": [
+            "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment.",
+            "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "id": "model_names_gap",
+    "tool_calls": [
+      {
+        "name": "list_model_names",
+        "arguments": {
+          "make": "BMW",
+          "model_year": 2011
+        },
+        "result": {
+          "make": "BMW",
+          "model_year": 2011,
+          "lists": [
+            {
+              "source": "vpic",
+              "count": 2,
+              "returned": 2,
+              "truncated": false,
+              "models": [
+                "328i",
+                "X3"
+              ]
+            },
+            {
+              "source": "recall_product_list",
+              "count": 2,
+              "returned": 2,
+              "truncated": false,
+              "models": [
+                "128I",
+                "328I"
+              ]
+            },
+            {
+              "source": "ncap",
+              "count": 1,
+              "returned": 1,
+              "truncated": false,
+              "models": [
+                "328I"
+              ]
+            }
+          ],
+          "note": "The recall product list is incomplete. An empty list is not proof a model has no campaigns. This spelling returned no rows. A different model string may still have records. This is not proof that nothing was filed or tested."
+        }
+      }
+    ]
+  },
+  {
+    "id": "investigation_link",
+    "tool_calls": [
+      {
+        "name": "search_investigations",
+        "arguments": {
+          "nhtsa_id": "EA15001"
+        },
+        "result": {
+          "count": 1,
+          "returned": 1,
+          "truncated": false,
+          "file_modified": null,
+          "rows": [
+            {
+              "nhtsa_id": "EA15001",
+              "make": "BMW",
+              "model": "X3",
+              "model_year": "2011",
+              "component": "ENGINE",
+              "opened": "20150101",
+              "closed": null,
+              "campaign_number": "17V683000",
+              "subject": "Fixture subject",
+              "summary": "Fixture investigation summary stays in the file."
+            }
+          ],
+          "note": "Loaded from NHTSA's investigations flat file. There is no public investigations REST API."
+        }
+      }
+    ]
+  },
+  {
+    "id": "investigation_by_vehicle",
+    "tool_calls": [
+      {
+        "name": "search_investigations",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 1,
+          "returned": 1,
+          "truncated": false,
+          "file_modified": null,
+          "rows": [
+            {
+              "nhtsa_id": "PE14001",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS",
+              "opened": "20160101",
+              "closed": "20170101",
+              "campaign_number": "19V182000",
+              "subject": "Airbag subject"
+            }
+          ],
+          "note": "Loaded from NHTSA's investigations flat file. There is no public investigations REST API."
+        }
+      }
+    ]
+  },
+  {
+    "id": "out_of_scope_title",
+    "tool_calls": []
+  },
+  {
+    "id": "out_of_scope_fuel",
+    "tool_calls": []
+  },
+  {
+    "id": "out_of_scope_repair",
+    "tool_calls": []
+  },
+  {
+    "id": "recalls_both_live_campaigns",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 2,
+          "returned": 2,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "19V182000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2019-03-06",
+                "raw": "06/03/2019",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+            },
+            {
+              "campaign_number": "16V061000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2016-02-03",
+                "raw": "03/02/2016",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_do_not_invent_park_outside",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "acura",
+          "model": "rdx",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 2,
+          "returned": 2,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "19V182000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2019-03-06",
+                "raw": "06/03/2019",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+            },
+            {
+              "campaign_number": "16V061000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2016-02-03",
+                "raw": "03/02/2016",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_ambiguous_day_first_date",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012
+        },
+        "result": {
+          "count": 2,
+          "returned": 2,
+          "truncated": false,
+          "campaigns": [
+            {
+              "campaign_number": "19V182000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2019-03-06",
+                "raw": "06/03/2019",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling specific 2003 Acura 3.2CL, 2013-2016 ILX, 2013-2014 ILX Hybrid, 2003-2006 MDX, 2007-2016 RDX, 2002-2003 3.2TL, 2004-2006, and 2009-2014 TL, 2010-2013 ZDX and 2001-2007 and 2009 Honda Accord, 2001-2005 Civic, 2003-2005 Civic Hybrid, 2001-2005 Civic GX NGV, 2002-2007 and 2010-2011 CR-V, 2003-2011 Element, 2007 Fit, 2002-2004 Odyssey, 2003-2008 Pilot, an..."
+            },
+            {
+              "campaign_number": "16V061000",
+              "make": "ACURA",
+              "model": "RDX",
+              "model_year": "2012",
+              "component": "AIR BAGS:FRONTAL:DRIVER SIDE:INFLATOR MODULE",
+              "manufacturer": "Honda (American Honda Motor Co.)",
+              "park_it": false,
+              "park_outside": false,
+              "over_the_air_update": false,
+              "report_received": {
+                "iso": "2016-02-03",
+                "raw": "03/02/2016",
+                "note": "The source writes day/month/year. Both numbers are 12 or less, so a US month/day reading would differ."
+              },
+              "investigation_id": "EA15001",
+              "summary": "Honda (American Honda Motor Co.) is recalling certain model year 2007-2011 Honda CR-V, 2011-2015 CR-Z, 2010-2014 FCX, and Insight, 2009-2013 Fit, 2013-2014 Fit EV, 2007-2014 Ridgeline, 2013-2016 Acura ILX, 2013-2014 Acura ILX Hybrid, 2007-2016 RDX, 2005-2012 Acura RL, 2009-2014 Acura TL, and 2010-2013 Acura ZDX vehicles.  The affected vehicles are equipped with a dual-stage driver frontal air bag..."
+            }
+          ],
+          "note": "These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA's own recall lookup."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_reject_mixed_arguments",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "ACURA",
+          "model": "RDX",
+          "model_year": 2012,
+          "campaign_number": "19V182000"
+        },
+        "result": {
+          "error": "invalid_arguments",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "Pass a campaign number or a make, model, and model year, not both."
+        }
+      }
+    ]
+  },
+  {
+    "id": "recalls_reject_incomplete_arguments",
+    "tool_calls": [
+      {
+        "name": "get_recalls",
+        "arguments": {
+          "make": "ACURA"
+        },
+        "result": {
+          "error": "invalid_arguments",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "Provide make, model, and model year, or a campaign number."
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_strips_internal_spaces",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "5UXW X7C5*BA",
+          "model_year": 2011
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_rejects_overlong_vin",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "123456789012345678"
+        },
+        "result": {
+          "error": "invalid_vin",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "A VIN must be 1 to 17 letters, digits, or * characters."
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_abc_multiple_error_codes",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "ABC"
+        },
+        "result": {
+          "identity": {
+            "vin": "ABC",
+            "error_code": "6,7,11",
+            "error_text": "6 - Incomplete VIN; 7 - Manufacturer is not registered with NHTSA for sale or importation in the U.S. for use on U.S roads; Please contact the manufacturer directly for more information; 11 - Incorrect Model Year",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {}
+        }
+      }
+    ]
+  },
+  {
+    "id": "decode_raw_filled_drops_sentinels",
+    "tool_calls": [
+      {
+        "name": "decode_vin",
+        "arguments": {
+          "vin": "5UXWX7C5*BA",
+          "model_year": 2011,
+          "include_raw_filled": true
+        },
+        "result": {
+          "identity": {
+            "vin": "5UXWX7C5*BA",
+            "error_code": "6",
+            "error_text": "6 - Incomplete VIN",
+            "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+          },
+          "specs": {
+            "make": "BMW",
+            "model": "X3",
+            "model_year": "2011",
+            "trim": "xDrive35i",
+            "body_class": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+            "vehicle_type": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+            "doors": "4",
+            "drive": "AWD/All-Wheel Drive",
+            "engine_cylinders": "6",
+            "displacement_l": "3.0",
+            "fuel": "Gasoline",
+            "plant_country": "GERMANY",
+            "plant_city": "MUNICH"
+          },
+          "other_filled_fields": {
+            "OtherEngineInfo": "Fixture only extra field"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "complaints_unknown_component_is_zero",
+    "tool_calls": [
+      {
+        "name": "summarize_complaints",
+        "arguments": {
+          "make": "BMW",
+          "model": "X3",
+          "model_year": 2011,
+          "component": "BRAKES"
+        },
+        "result": {
+          "count": 0,
+          "crash_reports": 0,
+          "fire_reports": 0,
+          "injuries": 0,
+          "deaths": 0,
+          "components": [],
+          "note": "Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.",
+          "component_filter": "BRAKES"
+        }
+      }
+    ]
+  },
+  {
+    "id": "ratings_reject_mixed_arguments",
+    "tool_calls": [
+      {
+        "name": "get_safety_ratings",
+        "arguments": {
+          "make": "Acura",
+          "model": "RDX",
+          "model_year": 2013,
+          "vehicle_id": "7520"
+        },
+        "result": {
+          "error": "invalid_arguments",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "Pass a vehicle id or a make, model, and model year, not both."
+        }
+      }
+    ]
+  },
+  {
+    "id": "profile_requires_an_identity",
+    "tool_calls": [
+      {
+        "name": "vehicle_profile",
+        "arguments": {},
+        "result": {
+          "error": "invalid_arguments",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "Provide a VIN, or make, model, and model year."
+        }
+      }
+    ]
+  },
+  {
+    "id": "investigations_require_a_filter",
+    "tool_calls": [
+      {
+        "name": "search_investigations",
+        "arguments": {},
+        "result": {
+          "error": "invalid_arguments",
+          "source": "glovebox",
+          "retryable": false,
+          "detail": "Provide at least one investigation filter."
+        }
+      }
+    ]
+  }
+]

@@ -3,6 +3,7 @@
 CASES = [
     {
         "id": "decode_partial_bmw",
+        "question": "What vehicle is VIN 5UXWX7C5*BA if the model year is 2011?",
         "category": "decode_partial",
         "tool": "decode_vin",
         "arguments": {"vin": "5UXWX7C5*BA", "model_year": 2011},
@@ -11,6 +12,7 @@ CASES = [
     },
     {
         "id": "decode_partial_lower",
+        "question": "Please decode VIN 5uxwx7c5*ba, model year 2011.",
         "category": "decode_partial",
         "tool": "decode_vin",
         "arguments": {"vin": "5uxwx7c5*ba", "model_year": 2011},
@@ -19,6 +21,7 @@ CASES = [
     },
     {
         "id": "decode_invalid_symbols",
+        "question": "Decode this VIN: VIN!",
         "category": "decode_invalid",
         "tool": "decode_vin",
         "arguments": {"vin": "VIN!"},
@@ -27,6 +30,7 @@ CASES = [
     },
     {
         "id": "decode_invalid_empty",
+        "question": "Decode this VIN for me: it is blank, just spaces.",
         "category": "decode_invalid",
         "tool": "decode_vin",
         "arguments": {"vin": "   "},
@@ -35,6 +39,7 @@ CASES = [
     },
     {
         "id": "decode_check_digit",
+        "question": "What is VIN 3GNDA13D76S000000?",
         "category": "decode_check_digit",
         "tool": "decode_vin",
         "arguments": {"vin": "3GNDA13D76S000000"},
@@ -43,6 +48,7 @@ CASES = [
     },
     {
         "id": "missing_means_unknown",
+        "question": "Using VIN 5UXWX7C5*BA, model year 2011, does this vehicle have side airbags?",
         "category": "missing_means_unknown",
         "tool": "decode_vin",
         "arguments": {"vin": "5UXWX7C5*BA", "model_year": 2011},
@@ -51,6 +57,7 @@ CASES = [
     },
     {
         "id": "not_applicable_dropped",
+        "question": "Decode VIN 5UXWX7C5*BA, model year 2011, and tell me the plant city. Do not add bus or trailer equipment.",
         "category": "not_applicable_dropped",
         "tool": "decode_vin",
         "arguments": {"vin": "5UXWX7C5*BA", "model_year": 2011},
@@ -59,6 +66,7 @@ CASES = [
     },
     {
         "id": "recalls_hit_rdx",
+        "question": "What safety recalls are filed for a 2012 Acura RDX?",
         "category": "recalls_hit",
         "tool": "get_recalls",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -67,6 +75,7 @@ CASES = [
     },
     {
         "id": "recalls_hit_x3",
+        "question": "What recalls are filed for a 2011 BMW X3?",
         "category": "recalls_hit",
         "tool": "get_recalls",
         "arguments": {"make": "bmw", "model": "x3", "model_year": 2011},
@@ -75,6 +84,7 @@ CASES = [
     },
     {
         "id": "recalls_campaign",
+        "question": "Look up NHTSA recall campaign 19v182000.",
         "category": "recalls_hit",
         "tool": "get_recalls",
         "arguments": {"campaign_number": "19v182000"},
@@ -83,6 +93,7 @@ CASES = [
     },
     {
         "id": "recalls_spelling_miss",
+        "question": "Are there recalls for a 2011 BMW model named NO-SUCH?",
         "category": "recalls_spelling",
         "tool": "get_recalls",
         "arguments": {"make": "BMW", "model": "NO-SUCH", "model_year": 2011},
@@ -91,6 +102,7 @@ CASES = [
     },
     {
         "id": "recalls_not_repair_phrase",
+        "question": "Has the recall work been done on my 2012 Acura RDX?",
         "category": "recalls_not_repair_status",
         "tool": "get_recalls",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -100,6 +112,7 @@ CASES = [
     },
     {
         "id": "complaints_x3_counts",
+        "question": "How many NHTSA complaints are there for a 2011 BMW X3, and which components show up?",
         "category": "complaints_summary",
         "tool": "summarize_complaints",
         "arguments": {"make": "BMW", "model": "X3", "model_year": 2011},
@@ -108,6 +121,7 @@ CASES = [
     },
     {
         "id": "complaints_rdx_fire",
+        "question": "Were any of the NHTSA complaints for a 2012 Acura RDX about a fire?",
         "category": "complaints_summary",
         "tool": "summarize_complaints",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -116,6 +130,7 @@ CASES = [
     },
     {
         "id": "complaints_component_filter",
+        "question": "Show only the engine complaints for a 2011 BMW X3.",
         "category": "complaints_summary",
         "tool": "summarize_complaints",
         "arguments": {"make": "BMW", "model": "X3", "model_year": 2011, "component": "engine"},
@@ -124,6 +139,7 @@ CASES = [
     },
     {
         "id": "complaints_redaction_keys",
+        "question": "Summarize the NHTSA complaints for a 2011 BMW X3. Quote any owner VIN or story you have.",
         "category": "complaints_redaction",
         "tool": "summarize_complaints",
         "arguments": {"make": "BMW", "model": "X3", "model_year": 2011},
@@ -132,6 +148,7 @@ CASES = [
     },
     {
         "id": "ratings_not_rated",
+        "question": "What NHTSA safety rating does vehicle id 7520 have?",
         "category": "ratings_not_rated",
         "tool": "get_safety_ratings",
         "arguments": {"vehicle_id": "7520"},
@@ -140,6 +157,7 @@ CASES = [
     },
     {
         "id": "ratings_variant_list",
+        "question": "Which crash-test variants does NHTSA list for a 2013 Acura RDX?",
         "category": "ratings_variant",
         "tool": "get_safety_ratings",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2013},
@@ -148,6 +166,7 @@ CASES = [
     },
     {
         "id": "ratings_empty_spelling",
+        "question": "What is the NCAP star rating for a 2011 BMW X3?",
         "category": "ratings_not_rated",
         "tool": "get_safety_ratings",
         "arguments": {"make": "BMW", "model": "X3", "model_year": 2011},
@@ -156,6 +175,7 @@ CASES = [
     },
     {
         "id": "profile_partial",
+        "question": "Give me the full Glovebox profile for VIN 5UXWX7C5*BA, model year 2011.",
         "category": "profile_partial",
         "tool": "vehicle_profile",
         "arguments": {"vin": "5UXWX7C5*BA", "model_year": 2011},
@@ -164,6 +184,7 @@ CASES = [
     },
     {
         "id": "profile_by_name",
+        "question": "Give me the full profile for a 2012 Acura RDX.",
         "category": "profile_partial",
         "tool": "vehicle_profile",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -172,6 +193,7 @@ CASES = [
     },
     {
         "id": "model_names_gap",
+        "question": "Which model-name spellings does NHTSA use for BMW in 2011?",
         "category": "recalls_spelling",
         "tool": "list_model_names",
         "arguments": {"make": "BMW", "model_year": 2011},
@@ -180,6 +202,7 @@ CASES = [
     },
     {
         "id": "investigation_link",
+        "question": "What is NHTSA investigation EA15001?",
         "category": "investigation_link",
         "tool": "search_investigations",
         "arguments": {"nhtsa_id": "EA15001"},
@@ -188,6 +211,7 @@ CASES = [
     },
     {
         "id": "investigation_by_vehicle",
+        "question": "Are there NHTSA defect investigations for a 2012 Acura RDX?",
         "category": "investigation_link",
         "tool": "search_investigations",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -196,6 +220,7 @@ CASES = [
     },
     {
         "id": "out_of_scope_title",
+        "question": "Can you tell me if a car has a clean title?",
         "category": "out_of_scope",
         "tool": None,
         "arguments": {},
@@ -205,6 +230,7 @@ CASES = [
     },
     {
         "id": "out_of_scope_fuel",
+        "question": "What is the fuel economy of a 2011 BMW X3?",
         "category": "out_of_scope",
         "tool": None,
         "arguments": {},
@@ -214,6 +240,7 @@ CASES = [
     },
     {
         "id": "out_of_scope_repair",
+        "question": "Can you confirm the dealer finished the recall repair on my car?",
         "category": "out_of_scope",
         "tool": None,
         "arguments": {},
@@ -223,6 +250,7 @@ CASES = [
     },
     {
         "id": "recalls_both_live_campaigns",
+        "question": "List every recall campaign number for a 2012 Acura RDX, with the dates NHTSA received them.",
         "category": "recalls_hit",
         "tool": "get_recalls",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -231,6 +259,7 @@ CASES = [
     },
     {
         "id": "recalls_do_not_invent_park_outside",
+        "question": "Is there a park-outside advisory on the 2012 Acura RDX recalls?",
         "category": "recalls_hit",
         "tool": "get_recalls",
         "arguments": {"make": "acura", "model": "rdx", "model_year": 2012},
@@ -239,6 +268,7 @@ CASES = [
     },
     {
         "id": "recalls_ambiguous_day_first_date",
+        "question": "For the 2012 Acura RDX recalls, what ISO date did you get for the report received on 06/03/2019, and is that date ambiguous?",
         "category": "recalls_hit",
         "tool": "get_recalls",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012},
@@ -247,6 +277,7 @@ CASES = [
     },
     {
         "id": "recalls_reject_mixed_arguments",
+        "question": "Call get_recalls once with both campaign number 19V182000 and the 2012 Acura RDX make, model, and year.",
         "category": "recalls_spelling",
         "tool": "get_recalls",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2012, "campaign_number": "19V182000"},
@@ -255,6 +286,7 @@ CASES = [
     },
     {
         "id": "recalls_reject_incomplete_arguments",
+        "question": "Call get_recalls with only the make ACURA and no model or year.",
         "category": "recalls_spelling",
         "tool": "get_recalls",
         "arguments": {"make": "ACURA"},
@@ -263,6 +295,7 @@ CASES = [
     },
     {
         "id": "decode_strips_internal_spaces",
+        "question": "Decode VIN 5UXW X7C5*BA, model year 2011.",
         "category": "decode_partial",
         "tool": "decode_vin",
         "arguments": {"vin": "5UXW X7C5*BA", "model_year": 2011},
@@ -271,6 +304,7 @@ CASES = [
     },
     {
         "id": "decode_rejects_overlong_vin",
+        "question": "Decode VIN 123456789012345678.",
         "category": "decode_invalid",
         "tool": "decode_vin",
         "arguments": {"vin": "123456789012345678"},
@@ -279,6 +313,7 @@ CASES = [
     },
     {
         "id": "decode_abc_multiple_error_codes",
+        "question": "Decode VIN ABC.",
         "category": "decode_invalid",
         "tool": "decode_vin",
         "arguments": {"vin": "ABC"},
@@ -287,6 +322,7 @@ CASES = [
     },
     {
         "id": "decode_raw_filled_drops_sentinels",
+        "question": "Decode VIN 5UXWX7C5*BA, model year 2011, and include every filled raw field.",
         "category": "not_applicable_dropped",
         "tool": "decode_vin",
         "arguments": {"vin": "5UXWX7C5*BA", "model_year": 2011, "include_raw_filled": True},
@@ -295,6 +331,7 @@ CASES = [
     },
     {
         "id": "complaints_unknown_component_is_zero",
+        "question": "How many brake complaints are filed for a 2011 BMW X3?",
         "category": "complaints_summary",
         "tool": "summarize_complaints",
         "arguments": {"make": "BMW", "model": "X3", "model_year": 2011, "component": "BRAKES"},
@@ -303,6 +340,7 @@ CASES = [
     },
     {
         "id": "ratings_reject_mixed_arguments",
+        "question": "Call get_safety_ratings once with make Acura, model RDX, model year 2013, and vehicle id 7520 together.",
         "category": "ratings_variant",
         "tool": "get_safety_ratings",
         "arguments": {"make": "ACURA", "model": "RDX", "model_year": 2013, "vehicle_id": "7520"},
@@ -311,6 +349,7 @@ CASES = [
     },
     {
         "id": "profile_requires_an_identity",
+        "question": "Give me a vehicle profile. I am not telling you the VIN or the year, make, and model.",
         "category": "profile_partial",
         "tool": "vehicle_profile",
         "arguments": {},
@@ -319,6 +358,7 @@ CASES = [
     },
     {
         "id": "investigations_require_a_filter",
+        "question": "Search defect investigations, but do not give any make, model, year, component, or id.",
         "category": "investigation_link",
         "tool": "search_investigations",
         "arguments": {},
