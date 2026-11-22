@@ -1,6 +1,6 @@
 # Documentation plan
 
-The user-facing docs to write once a server exists. This file is the outline, not those docs. The design set linked from the README is for review. The pages below are for someone who cloned the repo to use it.
+The user-facing pages below are written. This file remains the map. The design set linked from the README is the research behind them.
 
 Write them in the repo as Markdown. Keep the same rules as the design set: plain language, no em dashes, Context Engineering when we mean how context is shaped, and a citation or an "unverified" mark on anything we say about NHTSA.
 

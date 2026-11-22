@@ -1,0 +1,26 @@
+{
+  "_request": {
+    "name": "ratings_vehicle",
+    "params": {
+      "vehicle_id": "7520"
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Message": "Results returned successfully",
+    "Results": [
+      {
+        "OverallRating": "Not Rated",
+        "OverallFrontCrashRating": "Not Rated",
+        "OverallSideCrashRating": "Not Rated",
+        "RolloverRating": "Not Rated",
+        "SidePoleCrashRating": "Not Rated",
+        "VehicleDescription": "2013 Acura RDX SUV FWD",
+        "VehicleId": 7520,
+        "Make": "ACURA",
+        "Model": "RDX",
+        "ModelYear": 2013
+      }
+    ]
+  }
+}

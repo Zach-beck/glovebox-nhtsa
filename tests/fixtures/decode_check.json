@@ -1,0 +1,27 @@
+{
+  "_request": {
+    "name": "decode_vin",
+    "params": {
+      "vin": "3GNDA13D76S000000"
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Message": "Results returned successfully. NOTE: Any missing decoded values should be interpreted as NHTSA does not have data on the specific variable. Missing value should NOT be interpreted as an indication that the vehicle does not have the feature.",
+    "Results": [
+      {
+        "VIN": "3GNDA13D76S000000",
+        "ErrorCode": "1",
+        "ErrorText": "1 - Check Digit (9th position) does not calculate properly",
+        "Make": "CHEVROLET",
+        "Model": "HHR",
+        "ModelYear": "2006",
+        "Trim": "LS",
+        "BodyClass": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+        "DriveType": "",
+        "PlantCity": "RAMOS ARIZPE",
+        "PlantCountry": "MEXICO"
+      }
+    ]
+  }
+}

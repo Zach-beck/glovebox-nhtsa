@@ -1,6 +1,6 @@
 # Architecture
 
-Design for the vehicle-specs agent. No code in this repo yet. Behavior that depends on a live NHTSA fact is cited in [research/nhtsa-data.md](research/nhtsa-data.md) or marked unknown. TTLs, tool names, and token budgets below are design choices.
+Design for Glovebox. The server in this repo follows it. Behavior that depends on a live NHTSA fact is cited in [research/nhtsa-data.md](research/nhtsa-data.md) or marked unknown. TTLs, tool names, and token budgets below are design choices.
 
 ## What the server is
 
@@ -11,7 +11,7 @@ That is Context Engineering: decide the context, then let the model write. The s
 ```mermaid
 flowchart LR
   client[MCP client]
-  server[vehicle-specs agent]
+  server[Glovebox]
   shaper[Shaper and redact]
   cache[Local cache]
   live[Live NHTSA APIs]
@@ -54,7 +54,7 @@ If `count` is 0, add a notice: this spelling returned no rows. Other spellings m
 
 Fetches the complaints API once, then reduces it before anything is cached or returned. Returns: `count`, date range of `dateComplaintFiled`, totals for crash, fire, injuries, and deaths, and the top components with those same totals. Default component list is 8, with the rest folded into `other`.
 
-Drops `vin` and `summary` always in the default mode. `include_examples` may be 0 to 3. Each example is the component, the flags, the dates, and a summary clipped to 300 characters after a redaction pass that masks email-shaped strings, phone-shaped strings, and any token that looks like a VIN. Examples are off by default. The response states that narratives are consumer reports, not findings.
+Drops `vin` and `summary` always. There is no examples argument. Zach chose counts only, with no narrative text. The response states that the figures are consumer reports, not findings.
 
 The Civic 2018 response was 576,788 bytes for 596 rows. The tool must not return that body. If the upstream count is large, the summary is still small. There is no paging parameter on this API. **Unknown** how big the largest model is. The shaper's memory budget should stream or cap the parse. A practical cap: if the body exceeds 8 MB, abort that section and return `unavailable` with the byte size, rather than risk the process. Eight megabytes was not observed. It is a guardrail.
 
@@ -137,7 +137,7 @@ Tool descriptions name the failure modes. A description that only says "get reca
 
 ## Cache
 
-A directory of JSON files, defaulting to a folder under the user's cache dir, overridable by `VEHICLE_SPECS_CACHE_DIR`. SQLite is acceptable if file-per-key gets awkward. Do not start with Redis.
+A directory of JSON files, defaulting to a folder under the user's cache dir, overridable by `GLOVEBOX_CACHE_DIR`. SQLite is acceptable if file-per-key gets awkward. Do not start with Redis.
 
 Key: method, normalized arguments, and a schema version so a shaper change does not serve old shapes. Values: the shaped object, not the raw body, except for a short-lived raw cache used to build the shaped object within the same process. On disk, complaints are stored only as the summary. That keeps partial VINs out of the cache directory.
 
@@ -159,7 +159,7 @@ Off by default.
 | Complaints | `FLAT_CMPL.zip`, listed at 360 MB | Not in v1, and not a silent download. |
 | Ratings | No bulk file was identified | Online only. **Unknown** whether NHTSA publishes a ratings flat file we missed. |
 
-`VEHICLE_SPECS_OFFLINE=1` means: answer from local indexes, and return `unavailable` for anything that would have been a live call. Do not half-silently hit the network.
+`GLOVEBOX_OFFLINE=1` means: answer from local indexes, and return `unavailable` for anything that would have been a live call. Do not half-silently hit the network.
 
 ## Errors
 
@@ -184,13 +184,13 @@ Environment variables. `.env.example` lists the eval keys only, because the serv
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
-| `VEHICLE_SPECS_TRANSPORT` | `stdio` | `stdio` or `http` |
-| `VEHICLE_SPECS_HTTP_HOST` | `127.0.0.1` | Ignored for stdio |
-| `VEHICLE_SPECS_HTTP_PORT` | `8741` | An uncommon port, on purpose |
-| `VEHICLE_SPECS_CACHE_DIR` | platform cache dir | Shaped-object cache |
-| `VEHICLE_SPECS_DATA_DIR` | platform cache dir | Downloaded zips |
-| `VEHICLE_SPECS_OFFLINE` | `0` | Local indexes only |
-| `VEHICLE_SPECS_HTTP_TOKEN` | unset | If set, HTTP requires `Authorization: Bearer`. stdio ignores it |
+| `GLOVEBOX_TRANSPORT` | `stdio` | `stdio` or `http` |
+| `GLOVEBOX_HTTP_HOST` | `127.0.0.1` | Ignored for stdio |
+| `GLOVEBOX_HTTP_PORT` | `8741` | An uncommon port, on purpose |
+| `GLOVEBOX_CACHE_DIR` | platform cache dir | Shaped-object cache |
+| `GLOVEBOX_DATA_DIR` | platform cache dir | Downloaded zips |
+| `GLOVEBOX_OFFLINE` | `0` | Local indexes only |
+| `GLOVEBOX_HTTP_TOKEN` | unset | If set, HTTP requires `Authorization: Bearer`. stdio ignores it |
 
 No NHTSA key exists to configure. Do not invent one.
 
@@ -207,7 +207,7 @@ Speak both the current revision and the previous handshake if the SDK allows one
 ## Security
 
 - Allowlist the outbound hosts: `vpic.nhtsa.dot.gov`, `api.nhtsa.gov`, `static.nhtsa.gov`. Refuse anything else, including redirects to other hosts. A tool argument must never become a URL.
-- Bind HTTP to localhost unless `VEHICLE_SPECS_HTTP_TOKEN` is set. Even then, v1 docs say not to expose it. Hosting auth is a later design, not a flag we quietly turn on.
+- Bind HTTP to localhost unless `GLOVEBOX_HTTP_TOKEN` is set. Even then, v1 docs say not to expose it. Hosting auth is a later design, not a flag we quietly turn on.
 - Redact complaint VINs, narratives by default, and any manufacturer contact fields if a future tool touches manufacturer details. Those rows contain email, phone, and a person's name. We saw that and did not store the values.
 - The investigations and recall files are public records. Still do not log whole rows.
 - Dependencies pinned with a lockfile. The container runs as a non-root user.

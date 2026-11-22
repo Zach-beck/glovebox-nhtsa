@@ -1,0 +1,17 @@
+{
+  "_request": {
+    "name": "products_models",
+    "params": {
+      "make": "ACURA",
+      "model_year": 2013
+    }
+  },
+  "body": {
+    "count": 1,
+    "results": [
+      {
+        "model": "RDX"
+      }
+    ]
+  }
+}

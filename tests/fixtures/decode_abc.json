@@ -1,0 +1,22 @@
+{
+  "_request": {
+    "name": "decode_vin",
+    "params": {
+      "vin": "ABC"
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Message": "Results returned successfully. NOTE: Any missing decoded values should be interpreted as NHTSA does not have data on the specific variable. Missing value should NOT be interpreted as an indication that the vehicle does not have the feature.",
+    "Results": [
+      {
+        "VIN": "ABC",
+        "ErrorCode": "6,7,11",
+        "ErrorText": "6 - Incomplete VIN; 7 - Manufacturer is not registered with NHTSA for sale or importation in the U.S. for use on U.S roads; Please contact the manufacturer directly for more information; 11 - Incorrect Model Year",
+        "Make": "",
+        "Model": "",
+        "ModelYear": ""
+      }
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "_request": {
+    "name": "ratings_make",
+    "params": {
+      "make": "BMW",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Results": [
+      {
+        "Model": "328I",
+        "VehicleId": 0
+      }
+    ]
+  }
+}

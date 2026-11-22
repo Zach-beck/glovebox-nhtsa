@@ -1,36 +1,92 @@
-# Vehicle-specs agent
+# Glovebox
 
-A local [Model Context Protocol](https://modelcontextprotocol.io) server over the National Highway Traffic Safety Administration's public vehicle data. It is meant to be downloaded and run on your own machine, against NHTSA's public endpoints and downloadable files. No account, no API key, and no hosted relay.
+Glovebox is a local [Model Context Protocol](https://modelcontextprotocol.io) server for public vehicle data from the National Highway Traffic Safety Administration. Give it a VIN, or a year, make, and model, and it returns a short profile: decoded specs, recall campaigns, complaint counts, NCAP ratings, and defect investigations.
 
-This repository is the research and design set. There is no server implementation yet. Zacharias Beck will review these documents before any build.
+The server shapes those answers before a model sees them. That work is Context Engineering: empty specs stay unknown, `Not Rated` stays `Not Rated`, and complaint narratives never enter the context.
 
-The project is not affiliated with, endorsed by, or published by NHTSA or the U.S. Department of Transportation. NHTSA's own terms disclaim accuracy and say the site is public information that may be copied. See [docs/research/rate-limits-and-terms.md](docs/research/rate-limits-and-terms.md).
+Glovebox is not affiliated with, endorsed by, or published by NHTSA or the U.S. Department of Transportation. NHTSA's terms say the site is public information that may be copied, and they disclaim accuracy. See [their terms](https://www.nhtsa.gov/about-nhtsa/terms-use).
 
-## What it is for
+This package is not on PyPI. `uvx glovebox-mcp` will work only after a release, and this repo does not publish one. Install from a checkout.
 
-Ask a normal question about a vehicle and get a short, sourced profile: what the VIN decodes to, which recall campaigns are filed against that model, a complaint summary, and the NCAP star rating when one exists. The server shapes those answers so they fit an LLM's context, and it says when a field is unknown instead of letting the model invent it.
+## Name collision
 
-That shaping work is Context Engineering. The server's job is to decide what context the model sees.
+`glovebox-mcp` is free on PyPI (the project URL returns 404). It is not free on GitHub. [segentic-lab/glovebox-mcp](https://github.com/segentic-lab/glovebox-mcp) is a different MIT project: a sandboxed computer-use server. It is also listed in the official MCP registry. An unrelated PyPI project named `glovebox` (0.0.5) exists and is not this server. Nothing here was registered or published.
 
-## Read these first
+## Quickstart
 
-| Document | What it decides |
+Requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
+
+```bash
+uv sync
+uv run glovebox-mcp
+```
+
+That process speaks MCP on stdin and stdout. Point a client at it:
+
+```json
+{
+  "mcpServers": {
+    "glovebox": {
+      "command": "uv",
+      "args": ["run", "glovebox-mcp"],
+      "cwd": "/absolute/path/to/this/checkout"
+    }
+  }
+}
+```
+
+Docker, still local, still stdio:
+
+```bash
+docker build -t glovebox-mcp .
+docker run -i --rm glovebox-mcp
+```
+
+Ask for a profile of a VIN. A useful answer quotes `error_code`, names the vehicle, and does not claim a recall was repaired.
+
+## What you can ask
+
+| Tool | Use it for |
 | --- | --- |
-| [docs/research/nhtsa-data.md](docs/research/nhtsa-data.md) | Which public datasets exist, what we called, and the quirks |
-| [docs/research/rate-limits-and-terms.md](docs/research/rate-limits-and-terms.md) | Documented limits versus what a polite test actually saw |
-| [docs/decisions/0001-language-and-runtime.md](docs/decisions/0001-language-and-runtime.md) | Language and SDK recommendation |
-| [docs/architecture.md](docs/architecture.md) | Tools, resources, prompts, cache, errors, transports |
-| [docs/evals.md](docs/evals.md) | Golden set, metrics, local runs, and the CI gate |
-| [docs/hosting.md](docs/hosting.md) | Local stdio for v1, and why a public endpoint is a bad default |
-| [docs/roadmap.md](docs/roadmap.md) | Phases, acceptance criteria, and how this differs from existing servers |
-| [docs/documentation-plan.md](docs/documentation-plan.md) | The end-user docs to write once the server exists |
+| `vehicle_profile` | The first call. Specs, recalls, complaint counts, ratings, investigations. |
+| `decode_vin` | One VIN. Read `error_code`. |
+| `get_recalls` | Campaigns for a make, model, and year, or one campaign number. |
+| `summarize_complaints` | Counts only. No owner text. |
+| `get_safety_ratings` | Stars, or the variant list. |
+| `search_investigations` | The local investigations file. |
+| `list_model_names` | Spellings that differ across NHTSA datasets. |
 
-Numbers from the live probe are in [docs/research/spikes/2026-11-22-probe.json](docs/research/spikes/2026-11-22-probe.json).
+Details: [docs/tool-reference.md](docs/tool-reference.md).
 
-## Recommendation in one paragraph
+## Clients
 
-Build it in Python on the official MCP Python SDK, distribute it with `uvx`, and keep v1 local over stdio. Expose a few shaped tools, not a pass-through of every vPIC route. Gate CI on frozen fixtures and contract tests, and run model-judged evals only on a machine that has its own key in an untracked `.env`. Do not publish an open internet endpoint in front of NHTSA.
+- [Cursor](docs/clients/cursor.md)
+- [Claude Desktop](docs/clients/claude-desktop.md)
+- [Claude Code](docs/clients/claude-code.md)
+- [VS Code](docs/clients/vscode.md)
+- [OpenCode](docs/clients/opencode.md)
 
-## Status
+## Tests and evals
 
-Design only. Nothing here calls NHTSA when you clone the repo, because there is no program to run yet.
+Deterministic tests run offline. They do not call NHTSA and they do not need a model key.
+
+```bash
+uv run pytest
+uv run python evals/local.py
+```
+
+`evals/local.py` prints a skip report when `.env` has no key. It does not prompt. The method is [docs/evals.md](docs/evals.md). The latest numbers are [docs/eval-results.md](docs/eval-results.md).
+
+## Design notes
+
+The research that led here is still in the repo:
+
+- [Data inventory](docs/research/nhtsa-data.md)
+- [Rate limits and terms](docs/research/rate-limits-and-terms.md)
+- [Language decision](docs/decisions/0001-language-and-runtime.md)
+- [Architecture](docs/architecture.md)
+- [Roadmap](docs/roadmap.md)
+
+## License
+
+MIT. See [LICENSE](LICENSE).

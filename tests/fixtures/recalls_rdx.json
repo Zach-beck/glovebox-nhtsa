@@ -1,0 +1,32 @@
+{
+  "_request": {
+    "name": "recalls_by_vehicle",
+    "params": {
+      "make": "ACURA",
+      "model": "RDX",
+      "model_year": 2012
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Message": "Results returned successfully",
+    "results": [
+      {
+        "Manufacturer": "Honda (American Honda Motor Co.)",
+        "NHTSACampaignNumber": "19V182000",
+        "parkIt": false,
+        "parkOutSide": true,
+        "overTheAirUpdate": false,
+        "NHTSAActionNumber": "EA15001",
+        "ReportReceivedDate": "06/03/2019",
+        "Component": "AIR BAGS:FRONTAL",
+        "Summary": "Fixture airbag campaign summary.",
+        "Consequence": "Fixture consequence.",
+        "Remedy": "Fixture remedy.",
+        "ModelYear": "2012",
+        "Make": "ACURA",
+        "Model": "RDX"
+      }
+    ]
+  }
+}

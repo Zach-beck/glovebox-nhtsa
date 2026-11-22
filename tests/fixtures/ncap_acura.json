@@ -1,0 +1,18 @@
+{
+  "_request": {
+    "name": "ratings_make",
+    "params": {
+      "make": "ACURA",
+      "model_year": 2013
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Results": [
+      {
+        "Model": "RDX",
+        "VehicleId": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "_request": {
+    "name": "ratings_model",
+    "params": {
+      "make": "ACURA",
+      "model": "RDX",
+      "model_year": 2013
+    }
+  },
+  "body": {
+    "Count": 2,
+    "Message": "Results returned successfully",
+    "Results": [
+      {
+        "VehicleDescription": "2013 Acura RDX SUV 4WD",
+        "VehicleId": 7731
+      },
+      {
+        "VehicleDescription": "2013 Acura RDX SUV FWD",
+        "VehicleId": 7520
+      }
+    ]
+  }
+}

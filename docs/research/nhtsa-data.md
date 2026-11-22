@@ -1,6 +1,6 @@
 # NHTSA public vehicle data
 
-Inventory of public NHTSA datasets that matter for a vehicle-specs agent. Every claim is tagged.
+Inventory of public NHTSA datasets that matter for Glovebox. Every claim is tagged.
 
 - **Documented.** A NHTSA page or file says it. The link is the citation.
 - **Observed.** We called the endpoint on 2026-11-22 and recorded the response. The paced run and its counts are in [spikes/2026-11-22-probe.json](spikes/2026-11-22-probe.json). Method and limits are in [rate-limits-and-terms.md](rate-limits-and-terms.md).

@@ -136,7 +136,7 @@ GitHub Actions, on pull request and on push:
 
 1. Install from the lockfile with uv.
 2. `pytest` for shaper, contracts, budgets, and scripted traces.
-3. A test that the suite contains no network socket. This can be a subprocess with `socket` blocked, or a simple grep of the test tree plus a unit test that the tool client's base URLs are the fixture ones when `VEHICLE_SPECS_FIXTURES` is set.
+3. A test that the suite contains no network socket. This can be a subprocess with `socket` blocked, or a simple grep of the test tree plus a unit test that the tool client's base URLs are the fixture ones when `GLOVEBOX_FIXTURES` is set.
 4. No `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` in the workflow. If one is present in the environment, the job does not use it.
 
 The job fails if any deterministic test fails. There is no flake budget. There is no coverage percentage gate in v1. Coverage of the shaper matters more than a number, and the fixtures are that coverage.

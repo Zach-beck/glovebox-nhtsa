@@ -1,0 +1,44 @@
+{
+  "_request": {
+    "name": "complaints_by_vehicle",
+    "params": {
+      "make": "BMW",
+      "model": "X3",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "count": 2,
+    "message": "Results returned successfully",
+    "results": [
+      {
+        "odiNumber": 1,
+        "manufacturer": "BMW",
+        "crash": false,
+        "fire": false,
+        "numberOfInjuries": 0,
+        "numberOfDeaths": 0,
+        "dateOfIncident": "2011-05-01",
+        "dateComplaintFiled": "2011-06-01",
+        "vin": "REDACTEDVIN",
+        "components": "ENGINE",
+        "summary": "Call person@example.com about VIN 1HGCM82633A004352.",
+        "products": []
+      },
+      {
+        "odiNumber": 2,
+        "manufacturer": "BMW",
+        "crash": true,
+        "fire": false,
+        "numberOfInjuries": 1,
+        "numberOfDeaths": 0,
+        "dateOfIncident": "2012-01-02",
+        "dateComplaintFiled": "2012-02-02",
+        "vin": "REDACTEDVIN",
+        "components": "ENGINE",
+        "summary": "Second narrative must not leak.",
+        "products": []
+      }
+    ]
+  }
+}

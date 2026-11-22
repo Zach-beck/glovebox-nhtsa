@@ -92,14 +92,9 @@ Acceptance:
 - We will not mark CI green because a judge model was in a good mood.
 - We will not publish a hosted demo that proxies anonymous traffic at NHTSA.
 
-## Open decisions
+## Decisions, accepted
 
-These four are the ones that change the build. Everything else in the docs is a recommendation Zach can override, but these should be answered first.
-
-1. **Language.** Python on the official SDK is the recommendation. Go if a single binary matters more. TypeScript if `npx` and a Workers-shaped future matter more. The ADR says not to start and port.
-
-2. **Complaint examples.** Default is counts only, no narratives, no VIN. Confirm that, or allow up to three redacted examples. This is a privacy choice, not a technical one.
-
-3. **Name and license.** Working name `vehicle-specs-agent`. MIT is the recommendation, so a stranger can vendor it. AGPL would match NLMA and is the wrong default for a sample meant to be read and reused. The package name has to be checked for collisions on PyPI before a publish, and we do not publish until asked.
-
-4. **How offline v1 is.** Investigations from the zip are in the v1 recommendation because there is no API and the file is small. Postgres VIN decode is optional and heavy. Confirm that split. If offline decode is a v1 requirement, the install story changes and the ADR's "uvx and you are done" line is no longer true.
+1. **Language.** Python 3.12 and the official MCP SDK. `uv` for a checkout. `uvx` after a future publish. Docker is optional and local.
+2. **Complaints.** Counts and component totals only. No narratives and no VIN field.
+3. **Name and license.** Project name Glovebox. Package name `glovebox-mcp`. MIT. PyPI had no `glovebox-mcp` project on 2026-11-22. GitHub already has an unrelated repository with that name. Nothing was published.
+4. **Offline data.** Investigations from `FLAT_INV.zip` only. No Postgres. The zip is small. The text inside is hundreds of megabytes, so the loader indexes the short columns.

@@ -1,0 +1,29 @@
+{
+  "_request": {
+    "name": "complaints_by_vehicle",
+    "params": {
+      "make": "ACURA",
+      "model": "RDX",
+      "model_year": 2012
+    }
+  },
+  "body": {
+    "count": 1,
+    "message": "Results returned successfully",
+    "results": [
+      {
+        "odiNumber": 3,
+        "manufacturer": "Honda",
+        "crash": false,
+        "fire": true,
+        "numberOfInjuries": 0,
+        "numberOfDeaths": 0,
+        "dateComplaintFiled": "2013-04-04",
+        "vin": "REDACTEDVIN",
+        "components": "AIR BAGS",
+        "summary": "Do not return this narrative.",
+        "products": []
+      }
+    ]
+  }
+}

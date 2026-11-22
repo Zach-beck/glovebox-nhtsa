@@ -1,0 +1,33 @@
+{
+  "_request": {
+    "name": "recalls_by_vehicle",
+    "params": {
+      "make": "BMW",
+      "model": "X3",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Message": "Results returned successfully",
+    "results": [
+      {
+        "Manufacturer": "BMW of North America, LLC",
+        "NHTSACampaignNumber": "17V683000",
+        "parkIt": false,
+        "parkOutSide": false,
+        "overTheAirUpdate": false,
+        "NHTSAActionNumber": "EA15001",
+        "ReportReceivedDate": "30/10/2017",
+        "Component": "ENGINE AND ENGINE COOLING",
+        "Summary": "Fixture campaign summary for a public campaign number observed in research.",
+        "Consequence": "Fixture consequence.",
+        "Remedy": "Fixture remedy.",
+        "Notes": "",
+        "ModelYear": "2011",
+        "Make": "BMW",
+        "Model": "X3"
+      }
+    ]
+  }
+}

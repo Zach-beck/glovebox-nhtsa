@@ -1,0 +1,15 @@
+{
+  "_request": {
+    "name": "recalls_by_vehicle",
+    "params": {
+      "make": "BMW",
+      "model": "NO-SUCH",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "Count": 0,
+    "Message": "Results returned successfully",
+    "results": []
+  }
+}

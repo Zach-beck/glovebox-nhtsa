@@ -1,0 +1,20 @@
+{
+  "_request": {
+    "name": "vpic_models",
+    "params": {
+      "make": "BMW",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "Count": 2,
+    "Results": [
+      {
+        "Model_Name": "X3"
+      },
+      {
+        "Model_Name": "328i"
+      }
+    ]
+  }
+}

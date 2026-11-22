@@ -1,0 +1,39 @@
+{
+  "_request": {
+    "name": "decode_vin",
+    "params": {
+      "vin": "5UXWX7C5*BA",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "Count": 1,
+    "Message": "Results returned successfully. NOTE: Any missing decoded values should be interpreted as NHTSA does not have data on the specific variable. Missing value should NOT be interpreted as an indication that the vehicle does not have the feature.",
+    "Results": [
+      {
+        "VIN": "5UXWX7C5*BA",
+        "ErrorCode": "6",
+        "ErrorText": "6 - Incomplete VIN",
+        "Make": "BMW",
+        "Model": "X3",
+        "ModelYear": "2011",
+        "Trim": "xDrive35i",
+        "BodyClass": "Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)",
+        "VehicleType": "MULTIPURPOSE PASSENGER VEHICLE (MPV)",
+        "Doors": "4",
+        "DriveType": "AWD/All-Wheel Drive",
+        "EngineCylinders": "6",
+        "DisplacementL": "3.0",
+        "FuelTypePrimary": "Gasoline",
+        "PlantCity": "MUNICH",
+        "PlantCountry": "GERMANY",
+        "PlantState": "",
+        "Series": "",
+        "ABS": "",
+        "BusType": "Not Applicable",
+        "TrailerType": "Not Applicable",
+        "OtherEngineInfo": "Fixture only extra field"
+      }
+    ]
+  }
+}

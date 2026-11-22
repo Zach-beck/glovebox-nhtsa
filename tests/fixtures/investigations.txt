@@ -1,0 +1,2 @@
+EA15001	BMW	X3	2011	ENGINE	BMW OF NORTH AMERICA	20150101		17V683000	Fixture subject	Fixture investigation summary stays in the file.
+PE14001	ACURA	RDX	2012	AIR BAGS	HONDA	20160101	20170101	19V182000	Airbag subject	Short summary.

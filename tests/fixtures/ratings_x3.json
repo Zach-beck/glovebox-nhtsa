@@ -1,0 +1,15 @@
+{
+  "_request": {
+    "name": "ratings_model",
+    "params": {
+      "make": "BMW",
+      "model": "X3",
+      "model_year": 2011
+    }
+  },
+  "body": {
+    "Count": 0,
+    "Message": "Results returned successfully",
+    "Results": []
+  }
+}
