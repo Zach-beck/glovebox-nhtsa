@@ -6,6 +6,8 @@ import html
 import re
 from typing import Any
 
+from glovebox_nhtsa.text import SPELLING_NOTICE
+
 STAR_MAX = 5
 
 _RATING_SKIP_ROWS = frozenset(
@@ -88,6 +90,39 @@ def _collapsible(summary: str, body: str, *, open_default: bool = False) -> str:
         f"<div class=\"fold-body\">{body}</div>"
         "</details>"
     )
+
+
+def _ratings_empty_message(
+    ratings_data: dict[str, Any],
+    *,
+    year: Any,
+    make: Any,
+    model: Any,
+) -> str:
+    notice = ratings_data.get("notice")
+    if notice and notice != SPELLING_NOTICE:
+        return str(notice)
+    if year and make and model:
+        return f"NHTSA has no NCAP safety rating on file for {year} {make} {model}."
+    return "NHTSA has no NCAP safety rating on file for this model year."
+
+
+def _hero_overall_rating_label(
+    ratings_section: dict[str, Any],
+    ratings_data: dict[str, Any],
+    rating_obj: dict[str, Any] | None,
+) -> str:
+    status = ratings_section.get("status") or ""
+    if status in {"empty", "unavailable", "not_applicable"}:
+        return "No data"
+    if not rating_obj:
+        if ratings_data.get("variants"):
+            return "Variants listed"
+        return "No data"
+    overall = rating_obj.get("overall_rating")
+    if overall is not None and str(overall).strip() != "":
+        return str(overall)
+    return "No data"
 
 
 def _complaint_bars(components: list[dict[str, Any]], total: int) -> str:
@@ -577,12 +612,9 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
 
     ratings_section = sections.get("ratings", {})
     ratings_data = ratings_section.get("data") or {}
-    rating = ratings_data.get("rating") or {}
-    overall = rating.get("overall_rating") if rating else None
-    if overall is None and ratings_data.get("variants"):
-        overall = "Variants listed"
-    elif overall is None:
-        overall = "Not rated"
+    rating_raw = ratings_data.get("rating")
+    rating = rating_raw if isinstance(rating_raw, dict) else None
+    overall = _hero_overall_rating_label(ratings_section, ratings_data, rating)
 
     inv_section = sections.get("investigations", {})
     inv_data = inv_section.get("data") or {}
@@ -715,14 +747,15 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
         )
         ratings_body = f'<div class="section-body"><ul class="empty-note">{variants}</ul></div>'
     else:
-        empty_msg = "No NCAP rating detail for this vehicle year."
-        if ratings_data.get("notice"):
-            empty_msg = str(ratings_data.get("notice"))
+        empty_msg = _ratings_empty_message(
+            ratings_data,
+            year=year,
+            make=make,
+            model=model,
+        )
         ratings_body = f'<div class="section-body"><p class="empty-note">{_esc(empty_msg)}</p></div>'
     if ratings_data.get("note") and rating:
         ratings_body += f'<p class="note">{_esc(ratings_data.get("note"))}</p>'
-    elif ratings_data.get("notice") and not rating:
-        ratings_body += f'<p class="section-notice">{_esc(ratings_data.get("notice"))}</p>'
 
     inv_table_rows = []
     for item in inv_rows:
@@ -747,11 +780,7 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
     cov_items = []
     for block in (cov.get("limits") or {}).values():
         cov_items.append(f"<li><strong>{_esc(block.get('topic'))}:</strong> {_esc(block.get('refusal'))}</li>")
-    coverage_body = (
-        f"<p>{_esc(cov.get('disclaimer'))}</p>"
-        f"<ul>{''.join(cov_items)}</ul>"
-        f'<p class="note">{_esc(cov.get("repair_note"))}</p>'
-    )
+    coverage_body = f"<p>{_esc(cov.get('disclaimer'))}</p>" f"<ul>{''.join(cov_items)}</ul>"
 
     sources_list = []
     for name, section in sections.items():

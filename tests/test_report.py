@@ -37,6 +37,23 @@ def test_vehicle_report_html_escapes_xss(service):
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html_text
 
 
+def test_report_html_empty_ratings_one_ncap_notice_and_no_data_tile(service):
+    profile = run(service.vehicle_profile, None, "ACURA", "RDX", 2012)
+    from glovebox_nhtsa.report import profile_sections_to_report, render_vehicle_report_html
+
+    report = profile_sections_to_report(
+        profile,
+        vin="SAMPLE-2012-ACURA-RDX",
+        source_urls={"recalls": "https://example.test/recalls"},
+    )
+    report["sections"]["ratings"]["status"] = "empty"
+    html_text = render_vehicle_report_html(report)
+    assert html_text.count("This spelling returned no rows") == 0
+    assert html_text.count("NHTSA has no NCAP safety rating on file") == 1
+    assert "No data" in html_text
+    assert html_text.count("These are campaigns filed against the model string") == 1
+
+
 def test_vehicle_report_html_omits_redundant_rating_identity_rows(service):
     result = run(service.get_safety_ratings, vehicle_id=7520)
     report = {
@@ -112,6 +129,21 @@ def test_cli_report_json(tmp_path: Path, monkeypatch):
     assert completed.returncode == 0, completed.stderr
     payload = json.loads(completed.stdout)
     assert payload["sections"]["decode"]["status"] == "ok"
+
+
+def test_ratings_notice_for_report_replaces_spelling_notice():
+    from glovebox_nhtsa.service import ratings_notice_for_report
+    from glovebox_nhtsa.text import SPELLING_NOTICE
+
+    out = ratings_notice_for_report(
+        {"count": 0, "notice": SPELLING_NOTICE},
+        make="ACURA",
+        model="RDX",
+        model_year=2012,
+    )
+    assert "NCAP" in out["notice"]
+    assert "2012" in out["notice"]
+    assert out["notice"] != SPELLING_NOTICE
 
 
 def test_ratings_for_report_year_rejects_mismatched_ncap_row():

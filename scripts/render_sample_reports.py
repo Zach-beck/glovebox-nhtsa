@@ -9,7 +9,7 @@ import anyio
 from glovebox_nhtsa.backend import build_url
 from glovebox_nhtsa.config import Settings
 from glovebox_nhtsa.report import profile_sections_to_report, render_vehicle_report_html
-from glovebox_nhtsa.service import build_service
+from glovebox_nhtsa.service import build_service, ratings_notice_for_report
 
 ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "tests" / "fixtures"
@@ -24,7 +24,12 @@ async def _samples(service) -> None:
     recalls = await service.get_recalls("ACURA", "RDX", 2012, include_remedy=True)
     profile["recalls"] = recalls
     profile["section_status"]["recalls"] = "ok" if recalls.get("count") else "empty"
-    profile["ratings"] = await service.get_safety_ratings("ACURA", "RDX", 2012)
+    profile["ratings"] = ratings_notice_for_report(
+        await service.get_safety_ratings("ACURA", "RDX", 2012),
+        make="ACURA",
+        model="RDX",
+        model_year=2012,
+    )
     profile["section_status"]["ratings"] = "empty" if profile["ratings"].get("count", 0) == 0 else "ok"
     profile["identity"] = {
         "vin": "SAMPLE-2012-ACURA-RDX",

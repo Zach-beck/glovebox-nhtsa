@@ -49,6 +49,29 @@ TTL_RATINGS = 7 * 24 * 3600
 TTL_MODELS = 7 * 24 * 3600
 SCHEMA = "1"
 
+def ratings_notice_for_report(
+    payload: dict[str, Any],
+    *,
+    make: str | None,
+    model: str | None,
+    model_year: int | None,
+) -> dict[str, Any]:
+    if payload.get("count", 0) != 0 or payload.get("rating"):
+        return payload
+    notice = payload.get("notice")
+    if notice and notice != SPELLING_NOTICE:
+        return payload
+    if make and model and model_year:
+        text = (
+            f"NHTSA has no NCAP safety rating on file for {int(model_year)} {make} {model}."
+        )
+    else:
+        text = "NHTSA has no NCAP safety rating on file for this model year."
+    updated = dict(payload)
+    updated["notice"] = text
+    return updated
+
+
 def ratings_for_report_year(payload: dict[str, Any], expected_year: int | None) -> dict[str, Any]:
     """Drop NCAP detail when NHTSA's row year does not match the vehicle identity year."""
     if expected_year is None or payload.get("error"):
@@ -400,6 +423,12 @@ class Service:
                 self._section(lambda: self.search_investigations(make, model, model_year_int)),
             )
             ratings = ratings_for_report_year(ratings, model_year_int)
+            ratings = ratings_notice_for_report(
+                ratings,
+                make=make,
+                model=model,
+                model_year=model_year_int,
+            )
         else:
             recalls = complaints = ratings = investigations = dict(skipped)
         recall_params = vehicle_params
