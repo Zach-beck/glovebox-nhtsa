@@ -24,9 +24,8 @@ async def _samples(service) -> None:
     recalls = await service.get_recalls("ACURA", "RDX", 2012, include_remedy=True)
     profile["recalls"] = recalls
     profile["section_status"]["recalls"] = "ok" if recalls.get("count") else "empty"
-    ratings = await service.get_safety_ratings(vehicle_id=7520)
-    profile["ratings"] = ratings
-    profile["section_status"]["ratings"] = "ok"
+    profile["ratings"] = await service.get_safety_ratings("ACURA", "RDX", 2012)
+    profile["section_status"]["ratings"] = "empty" if profile["ratings"].get("count", 0) == 0 else "ok"
     profile["identity"] = {
         "vin": "SAMPLE-2012-ACURA-RDX",
         "spec_note": profile.get("identity", {}).get("spec_note"),
@@ -44,7 +43,10 @@ async def _samples(service) -> None:
             "complaints_by_vehicle",
             {"make": "ACURA", "model": "RDX", "model_year": 2012},
         ),
-        "ratings": build_url("ratings_vehicle", {"vehicle_id": "7520"}),
+        "ratings": build_url(
+            "ratings_model",
+            {"make": "ACURA", "model": "RDX", "model_year": 2012},
+        ),
         "investigations": "https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip",
     }
     report = profile_sections_to_report(profile, vin="SAMPLE-2012-ACURA-RDX", source_urls=urls)

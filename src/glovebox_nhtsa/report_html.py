@@ -8,6 +8,10 @@ from typing import Any
 
 STAR_MAX = 5
 
+_RATING_SKIP_ROWS = frozenset(
+    {"make", "model", "model_year", "vehicle_id", "vehicle_description", "overall_rating"}
+)
+
 
 def _esc(value: Any) -> str:
     if value is None:
@@ -328,11 +332,19 @@ body {
 .section-head {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
+  justify-content: space-between;
   gap: var(--space-2);
   margin-bottom: var(--space-3);
   padding-bottom: var(--space-2);
   border-bottom: 1px solid var(--line-soft);
+}
+.report-section.is-empty .section-body,
+.report-section.is-unavailable .section-body {
+  padding: var(--space-2);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
 }
 .section-head h2 {
   font-size: var(--text-lg);
@@ -349,10 +361,10 @@ body {
   border-radius: 999px;
   border: 1px solid var(--line);
 }
-.status-ok { background: var(--status-ok-bg); color: var(--status-ok-fg); border-color: transparent; }
-.status-empty { background: var(--status-empty-bg); color: var(--status-empty-fg); border-color: transparent; }
-.status-unavailable { background: var(--status-unavailable-bg); color: var(--status-unavailable-fg); border-color: transparent; }
-.status-not_applicable { background: var(--status-na-bg); color: var(--status-na-fg); border-color: transparent; }
+.status-ok { background: var(--status-ok-bg); color: var(--status-ok-fg); border-color: rgba(47, 74, 58, 0.2); }
+.status-empty { background: var(--status-empty-bg); color: var(--status-empty-fg); border-color: var(--line); }
+.status-unavailable { background: var(--status-unavailable-bg); color: var(--status-unavailable-fg); border-color: rgba(107, 61, 56, 0.25); }
+.status-not_applicable { background: var(--status-na-bg); color: var(--status-na-fg); border-color: var(--line); }
 .def-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
@@ -434,7 +446,6 @@ body {
 .bar-fill {
   height: 100%;
   background: var(--accent);
-  opacity: 0.92;
   border-radius: 999px;
   min-width: 2px;
 }
@@ -489,7 +500,9 @@ body {
 .callout ul { margin: var(--space-2) 0 0; padding-left: 1.2rem; }
 .callout li { margin-bottom: 0.35rem; }
 .note { font-size: var(--text-sm); color: var(--ink-muted); margin-top: var(--space-2); }
-.empty-note { font-size: var(--text-sm); color: var(--ink-faint); font-style: italic; }
+.empty-note { font-size: var(--text-sm); color: var(--ink-muted); font-style: normal; margin: 0; }
+.rating-meta { font-size: var(--text-xs); margin: var(--space-2) 0 0; line-height: 1.45; }
+.section-notice { font-size: var(--text-sm); color: var(--ink-muted); margin-top: var(--space-2); }
 .sources-footer {
   margin-top: var(--space-5);
   padding-top: var(--space-3);
@@ -661,15 +674,26 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
 
     ratings_body = ""
     if rating:
+        vid = rating.get("vehicle_id")
+        desc = rating.get("vehicle_description")
+        meta_bits = []
+        if vid:
+            meta_bits.append(f"NHTSA vehicle id {_esc(vid)}")
+        if desc:
+            meta_bits.append(_esc(desc))
+        meta_line = (
+            f'<p class="rating-meta muted">{" · ".join(meta_bits)}</p>' if meta_bits else ""
+        )
         ratings_body = (
             f'<div class="ratings-block">'
             f'<div class="rating-hero">'
             f'{_stars_svg(rating.get("overall_rating"), label="Overall")}'
             f"</div>"
+            f"{meta_line}"
         )
         rows = []
         for key in sorted(rating.keys()):
-            if key == "overall_rating":
+            if key in _RATING_SKIP_ROWS:
                 continue
             value = rating.get(key)
             if "rating" in key.lower() or "rollover" in key.lower():
@@ -677,7 +701,7 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
                     f'<div class="rating-row"><span>{_esc(key.replace("_", " ").title())}</span>'
                     f"{_stars_svg(value, label=key)}</div>"
                 )
-            else:
+            elif key not in _RATING_SKIP_ROWS:
                 rows.append(
                     f'<div class="rating-row"><span>{_esc(key.replace("_", " ").title())}</span>'
                     f'<span class="tabular">{_esc(value)}</span></div>'
@@ -689,11 +713,16 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
             f"<span class=\"tabular\">(id {_esc(v.get('vehicle_id'))})</span></li>"
             for v in ratings_data.get("variants") or []
         )
-        ratings_body = f"<ul>{variants}</ul>"
+        ratings_body = f'<div class="section-body"><ul class="empty-note">{variants}</ul></div>'
     else:
-        ratings_body = '<p class="empty-note">No rating detail returned.</p>'
-    if ratings_data.get("note"):
+        empty_msg = "No NCAP rating detail for this vehicle year."
+        if ratings_data.get("notice"):
+            empty_msg = str(ratings_data.get("notice"))
+        ratings_body = f'<div class="section-body"><p class="empty-note">{_esc(empty_msg)}</p></div>'
+    if ratings_data.get("note") and rating:
         ratings_body += f'<p class="note">{_esc(ratings_data.get("note"))}</p>'
+    elif ratings_data.get("notice") and not rating:
+        ratings_body += f'<p class="section-notice">{_esc(ratings_data.get("notice"))}</p>'
 
     inv_table_rows = []
     for item in inv_rows:
@@ -733,6 +762,9 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
 
     def section_block(section_id: str, heading: str, body: str, section: dict[str, Any]) -> str:
         status = section.get("status") or ""
+        state_class = ""
+        if status in {"empty", "unavailable", "not_applicable"}:
+            state_class = f" is-{status.replace('_', '-')}"
         source = section.get("source_url")
         source_html = (
             f'<p class="section-source"><a href="{_esc(source)}">{_esc(source)}</a></p>'
@@ -740,7 +772,7 @@ def render_vehicle_report_html(report: dict[str, Any]) -> str:
             else ""
         )
         return (
-            f'<section class="report-section" id="{_esc(section_id)}" aria-labelledby="{_esc(section_id)}-head">'
+            f'<section class="report-section{state_class}" id="{_esc(section_id)}" aria-labelledby="{_esc(section_id)}-head">'
             f'<div class="section-head" id="{_esc(section_id)}-head">'
             f"<h2>{_esc(heading)}</h2>{_status_pill(status)}"
             f"</div>{body}{source_html}</section>"

@@ -6,7 +6,7 @@ import pytest
 
 from glovebox_nhtsa.cache import MemoryCache, NullCache
 from glovebox_nhtsa.report import render_vehicle_report_html
-from glovebox_nhtsa.service import Service
+from glovebox_nhtsa.service import ratings_for_report_year
 from tests.conftest import run
 
 
@@ -35,6 +35,26 @@ def test_vehicle_report_html_escapes_xss(service):
     html_text = render_vehicle_report_html(result)
     assert malicious not in html_text
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html_text
+
+
+def test_vehicle_report_html_omits_redundant_rating_identity_rows(service):
+    result = run(service.get_safety_ratings, vehicle_id=7520)
+    report = {
+        "vin": "TEST",
+        "fetched_at": "2026-01-01T00:00:00Z",
+        "sections": {
+            "ratings": {"status": "ok", "data": result},
+            "decode": {"status": "ok", "data": {}},
+            "recalls": {"status": "empty", "data": {}},
+            "complaints": {"status": "empty", "data": {}},
+            "investigations": {"status": "empty", "data": {}},
+            "coverage_limits": {"status": "ok", "data": {"limits": {}, "disclaimer": "x", "repair_note": "y"}},
+        },
+    }
+    html_text = render_vehicle_report_html(report)
+    assert "rating-meta" in html_text
+    assert "Vehicle Id" not in html_text
+    assert "NHTSA vehicle id 7520" in html_text
 
 
 def test_vehicle_report_html_is_self_contained(service):
@@ -92,6 +112,30 @@ def test_cli_report_json(tmp_path: Path, monkeypatch):
     assert completed.returncode == 0, completed.stderr
     payload = json.loads(completed.stdout)
     assert payload["sections"]["decode"]["status"] == "ok"
+
+
+def test_ratings_for_report_year_rejects_mismatched_ncap_row():
+    payload = {
+        "count": 1,
+        "rating": {
+            "model_year": 2013,
+            "overall_rating": "Not Rated",
+            "vehicle_id": "7520",
+            "vehicle_description": "2013 Acura RDX SUV FWD",
+        },
+    }
+    aligned = ratings_for_report_year(payload, 2012)
+    assert aligned["count"] == 0
+    assert aligned["rating"] is None
+    assert "2013" in aligned["notice"]
+    assert "2012" in aligned["notice"]
+
+
+def test_vehicle_profile_rdx_2012_ratings_empty_not_wrong_year(service):
+    result = run(service.vehicle_profile, None, "ACURA", "RDX", 2012)
+    assert result["section_status"]["ratings"] == "empty"
+    assert result["ratings"].get("count", 0) == 0
+    assert "7520" not in json.dumps(result["ratings"])
 
 
 def test_recalls_in_report_include_remedy_when_present(service):

@@ -49,6 +49,31 @@ TTL_RATINGS = 7 * 24 * 3600
 TTL_MODELS = 7 * 24 * 3600
 SCHEMA = "1"
 
+def ratings_for_report_year(payload: dict[str, Any], expected_year: int | None) -> dict[str, Any]:
+    """Drop NCAP detail when NHTSA's row year does not match the vehicle identity year."""
+    if expected_year is None or payload.get("error"):
+        return payload
+    rating = payload.get("rating")
+    if not isinstance(rating, dict):
+        return payload
+    raw_year = rating.get("model_year")
+    if raw_year is None or str(raw_year).strip() == "":
+        return payload
+    try:
+        got = int(raw_year)
+    except (TypeError, ValueError):
+        return payload
+    if got == int(expected_year):
+        return payload
+    return {
+        "count": 0,
+        "rating": None,
+        "notice": (
+            f"NHTSA returned NCAP data for model year {got}, not {expected_year}. "
+            "No rating is shown for the requested year."
+        ),
+    }
+
 
 def _invalid_arguments(detail: str) -> dict[str, Any]:
     return error_body(
@@ -223,8 +248,14 @@ class Service:
                 return listing
         if len(chosen) == 1 and chosen[0].get("vehicle_id"):
             detail = await self.get_safety_ratings(vehicle_id=chosen[0]["vehicle_id"])
-            listing["rating"] = detail.get("rating")
-            listing["rating_note"] = detail.get("note")
+            aligned = ratings_for_report_year(detail, int(model_year))
+            if aligned.get("rating"):
+                listing["rating"] = aligned.get("rating")
+                listing["rating_note"] = detail.get("note")
+            elif aligned.get("notice"):
+                listing["count"] = 0
+                listing["variants"] = []
+                listing["notice"] = aligned["notice"]
         return listing
 
     async def list_model_names(self, make: str, model_year: int) -> dict[str, Any]:
@@ -368,6 +399,7 @@ class Service:
                 self._section(lambda: self.get_safety_ratings(make, model, model_year_int, drive_type=drive)),
                 self._section(lambda: self.search_investigations(make, model, model_year_int)),
             )
+            ratings = ratings_for_report_year(ratings, model_year_int)
         else:
             recalls = complaints = ratings = investigations = dict(skipped)
         recall_params = vehicle_params

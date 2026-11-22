@@ -1,0 +1,15 @@
+{
+  "_request": {
+    "name": "ratings_model",
+    "params": {
+      "make": "ACURA",
+      "model": "RDX",
+      "model_year": 2012
+    }
+  },
+  "body": {
+    "Count": 0,
+    "Message": "Results returned successfully",
+    "Results": []
+  }
+}
