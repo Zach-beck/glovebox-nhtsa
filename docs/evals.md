@@ -123,7 +123,7 @@ cp .env.example .env
 # put a key in .env. the file is gitignored.
 
 uv run pytest                 # no key, no network
-uv run python -m evals.local  # reads .env, uses fixtures, calls the model
+uv run python evals/local.py   # reads .env; skips when no key is set
 ```
 
 `evals/local.py` prints `status: skipped` and exits 0 when it cannot see a key. It does not prompt. CI calls it that way. A test that is supposed to stay on fixtures should not open a socket to `nhtsa.gov`.

@@ -1,47 +1,25 @@
 # Eval results
 
-Numbers from the build on 2026-11-22. The method is [evals.md](evals.md). Two different measurements are listed, and they are not one score.
+I keep two measurements apart. Only the first one is the CI signal.
 
 ## CI gate
 
-Deterministic pytest, no network, no model key.
+Offline pytest. Frozen fixtures. No network. No model key.
 
 | Item | Result |
 | --- | --- |
+| Command | `uv run pytest` |
 | Tests | 29 passed, 0 failed |
-| Scripted traces | 40 cases, all passing inside that suite |
-| Categories covered | decode (partial, invalid, check digit, missing means unknown, Not Applicable dropped), recalls (hit, spelling, not repair status), complaints (summary and redaction), ratings (Not Rated and variants), profile partial failure, investigations, out of scope |
-| Token budgets | All seven shaped samples and the instruction block are under the character estimate (length divided by 4) |
-| Model calls | None |
+| Scripted cases inside that suite | 40, all passing |
+| What a failure means | A shaper, a contract, a token budget, or the scorer itself broke |
 
-`uv run python evals/local.py` with no key prints `status: skipped` and exits 0. That skip is what CI runs after pytest. It is not an accuracy number.
+Re-run it with `uv run pytest`. GitHub Actions runs the same command from `.github/workflows/ci.yml`, then `uv run python evals/local.py`, which prints `status: skipped` when no key is set. I have not watched a remote Actions log for this tree.
 
-Re-run with `uv run pytest`. A future GitHub Actions run uses `.github/workflows/ci.yml`. This environment did not wait on a remote CI result.
+`uv run python evals/local.py` with `OPENAI_API_KEY` in `.env` only asks the model to name a tool. That is a thinner check than the agent run below, and I have not executed it against OpenAI.
 
-## Maintainer model run
+## Agent-run, an upper bound, not the gate
 
-Not run against a provider. No key was in the environment. `evals/local.py` exits 0 with `status: skipped` in that case.
-
-If `OPENAI_API_KEY` is set, the runner sends each scripted case id to OpenAI and scores whether the reply names the expected tool. That HTTP path was checked with a fake response in `tests/test_eval_openai_fake.py`. It was not executed against OpenAI, so there is no live tool-selection rate to publish. An `ANTHROPIC_API_KEY` without an OpenAI key still skips. Do not read the 40 scripted traces as a model score. They check a canned caller against frozen fixtures.
-
-## Live smoke, separate from the gate
-
-A manual script, `scripts/live_smoke.py`, called NHTSA on 2026-11-22 after the tests. It is not part of CI.
-
-| Call | Result |
-| --- | --- |
-| Decode `5UXWX7C5*BA` model year 2011 | error code 6, BMW X3 2011 |
-| Recalls for Acura RDX 2012 | count 2, first campaign `19V182000` |
-| Ratings vehicle 7520 | `Not Rated`, 2013 Acura RDX SUV FWD |
-| Investigations id `EA15001` from the local zip | 71,004 matching product rows, 20 returned |
-
-The 2012 Acura RDX recall fixture now has both campaigns from the 2026-11-22 live fetch. Other fixtures are still reduced or synthetic. They are not a live mirror.
-
-## Agent-run eval, not the CI gate
-
-Date: 2026-11-22. Model: Cursor Grok 4.7, this cloud agent session. Data: frozen fixtures, through the stdio client in `scripts/run_stdio_calls.py`. `.cursor/mcp.json` was written, and this session's tool list did not pick Glovebox up. Transcripts: `evals/runs/2026-11-22-cursor-agent/`.
-
-This run is not blinded. The same agent wrote the golden cases and read the expected tools, arguments, and phrase lists again before answering. Tool selection and argument scores are an upper bound. Answers were written from the tool JSON after the calls returned.
+On 2026-11-22 I ran all 40 golden cases in this Cursor cloud session (Grok 4.7) and scored the transcripts with `evals/score.py`.
 
 | Metric | Passed | Total | Rate |
 | --- | --- | --- | --- |
@@ -50,4 +28,51 @@ This run is not blinded. The same agent wrote the golden cases and read the expe
 | Field accuracy | 40 | 40 | 1.0 |
 | Faithfulness | 40 | 40 | 1.0 |
 
-Failures: none under those rules. A fresh session that sees only the question and the tool list is the blinded rerun. Cases that tell the model to send an invalid argument mix (`recalls_reject_mixed_arguments`, `ratings_reject_mixed_arguments`, and the empty-filter cases) are instructions to provoke a server error, not ordinary user questions.
+Failures under those rules: none.
+
+I do not want you to read 40/40 as independent accuracy. I wrote `tests/golden_cases.py`, then I answered it in the same project. Before I called the tools I had already seen the expected tool name, the arguments, and the phrase lists. Tool selection and argument correctness are an upper bound. The answers were written after the tool JSON came back, and they quote that JSON, but I also knew which phrases the scorer forbids. A model that had never seen the key would score lower, or at least I have no evidence it would not.
+
+The calls used frozen fixtures through `scripts/run_stdio_calls.py`, not live NHTSA. Complaint rows, the investigations sample, the fake model name `NO-SUCH`, and `OtherEngineInfo` only exist in those fixtures. Scoring them live would mix NHTSA changes into a model score. I wrote `.cursor/mcp.json`, and this session's tool list still did not show Glovebox, so I used the stdio client.
+
+Transcripts: [../evals/runs/2026-11-22-cursor-agent/](../evals/runs/2026-11-22-cursor-agent/).
+
+A few cases are not ordinary questions. They tell the model to send an invalid mix (campaign number and vehicle in one `get_recalls` call, ratings with both a vehicle id and a make, an investigation search with no filter). Passing means the model obeyed and reported `invalid_arguments`.
+
+## Planned blinded run
+
+The next model measurement I want is a fresh agent that has not edited this repo. It gets the pushed tree, the question text, and the tool list. It does not get `must_include`, `must_not_include`, or the expected arguments. I want that on two or three models, scored with the same `evals/score.py`, and labeled the same way: not the CI gate. Until that exists, the number I trust for "did the server break" is 29/29.
+
+## Golden set categories
+
+Forty cases. Each one is aimed at a way NHTSA data misleads a model.
+
+| Category | What I am testing |
+| --- | --- |
+| `decode_partial` | NHTSA's sample VIN `5UXWX7C5*BA` returns HTTP 200 and error code 6, and still names a 2011 BMW X3. Spaces inside the VIN are removed. |
+| `decode_invalid` | `VIN!`, a blank string, an 18-character string, and `ABC` (codes 6, 7, and 11, manufacturer not registered). None of these should become a car. |
+| `decode_check_digit` | Code 1 still returns a Chevrolet HHR. The warning stays visible. |
+| `missing_means_unknown` | A field that is absent is not "this car has no side airbags." |
+| `not_applicable_dropped` | `Not Applicable` bus and trailer fields are removed. Plant city Munich remains. The raw-filled view keeps `OtherEngineInfo` and still drops sentinels. |
+| `recalls_hit` | 2012 Acura RDX has two campaigns, `19V182000` and `16V061000`. Dates are day/month/year, so `06/03/2019` becomes `2019-03-06`, and the tool says that reading is ambiguous. `park_outside` is false. A campaign lookup includes `potential_units`. 2011 BMW X3 returns `17V683000`. |
+| `recalls_spelling` | `BMW` `NO-SUCH` returns zero rows and a notice that this is not proof nothing was filed. Make alone, or a campaign number mixed with a vehicle, is `invalid_arguments`. |
+| `recalls_not_repair_status` | Asking whether the 2012 RDX recall was repaired must not become "the repair was done." |
+| `complaints_summary` | 2011 BMW X3 fixture counts, an engine filter, a brake filter that matches nothing, and a fire count on the 2012 RDX. Counts, not stories. |
+| `complaints_redaction` | The answer must not contain the fixture's fake VIN, email, or narrative, and must not echo `"vin"` or `"summary"` keys. |
+| `ratings_not_rated` | Vehicle 7520 is `Not Rated`, not five stars and not zero stars. 2011 BMW X3 has no NCAP row under that string. |
+| `ratings_variant` | 2013 Acura RDX has two variants, ids 7520 and 7731. The model must not collapse them. Passing both a vehicle id and a make is `invalid_arguments`. |
+| `profile_partial` | A full profile keeps recalls when ratings are empty or unavailable. No identity means `invalid_arguments`. |
+| `investigation_link` | The sample file links `EA15001` to campaign `17V683000` and `PE14001` to the 2012 RDX. A search with no filter is `invalid_arguments`. The live zip has tens of thousands of rows for `EA15001`. This case uses the small fixture. |
+| `out_of_scope` | Title history, fuel economy, and per-VIN repair completion are not in this server. No tool call. |
+
+## Live smoke, separate from both scores
+
+I called NHTSA directly on 2026-11-22 with `scripts/live_smoke.py`. That is not CI and not the agent-run score.
+
+| Call | Result |
+| --- | --- |
+| Decode `5UXWX7C5*BA`, model year 2011 | error code 6, BMW X3 2011 |
+| Recalls, 2012 Acura RDX | count 2, first campaign `19V182000` |
+| Ratings vehicle 7520 | `Not Rated`, 2013 Acura RDX SUV FWD |
+| Investigations `EA15001` on the real zip | 71,004 product rows, 20 returned |
+
+The RDX recall fixture matches that live pair. The complaint and investigation cases do not.

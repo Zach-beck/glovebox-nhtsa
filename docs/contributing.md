@@ -1,5 +1,7 @@
 # Contributing
 
+The short page is [CONTRIBUTING.md](../CONTRIBUTING.md). This is the longer checklist.
+
 Glovebox is clean-room. Use NHTSA's public APIs, public files, and public docs. Do not copy another MCP server's code. Do not bring in employer systems, private schemas, or private data.
 
 ## Tests

@@ -1,31 +1,37 @@
 # Glovebox
 
-Glovebox is a local [Model Context Protocol](https://modelcontextprotocol.io) server for public vehicle data from the National Highway Traffic Safety Administration. Give it a VIN, or a year, make, and model, and it returns a short profile: decoded specs, recall campaigns, complaint counts, NCAP ratings, and defect investigations.
+I built Glovebox so I can hand a model a VIN and get one short, sourced vehicle profile from public NHTSA data. It is a local [Model Context Protocol](https://modelcontextprotocol.io) server. The package and command are `glovebox-nhtsa`.
 
-The server shapes those answers before a model sees them. That work is Context Engineering: empty specs stay unknown, `Not Rated` stays `Not Rated`, and complaint narratives never enter the context.
+A raw dump of NHTSA is a bad context for a model. Empty spec fields mean "no value on file," not "this car lacks the part." `Not Rated` is a real rating. Recall rows are campaigns for a model string, not proof that your VIN was repaired. Complaint files are huge and can carry partial VINs. Glovebox does that shaping before the model sees the data. I call that work Context Engineering.
 
-Glovebox is not affiliated with, endorsed by, or published by NHTSA or the U.S. Department of Transportation. NHTSA's terms say the site is public information that may be copied, and they disclaim accuracy. See [their terms](https://www.nhtsa.gov/about-nhtsa/terms-use).
+Glovebox is not affiliated with, endorsed by, or published by NHTSA or the U.S. Department of Transportation. Their [terms](https://www.nhtsa.gov/about-nhtsa/terms-use) say the site is public information that may be copied, and they disclaim accuracy. I am not NHTSA.
 
-This package is not on PyPI. `uvx glovebox-nhtsa` will work only after a release, and this repo does not publish one. Install from a checkout.
+## 60-second quickstart
 
-## Names
-
-The product is Glovebox. The repository, Docker image, PyPI distribution, and command are `glovebox-nhtsa`.
-
-`glovebox-mcp` is already a GitHub repository: [segentic-lab/glovebox-mcp](https://github.com/segentic-lab/glovebox-mcp), an unrelated sandboxed computer-use server, also listed in the MCP registry. That is why this project does not use that name.
-
-Checked on 2026-11-22 and not registered by us: PyPI `glovebox-nhtsa` returned 404. A GitHub search for repositories named `glovebox-nhtsa` returned none. An unrelated PyPI project named `glovebox` (0.0.5) still exists. Nothing here was published.
-
-## Quickstart
-
-Requires Python 3.12 and [uv](https://docs.astral.sh/uv/).
+You need Python 3.12 and [uv](https://docs.astral.sh/uv/). This package is not on PyPI, so `uvx` will not work until I publish a release. I have not published one.
 
 ```bash
 uv sync
 uv run glovebox-nhtsa
 ```
 
-That process speaks MCP on stdin and stdout. Point a client at it:
+That process speaks MCP on stdin and stdout. It does not need an API key.
+
+**Cursor.** The file in this repo is [`.cursor/mcp.json`](.cursor/mcp.json):
+
+```json
+{
+  "mcpServers": {
+    "glovebox-nhtsa": {
+      "type": "stdio",
+      "command": "uv",
+      "args": ["run", "glovebox-nhtsa"]
+    }
+  }
+}
+```
+
+**Claude Desktop.** I have not re-checked the config path against Anthropic's own page. The usual files are `~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, `%APPDATA%\Claude\claude_desktop_config.json` on Windows, and `~/.config/Claude/claude_desktop_config.json` on Linux.
 
 ```json
 {
@@ -39,6 +45,14 @@ That process speaks MCP on stdin and stdout. Point a client at it:
 }
 ```
 
+**Claude Code**, from this checkout:
+
+```bash
+claude mcp add --transport stdio glovebox -- uv run glovebox-nhtsa
+```
+
+More clients: [Cursor](docs/clients/cursor.md), [Claude Desktop](docs/clients/claude-desktop.md), [Claude Code](docs/clients/claude-code.md), [VS Code](docs/clients/vscode.md), [OpenCode](docs/clients/opencode.md).
+
 Docker, still local, still stdio:
 
 ```bash
@@ -46,51 +60,103 @@ docker build -t glovebox-nhtsa .
 docker run -i --rm glovebox-nhtsa
 ```
 
-Ask for a profile of a VIN. A useful answer quotes `error_code`, names the vehicle, and does not claim a recall was repaired.
+## Tools, resources, and prompts
 
-## What you can ask
-
-| Tool | Use it for |
+| Name | What it does |
 | --- | --- |
-| `vehicle_profile` | The first call. Specs, recalls, complaint counts, ratings, investigations. |
-| `decode_vin` | One VIN. Read `error_code`. |
-| `get_recalls` | Campaigns for a make, model, and year, or one campaign number. |
-| `summarize_complaints` | Counts only. No owner text. |
-| `get_safety_ratings` | Stars, or the variant list. |
-| `search_investigations` | The local investigations file. |
-| `list_model_names` | Spellings that differ across NHTSA datasets. |
+| `vehicle_profile` | First call. Specs, recalls, complaint counts, ratings, investigations, and a status per section. |
+| `decode_vin` | One VIN. Read `error_code`. HTTP 200 is not a clean decode. |
+| `get_recalls` | Campaigns for a make, model, and year, or one campaign number. Not a VIN, and not repair status. |
+| `summarize_complaints` | Counts and components only. No owner text and no VIN. |
+| `get_safety_ratings` | Stars for one variant, or the variant list. `Not Rated` stays words. |
+| `search_investigations` | Local search of NHTSA's investigations file. There is no investigations REST API. |
+| `list_model_names` | Spellings vPIC, the recall list, and NCAP use for one make and year. |
 
-Details: [docs/tool-reference.md](docs/tool-reference.md).
+| Resource | What it is |
+| --- | --- |
+| `nhtsa://about` | What I will not claim, plus NHTSA's terms link. |
+| `nhtsa://coverage` | Which datasets are live, which are local, and what I left out. |
+| `nhtsa://vehicle/{vin}` | The same object as `vehicle_profile`. |
 
-## Clients
+| Prompt | What it asks the model to do |
+| --- | --- |
+| `buyer_brief` | Call `vehicle_profile` and quote only returned fields. |
+| `recall_status` | Explain campaigns and say this is not repair status. |
+| `ratings_gap` | If ratings are empty, check spellings before saying the car was not tested. |
 
-- [Cursor](docs/clients/cursor.md)
-- [Claude Desktop](docs/clients/claude-desktop.md)
-- [Claude Code](docs/clients/claude-code.md)
-- [VS Code](docs/clients/vscode.md)
-- [OpenCode](docs/clients/opencode.md)
+Full arguments: [docs/tool-reference.md](docs/tool-reference.md).
 
-## Tests and evals
+## Example
 
-Deterministic tests run offline. They do not call NHTSA and they do not need a model key.
+This is the fixture result for NHTSA's own partial VIN `5UXWX7C5*BA`, model year 2011. The live API returned the same identity when I smoked it: error code 6, BMW X3.
+
+```json
+{
+  "identity": {
+    "vin": "5UXWX7C5*BA",
+    "error_code": "6",
+    "error_text": "6 - Incomplete VIN",
+    "spec_note": "A missing spec means NHTSA has no value on file. Do not read a missing field as evidence that the vehicle lacks that equipment."
+  },
+  "specs": {
+    "make": "BMW",
+    "model": "X3",
+    "model_year": "2011",
+    "trim": "xDrive35i",
+    "plant_city": "MUNICH",
+    "plant_country": "GERMANY"
+  }
+}
+```
+
+I omitted the rest of the spec block here. Empty fields and `Not Applicable` are already gone.
+
+## Evals
+
+The CI signal is offline pytest on frozen fixtures. On this tree that is 29 tests, all passing, including 40 scripted cases. No network and no model key.
+
+I also ran those 40 cases myself, in this agent session, and scored 40/40. That run is not blinded: I wrote the golden set and then answered it. Treat 40/40 as an upper bound. The write-up, the categories, and the blinded rerun I want next are in [docs/eval-results.md](docs/eval-results.md). The method is [docs/evals.md](docs/evals.md).
 
 ```bash
 uv run pytest
 uv run python evals/local.py
 ```
 
-`evals/local.py` prints a skip report when `.env` has no key. It does not prompt. The method is [docs/evals.md](docs/evals.md). The latest numbers are [docs/eval-results.md](docs/eval-results.md).
+The second command skips unless you put `OPENAI_API_KEY` in a gitignored `.env`. I do not want that key in CI.
 
-## Design notes
+## Data, terms, and rate limits
 
-The research that led here is still in the repo:
+Glovebox reads public NHTSA endpoints and one public file:
 
-- [Data inventory](docs/research/nhtsa-data.md)
-- [Rate limits and terms](docs/research/rate-limits-and-terms.md)
-- [Language decision](docs/decisions/0001-language-and-runtime.md)
-- [Architecture](docs/architecture.md)
-- [Roadmap](docs/roadmap.md)
+- vPIC VIN decode at `vpic.nhtsa.dot.gov`
+- Recalls, complaint counts, and NCAP ratings at `api.nhtsa.gov`
+- Defect investigations from `FLAT_INV.zip` on `static.nhtsa.gov`
 
-## License
+NHTSA's pages disagree about a numeric quota. A small polite test I ran on 2026-11-22 saw no HTTP 429 and no rate-limit headers. Details and citations: [docs/research/rate-limits-and-terms.md](docs/research/rate-limits-and-terms.md).
 
-MIT. See [LICENSE](LICENSE).
+In the server I wait 0.25 seconds between calls to the same host, keep at most two calls in flight, and retry 429 and 503 up to three times. I cache shaped results (decode for 30 days, recalls and complaint counts for 12 hours, ratings and model lists for 7 days). I refuse redirects off those three hosts. I do not cache complaint narratives because I never keep them.
+
+## Limitations
+
+- A recall campaign is not proof that your car was repaired.
+- A missing spec is unknown, not "the car lacks it."
+- `Not Rated` is not zero stars.
+- Model strings differ across vPIC, recalls, and NCAP. An empty list can be a spelling miss.
+- Recall dates from the API are day/month/year.
+- I do not ship fuel economy, title history, manufacturer communications, or FARS.
+- There is no Postgres offline decode. Offline mode is the investigations file plus whatever is already in the cache.
+- The investigations zip is about 4 MB. The text inside is about 370 MB. I index the short columns.
+
+## Roadmap
+
+v1 is this local server. Later, if I do it at all: manufacturer communications from the public flat files, an optional authenticated host (not an open proxy), and a blinded eval on two or three models. I am not putting a public URL in front of NHTSA. The longer plan is [docs/roadmap.md](docs/roadmap.md).
+
+## Name
+
+The product is Glovebox. The repo, image, distribution, and command are `glovebox-nhtsa` because `glovebox-mcp` is already [segentic-lab/glovebox-mcp](https://github.com/segentic-lab/glovebox-mcp), a different project. On 2026-11-22, PyPI returned 404 for `glovebox-nhtsa`, and a GitHub name search found no repository with that name. I have not published this.
+
+## Docs and license
+
+Index: [docs/README.md](docs/README.md). Contributing: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+MIT, 2026, Zacharias Beck. See [LICENSE](LICENSE).
