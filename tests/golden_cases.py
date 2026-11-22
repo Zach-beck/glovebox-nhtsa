@@ -334,7 +334,7 @@ CASES = [
         "question": "How many brake complaints are filed for a 2011 BMW X3?",
         "category": "complaints_summary",
         "tool": "summarize_complaints",
-        "arguments": {"make": "BMW", "model": "X3", "model_year": 2011, "component": "BRAKES"},
+        "arguments": {"make": "BMW", "model": "X3", "model_year": 2011, "component": "brake"},
         "must_include": ['"count": 0'],
         "must_not_include": ["REDACTEDVIN", "person@example.com"],
     },
@@ -366,3 +366,22 @@ CASES = [
         "must_not_include": ["EA15001"],
     },
 ]
+
+FIXTURE_ONLY_IDS = frozenset(
+    {
+        "investigation_link",
+        "investigation_by_vehicle",
+        "decode_raw_filled_drops_sentinels",
+        "complaints_x3_counts",
+        "complaints_component_filter",
+        "complaints_redaction_keys",
+    }
+)
+
+for _case in CASES:
+    if _case["id"] in FIXTURE_ONLY_IDS:
+        _case["eval_mode"] = "fixture_only"
+    elif _case.get("tool") is None:
+        _case["eval_mode"] = "live"
+    else:
+        _case["eval_mode"] = "fixture"

@@ -1,7 +1,7 @@
 import httpx
 import anyio
 
-from glovebox_nhtsa.backend import LiveBackend, build_url
+from glovebox_nhtsa.backend import LiveBackend, UpstreamError, build_url
 
 
 async def _noop(_seconds: float) -> None:
@@ -56,3 +56,43 @@ def test_redirects_are_refused():
         assert "redirect" in str(exc).lower()
     else:
         raise AssertionError("redirect was followed or ignored")
+
+
+def test_http_400_with_empty_json_is_a_normal_empty_result():
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(
+            400,
+            json={"Count": 0, "Message": "Results returned successfully", "results": []},
+        )
+
+    async def run() -> dict:
+        client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+        backend = LiveBackend(gap_seconds=0, client=client, sleeper=_noop)
+        try:
+            return await backend.fetch("recalls_by_vehicle", {"make": "BMW", "model": "NO-SUCH", "model_year": 2011})
+        finally:
+            await backend.aclose()
+
+    payload = anyio.run(run)
+    assert payload["Count"] == 0
+    assert payload["results"] == []
+
+
+def test_http_400_with_bad_json_stays_unavailable():
+    def handler(_request: httpx.Request) -> httpx.Response:
+        return httpx.Response(400, text="not json")
+
+    async def run():
+        client = httpx.AsyncClient(transport=httpx.MockTransport(handler))
+        backend = LiveBackend(gap_seconds=0, client=client, sleeper=_noop)
+        try:
+            await backend.fetch("complaints_by_vehicle", {"make": "BMW", "model": "X3", "model_year": 2011})
+        finally:
+            await backend.aclose()
+
+    try:
+        anyio.run(run)
+    except UpstreamError:
+        pass
+    else:
+        raise AssertionError("expected upstream error")

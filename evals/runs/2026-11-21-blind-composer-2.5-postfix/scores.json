@@ -1,0 +1,157 @@
+{
+  "cases": 40,
+  "tool_selection": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "argument_correctness": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "field_accuracy": {
+    "passed": 35,
+    "total": 40,
+    "rate": 0.875
+  },
+  "faithfulness": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "failures": [
+    {
+      "id": "complaints_x3_counts",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "ENGINE"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "complaints_component_filter",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "ENGINE"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "investigation_link",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "17V683000"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "investigation_by_vehicle",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "PE14001"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "decode_raw_filled_drops_sentinels",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "OtherEngineInfo"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    }
+  ],
+  "model": "Composer 2.5 post-fix (cloud agent)",
+  "date": "2026-11-22",
+  "data_source": "live_nhtsa",
+  "label": "blinded post-fix agent-run eval, not the CI gate",
+  "note": "Tool names and arguments follow golden_cases for live invocation only; answers were written without must_include / must_not_include.",
+  "category_breakdown": {
+    "complaints_redaction": {
+      "passed": 1,
+      "total": 1
+    },
+    "complaints_summary": {
+      "passed": 2,
+      "total": 4
+    },
+    "decode_check_digit": {
+      "passed": 1,
+      "total": 1
+    },
+    "decode_invalid": {
+      "passed": 4,
+      "total": 4
+    },
+    "decode_partial": {
+      "passed": 3,
+      "total": 3
+    },
+    "investigation_link": {
+      "passed": 1,
+      "total": 3
+    },
+    "missing_means_unknown": {
+      "passed": 1,
+      "total": 1
+    },
+    "not_applicable_dropped": {
+      "passed": 1,
+      "total": 2
+    },
+    "out_of_scope": {
+      "passed": 3,
+      "total": 3
+    },
+    "profile_partial": {
+      "passed": 3,
+      "total": 3
+    },
+    "ratings_not_rated": {
+      "passed": 2,
+      "total": 2
+    },
+    "ratings_variant": {
+      "passed": 2,
+      "total": 2
+    },
+    "recalls_hit": {
+      "passed": 6,
+      "total": 6
+    },
+    "recalls_not_repair_status": {
+      "passed": 1,
+      "total": 1
+    },
+    "recalls_spelling": {
+      "passed": 4,
+      "total": 4
+    }
+  }
+}

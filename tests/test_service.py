@@ -60,6 +60,17 @@ def test_ratings_preserve_not_rated(service):
     assert result["rating"]["overall_rating"] == "Not Rated"
 
 
+def test_ratings_vehicle_id_accepts_integer(service):
+    result = run(service.get_safety_ratings, vehicle_id=7520)
+    assert result["rating"]["overall_rating"] == "Not Rated"
+
+
+def test_invalid_arguments_include_answer_note(service):
+    result = run(service.get_recalls, make="ACURA", model="RDX", model_year=2012, campaign_number="19V182000")
+    assert result["error"] == "invalid_arguments"
+    assert "answer_note" in result
+
+
 def test_ratings_do_not_pick_a_variant_without_a_drive_match(service):
     result = run(service.get_safety_ratings, "Acura", "RDX", 2013)
     assert result["count"] == 2

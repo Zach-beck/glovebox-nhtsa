@@ -38,9 +38,25 @@ Transcripts: [../evals/runs/2026-11-22-cursor-agent/](../evals/runs/2026-11-22-c
 
 A few cases are not ordinary questions. They tell the model to send an invalid mix (campaign number and vehicle in one `get_recalls` call, ratings with both a vehicle id and a make, an investigation search with no filter). Passing means the model obeyed and reported `invalid_arguments`.
 
+## Blinded live runs (Nov 21, 2026), pre-fix
+
+Three agents ran all 40 golden questions against live NHTSA (fixtures unset) before `fix/eval-findings`. Branches hold transcripts and reports.
+
+| Model | Full pass | Tool | Args | Fields | Faith | Main causes |
+| --- | --- | --- | --- | --- | --- | --- |
+| Composer 2.5 | 31/40 | 40/40 | 39/40 | 31/40 | 39/40 | HTTP 400 empty body mapped to `upstream_unavailable`; out-of-scope exact phrases missed; investigations default fixture file in `run_stdio_calls` |
+| Grok 4.5 | 29/40 | 40/40 | 39/40 | 29/40 | 39/40 | Same 400 mapping; live investigations drift; component `brake` vs `BRAKES` |
+| Grok 4.6 | 28/40 | 40/40 | 39/40 | 30/40 | 37/40 | Same 400 mapping; faithfulness on `invalid_vin` wording and rejected campaign ids |
+
+The unblinded fixture run in this repo remains **40/40** on the same scorer. That is an upper bound, not a live claim.
+
+Post-fix rerun (one cloud agent session, live NHTSA): **35/40** full pass (field accuracy 35/40; tool/args/faithfulness 40/40). Report: `evals/runs/2026-11-21-blind-composer-2.5-postfix/report.md`.
+
+Remaining field misses: three `fixture_only` complaint or investigation cases scored against live data, plus live decode lacking fixture-only `OtherEngineInfo`. Out-of-scope and HTTP-400 spelling cases improved versus the pre-fix 31/40 Composer run.
+
 ## Planned blinded run
 
-The next model measurement I want is a fresh agent that has not edited this repo. It gets the pushed tree, the question text, and the tool list. It does not get `must_include`, `must_not_include`, or the expected arguments. I want that on two or three models, scored with the same `evals/score.py`, and labeled the same way: not the CI gate. Until that exists, the number I trust for "did the server break" is 29/29.
+After server fixes, re-score blinded live runs with the same `evals/score.py` and treat `eval_mode: fixture_only` cases separately when NHTSA drift is expected. The CI signal remains offline pytest on frozen fixtures.
 
 ## Golden set categories
 

@@ -12,7 +12,7 @@ from collections import Counter
 from datetime import date
 from typing import Any
 
-from glovebox_nhtsa.text import COMPLAINT_NOTE, REPAIR_NOTE, SPEC_NOTE, SPELLING_NOTICE
+from glovebox_nhtsa.text import COMPLAINT_NOTE, REPAIR_NOTE, SENTINEL_NOTE, SPEC_NOTE, SPELLING_NOTICE
 
 _CORE_FIELDS = (
     ("Make", "make"),
@@ -117,8 +117,37 @@ def _rows(payload: dict[str, Any]) -> list[dict[str, Any]]:
     return [row for row in rows if isinstance(row, dict)]
 
 
-def error_body(code: str, source: str, retryable: bool, detail: str) -> dict[str, Any]:
-    return {"error": code, "source": source, "retryable": retryable, "detail": detail}
+def error_body(code: str, source: str, retryable: bool, detail: str, **extra: Any) -> dict[str, Any]:
+    body: dict[str, Any] = {"error": code, "source": source, "retryable": retryable, "detail": detail}
+    body.update(extra)
+    return body
+
+
+def component_matches(needle: str, haystack: str) -> bool:
+    """Case-insensitive substring match with simple English singular/plural overlap."""
+    n = needle.strip().lower()
+    h = haystack.strip().lower()
+    if not n:
+        return True
+    if n in h:
+        return True
+    forms = {n}
+    if n.endswith("s") and len(n) > 1:
+        forms.add(n[:-1])
+    if n.endswith("es") and len(n) > 2:
+        forms.add(n[:-2])
+    for form in forms:
+        if form and form in h:
+            return True
+    return False
+
+
+def component_arguments_equivalent(expected: str, actual: str) -> bool:
+    a = expected.strip().casefold()
+    b = actual.strip().casefold()
+    if a == b:
+        return True
+    return component_matches(expected, actual) or component_matches(actual, expected)
 
 
 def normalize_vin(vin: str) -> tuple[str | None, dict[str, Any] | None]:
@@ -162,6 +191,7 @@ def shape_decode(payload: dict[str, Any], *, include_raw_filled: bool = False) -
                 continue
             other[key] = value if not isinstance(value, str) else value.strip()
         result["other_filled_fields"] = other
+        result["sentinel_note"] = SENTINEL_NOTE
     return result
 
 
@@ -226,9 +256,9 @@ def _as_int(value: Any) -> int:
 def shape_complaints(payload: dict[str, Any], *, component: str | None = None) -> dict[str, Any]:
     """Counts only. Narratives and the partial VIN field are dropped."""
     rows = _rows(payload)
-    needle = component.strip().lower() if component else ""
+    needle = component.strip() if component else ""
     if needle:
-        rows = [row for row in rows if needle in str(row.get("components") or "").lower()]
+        rows = [row for row in rows if component_matches(needle, str(row.get("components") or ""))]
     crashes = fires = injuries = deaths = 0
     buckets: dict[str, dict[str, int]] = {}
     filed: list[str] = []

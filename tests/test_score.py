@@ -1,8 +1,15 @@
-from evals.score import normalize_arguments, score_case, summarize
+from evals.score import _arguments_match, normalize_arguments, score_case, summarize
 from glovebox_nhtsa.config import Settings
 from glovebox_nhtsa.service import build_service
 from tests.conftest import FIXTURES, INVESTIGATIONS, run
 from tests.golden_cases import CASES
+
+
+def test_component_arguments_accept_singular_and_plural():
+    assert _arguments_match(
+        {"make": "BMW", "model": "X3", "model_year": 2011, "component": "BRAKES"},
+        {"make": "BMW", "model": "X3", "model_year": 2011, "component": "brake"},
+    )
 
 
 def test_normalize_make_and_vin_spaces():

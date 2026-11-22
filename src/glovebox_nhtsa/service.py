@@ -29,7 +29,7 @@ from glovebox_nhtsa.shaping import (
     shape_rating_variants,
     shape_recalls,
 )
-from glovebox_nhtsa.text import SPELLING_NOTICE
+from glovebox_nhtsa.text import INVALID_CALL_NOTE, SPELLING_NOTICE
 
 TTL_DECODE = 30 * 24 * 3600
 TTL_RECALLS = 12 * 3600
@@ -37,6 +37,16 @@ TTL_COMPLAINTS = 12 * 3600
 TTL_RATINGS = 7 * 24 * 3600
 TTL_MODELS = 7 * 24 * 3600
 SCHEMA = "1"
+
+
+def _invalid_arguments(detail: str) -> dict[str, Any]:
+    return error_body(
+        "invalid_arguments",
+        "glovebox",
+        False,
+        detail,
+        answer_note=INVALID_CALL_NOTE,
+    )
 
 
 class Service:
@@ -109,12 +119,7 @@ class Service:
     ) -> dict[str, Any]:
         campaign = (campaign_number or "").strip().upper()
         if campaign and any((make, model, model_year)):
-            return error_body(
-                "invalid_arguments",
-                "glovebox",
-                False,
-                "Pass a campaign number or a make, model, and model year, not both.",
-            )
+            return _invalid_arguments("Pass a campaign number or a make, model, and model year, not both.")
         if campaign:
             params = {"campaign_number": campaign}
             return await self._fetch_shaped(
@@ -126,12 +131,7 @@ class Service:
                 lambda raw: shape_recalls(raw, include_remedy=include_remedy),
             )
         if not make or not model or not model_year:
-            return error_body(
-                "invalid_arguments",
-                "glovebox",
-                False,
-                "Provide make, model, and model year, or a campaign number.",
-            )
+            return _invalid_arguments("Provide make, model, and model year, or a campaign number.")
         params = {"make": make.strip().upper(), "model": model.strip().upper(), "model_year": int(model_year)}
         return await self._fetch_shaped(
             "recalls_vehicle",
@@ -150,7 +150,7 @@ class Service:
         component: str | None = None,
     ) -> dict[str, Any]:
         if not make or not model or not model_year:
-            return error_body("invalid_arguments", "glovebox", False, "Provide make, model, and model year.")
+            return _invalid_arguments("Provide make, model, and model year.")
         params = {"make": make.strip().upper(), "model": model.strip().upper(), "model_year": int(model_year)}
         return await self._fetch_shaped(
             "complaints",
@@ -166,17 +166,12 @@ class Service:
         make: str | None = None,
         model: str | None = None,
         model_year: int | None = None,
-        vehicle_id: str | None = None,
+        vehicle_id: int | str | None = None,
         drive_type: str | None = None,
     ) -> dict[str, Any]:
-        if vehicle_id:
+        if vehicle_id is not None and str(vehicle_id).strip() != "":
             if any((make, model, model_year)):
-                return error_body(
-                    "invalid_arguments",
-                    "glovebox",
-                    False,
-                    "Pass a vehicle id or a make, model, and model year, not both.",
-                )
+                return _invalid_arguments("Pass a vehicle id or a make, model, and model year, not both.")
             params = {"vehicle_id": str(vehicle_id).strip()}
             return await self._fetch_shaped(
                 "ratings_vehicle",
@@ -187,12 +182,7 @@ class Service:
                 shape_rating_detail,
             )
         if not make or not model or not model_year:
-            return error_body(
-                "invalid_arguments",
-                "glovebox",
-                False,
-                "Provide make, model, and model year, or a vehicle id.",
-            )
+            return _invalid_arguments("Provide make, model, and model year, or a vehicle id.")
         params = {"make": make.strip().upper(), "model": model.strip().upper(), "model_year": int(model_year)}
         listing = await self._fetch_shaped(
             "ratings_model",
@@ -228,7 +218,7 @@ class Service:
 
     async def list_model_names(self, make: str, model_year: int) -> dict[str, Any]:
         if not make or not model_year:
-            return error_body("invalid_arguments", "glovebox", False, "Provide make and model year.")
+            return _invalid_arguments("Provide make and model year.")
         params = {"make": make.strip().upper(), "model_year": int(model_year)}
 
         async def one(fetch_name: str, source: str) -> dict[str, Any]:
@@ -265,7 +255,7 @@ class Service:
         nhtsa_id: str | None = None,
     ) -> dict[str, Any]:
         if not any((make, model, model_year, component, query, nhtsa_id)):
-            return error_body("invalid_arguments", "glovebox", False, "Provide at least one investigation filter.")
+            return _invalid_arguments("Provide at least one investigation filter.")
         return await self.investigations.search(
             make=(make or "").strip(),
             model=(model or "").strip(),
@@ -311,7 +301,7 @@ class Service:
             status["specs"] = "empty"
             identity = {"make": make.strip().upper(), "model": model.strip().upper(), "model_year": int(model_year)}
         else:
-            return error_body("invalid_arguments", "glovebox", False, "Provide a VIN, or make, model, and model year.")
+            return _invalid_arguments("Provide a VIN, or make, model, and model year.")
 
         drive = specs.get("drive")
         recalls, complaints, ratings, investigations = await asyncio.gather(
