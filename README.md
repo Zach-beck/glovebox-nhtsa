@@ -171,7 +171,7 @@ This is the fixture result for NHTSA's own partial VIN `5UXWX7C5*BA`, model year
 
 I omitted the rest of the spec block here. Empty fields and `Not Applicable` are already gone.
 
-A full HTML dossier for the same fixture VIN is committed at [docs/sample-report.html](docs/sample-report.html) (no screenshot; open the file in a browser).
+Fixture HTML samples: [docs/sample-report.html](docs/sample-report.html) (partial BMW X3 VIN) and [docs/sample-report-rdx.html](docs/sample-report-rdx.html) (richer 2012 Acura RDX fixture set). Open locally in a browser; no screenshot in the repo.
 
 ## Evals
 

@@ -37,6 +37,17 @@ def test_vehicle_report_html_escapes_xss(service):
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html_text
 
 
+def test_vehicle_report_html_is_self_contained(service):
+    html_text = run(service.vehicle_report, "5UXWX7C5*BA", 2011, format="html")["html"]
+    lower = html_text.lower()
+    assert "<link " not in lower
+    assert re.search(r"<script[^>]+src=", lower) is None
+    assert "@import url(" not in lower
+    assert re.search(r"url\s*\(\s*['\"]https?://", lower) is None
+    assert 'class="hero-title"' in html_text
+    assert 'class="report-nav"' in html_text
+
+
 def test_vehicle_report_html_writes_path(service, tmp_path: Path):
     target = tmp_path / "out.html"
     payload = run(
