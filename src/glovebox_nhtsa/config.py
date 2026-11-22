@@ -32,6 +32,7 @@ class Settings:
     offline: bool = False
     fixtures_dir: Path | None = None
     investigations_file: Path | None = None
+    report_dir: Path | None = None
     request_gap_seconds: float = 0.25
     request_timeout_seconds: float = 20.0
 
@@ -55,6 +56,7 @@ class Settings:
             offline=_flag("GLOVEBOX_OFFLINE"),
             fixtures_dir=_path("GLOVEBOX_FIXTURES"),
             investigations_file=_path("GLOVEBOX_INVESTIGATIONS_FILE"),
+            report_dir=_path("GLOVEBOX_REPORT_DIR"),
             request_gap_seconds=float(os.environ.get("GLOVEBOX_REQUEST_GAP_SECONDS", "0.25")),
         )
 

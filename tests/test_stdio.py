@@ -40,9 +40,11 @@ def test_stdio_client_lists_and_calls_tools(tmp_path):
         "get_recalls",
         "get_safety_ratings",
         "list_model_names",
+        "render_vehicle_report_html",
         "search_investigations",
         "summarize_complaints",
         "vehicle_profile",
+        "vehicle_report",
     ]
     assert "BMW" in decoded.content[0].text
     assert "17V683000" in profile.content[0].text

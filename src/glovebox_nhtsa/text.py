@@ -2,7 +2,9 @@
 
 INSTRUCTIONS = (
     "Glovebox reads public NHTSA data on this machine. "
-    "Call vehicle_profile first when you have a VIN or a year, make, and model. "
+    "When the user wants a readable vehicle dossier, call vehicle_report with format html "
+    "or render_vehicle_report_html and give them the returned file path or HTML. Do not hand-write HTML. "
+    "Call vehicle_profile or vehicle_report first when you have a VIN or a year, make, and model. "
     "For out-of-scope questions, call coverage_limits or read nhtsa://coverage and use its exact refusal phrases. "
     "A missing spec means NHTSA has no value, not that the vehicle lacks the equipment. "
     "NHTSA sentinel placeholder values are omitted on purpose; do not quote them when summarizing decode output. "

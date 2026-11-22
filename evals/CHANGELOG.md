@@ -1,5 +1,15 @@
 # Eval golden set changelog
 
+## 2026-11-22 (vehicle-report)
+
+### `vehicle_report` golden cases
+
+Added `vehicle_report_partial` (fixture) for the partial BMW X3 VIN dossier with per-section `source_url`, `fetched_at`, and ratings `empty`. Added `vehicle_report_invalid` for rejected VIN input. Existing `eval_mode` rules unchanged: `fixture_only` for investigations and the BMW X3 complaint trio, `live` for out-of-scope refusals, `fixture` otherwise.
+
+### HTML and CLI
+
+`render_vehicle_report_html` and `vehicle_report` with `format=html` are scored manually in pytest. The golden set still targets JSON faithfulness; agents should prefer HTML tools for readable output per server instructions.
+
 ## 2026-11-22 (fix/eval-findings)
 
 ### LiveBackend HTTP 400 empty body

@@ -48,7 +48,8 @@ def test_complaints_cache_does_not_store_narratives(service, tmp_path: Path):
     assert result["injuries"] == 1
     cached = "\n".join(path.read_text() for path in (tmp_path / "cache").glob("*.json"))
     # service fixture uses its own tmp cache; search the service cache dir via files written
-    cache_dir = service.cache.directory
+    cache_dir = getattr(service.cache, "directory", None)
+    assert cache_dir is not None
     stored = "\n".join(path.read_text() for path in cache_dir.glob("*.json"))
     assert "person@example.com" not in stored
     assert "REDACTEDVIN" not in stored

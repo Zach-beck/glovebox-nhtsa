@@ -64,6 +64,23 @@ At most 20 rows, newest open date first. `count` can be much larger than 20: the
 
 Three lists: `vpic`, `recall_product_list`, and `ncap`. The recall product list is incomplete. During research, BMW X3 2011 had recall campaigns and was missing from that list. Each list is capped at 40 names.
 
+## vehicle_report
+
+| Argument | Required | Notes |
+| --- | --- | --- |
+| `vin` | yes | Optional `model_year` override. |
+| `format` | no | `json` (default) or `html`. |
+
+Returns `vehicle_report/1` JSON with `fetched_at`, `sections` (each with `status`, `source_url`, and `data`), and `coverage_limits`. Status values include `ok`, `empty`, `unavailable`, and `not_applicable`. Recalls include remedy text when NHTSA provides it. HTML format returns `html` and optional `file_path` when `GLOVEBOX_REPORT_DIR` is set.
+
+## render_vehicle_report_html
+
+| Argument | Required | Notes |
+| --- | --- | --- |
+| `vin` | yes | Optional `model_year`. |
+
+Same HTML as `vehicle_report` with `format=html`.
+
 ## vehicle_profile
 
 | Argument | Required | Notes |
@@ -99,7 +116,9 @@ These are user-chosen templates, not hidden instructions.
 | `GLOVEBOX_HTTP_HOST` | `127.0.0.1` | HTTP bind address |
 | `GLOVEBOX_HTTP_PORT` | `8741` | HTTP port |
 | `GLOVEBOX_HTTP_TOKEN` | unset | If set, HTTP requires `Authorization: Bearer` |
-| `GLOVEBOX_CACHE_DIR` | `~/.cache/glovebox-nhtsa` | Shaped results |
+| `GLOVEBOX_CACHE` | `memory` | `memory`, `disk`, or `off` |
+| `GLOVEBOX_CACHE_DIR` | unset | When set (or `GLOVEBOX_CACHE=disk`), shaped results on disk under this path (default `~/.cache/glovebox-nhtsa`) |
+| `GLOVEBOX_REPORT_DIR` | unset | When set, HTML report tools write self-contained files here |
 | `GLOVEBOX_DATA_DIR` | under the cache dir | Downloaded investigations zip |
 | `GLOVEBOX_OFFLINE` | off | No live calls. Investigations still work from a local file. |
 | `GLOVEBOX_FIXTURES` | unset | Directory of frozen JSON. Tests set this. Do not set it for real use. |

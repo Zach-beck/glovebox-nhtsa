@@ -6,9 +6,67 @@ A raw dump of NHTSA is a bad context for a model. Empty spec fields mean "no val
 
 Glovebox is not affiliated with, endorsed by, or published by NHTSA or the U.S. Department of Transportation. Their [terms](https://www.nhtsa.gov/about-nhtsa/terms-use) say the site is public information that may be copied, and they disclaim accuracy. I am not NHTSA.
 
-## 60-second quickstart
+## Install
 
-You need Python 3.12 and [uv](https://docs.astral.sh/uv/). This package is not on PyPI, so `uvx` will not work until I publish a release. I have not published one.
+You need Python 3.12 and [uv](https://docs.astral.sh/uv/). This package is **not on PyPI**. Installing from PyPI would need a separate publish step and maintainer approval. For now, install from git:
+
+```bash
+uvx --from git+https://github.com/Zach-beck/glovebox-nhtsa glovebox-nhtsa
+```
+
+That runs the MCP server on stdio. For a one-off HTML or JSON report without an MCP client:
+
+```bash
+uvx --from git+https://github.com/Zach-beck/glovebox-nhtsa glovebox report 5UXWX7C5*BA --model-year 2011 --html report.html
+```
+
+From a checkout, `uv sync` and `uv run glovebox-nhtsa` behave the same. Set `GLOVEBOX_REPORT_DIR` when you want HTML tools to write files agents can open. Caching defaults and TTLs are in [docs/caching.md](docs/caching.md).
+
+### MCP client config
+
+**Cursor** ([`.cursor/mcp.json`](.cursor/mcp.json) in this repo):
+
+```json
+{
+  "mcpServers": {
+    "glovebox-nhtsa": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/Zach-beck/glovebox-nhtsa", "glovebox-nhtsa"]
+    }
+  }
+}
+```
+
+**Claude Desktop** (paths vary by OS; see [docs/clients/claude-desktop.md](docs/clients/claude-desktop.md)):
+
+```json
+{
+  "mcpServers": {
+    "glovebox": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/Zach-beck/glovebox-nhtsa", "glovebox-nhtsa"]
+    }
+  }
+}
+```
+
+**OpenCode** (`opencode.json`):
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "glovebox": {
+        "type": "local",
+        "command": ["uvx", "--from", "git+https://github.com/Zach-beck/glovebox-nhtsa", "glovebox-nhtsa"]
+      }
+    }
+  }
+}
+```
+
+## 60-second quickstart
 
 ```bash
 uv sync
@@ -17,7 +75,7 @@ uv run glovebox-nhtsa
 
 That process speaks MCP on stdin and stdout. It does not need an API key.
 
-**Cursor.** The file in this repo is [`.cursor/mcp.json`](.cursor/mcp.json):
+**Cursor (checkout dev).** The file in this repo is [`.cursor/mcp.json`](.cursor/mcp.json):
 
 ```json
 {
@@ -64,7 +122,9 @@ docker run -i --rm glovebox-nhtsa
 
 | Name | What it does |
 | --- | --- |
-| `vehicle_profile` | First call. Specs, recalls, complaint counts, ratings, investigations, and a status per section. |
+| `vehicle_report` | One VIN dossier with `source_url`, `fetched_at`, and per-section status. JSON or HTML. |
+| `render_vehicle_report_html` | Self-contained HTML for one VIN. Writes a file when `GLOVEBOX_REPORT_DIR` is set. |
+| `vehicle_profile` | Specs, recalls, complaint counts, ratings, investigations, and a status per section. |
 | `decode_vin` | One VIN. Read `error_code`. HTTP 200 is not a clean decode. |
 | `get_recalls` | Campaigns for a make, model, and year, or one campaign number. Not a VIN, and not repair status. |
 | `summarize_complaints` | Counts and components only. No owner text and no VIN. |
@@ -111,9 +171,11 @@ This is the fixture result for NHTSA's own partial VIN `5UXWX7C5*BA`, model year
 
 I omitted the rest of the spec block here. Empty fields and `Not Applicable` are already gone.
 
+Fixture HTML samples: [docs/sample-report.html](docs/sample-report.html) (partial BMW X3 VIN) and [docs/sample-report-rdx.html](docs/sample-report-rdx.html) (richer 2012 Acura RDX fixture set). Open locally in a browser; no screenshot in the repo.
+
 ## Evals
 
-The CI signal is offline pytest on frozen fixtures. On this tree that is 29 tests, all passing, including 40 scripted cases. No network and no model key.
+The CI signal is offline pytest on frozen fixtures. No network and no model key.
 
 I also ran those 40 cases myself, in this agent session, and scored 40/40. That run is not blinded: I wrote the golden set and then answered it. Treat 40/40 as an upper bound. The write-up, the categories, and the blinded rerun I want next are in [docs/eval-results.md](docs/eval-results.md). The method is [docs/evals.md](docs/evals.md).
 
@@ -135,7 +197,7 @@ Glovebox reads public NHTSA endpoints and one public file:
 
 NHTSA's pages disagree about a numeric quota. A small polite test I ran on 2026-11-22 saw no HTTP 429 and no rate-limit headers. Details and citations: [docs/research/rate-limits-and-terms.md](docs/research/rate-limits-and-terms.md).
 
-In the server I wait 0.25 seconds between calls to the same host, keep at most two calls in flight, and retry 429 and 503 up to three times. I cache shaped results (decode for 30 days, recalls and complaint counts for 12 hours, ratings and model lists for 7 days). I refuse redirects off those three hosts. I do not cache complaint narratives because I never keep them.
+In the server I wait 0.25 seconds between calls to the same host, keep at most two calls in flight, and retry 429 and 503 up to three times. I cache shaped results in memory by default (decode 7 days, recalls and complaint counts 6 hours, ratings and model lists 7 days). Set `GLOVEBOX_CACHE=off` to disable. I refuse redirects off those three hosts. I do not cache complaint narratives because I never keep them. Details: [docs/caching.md](docs/caching.md).
 
 ## Limitations
 

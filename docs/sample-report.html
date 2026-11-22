@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2011 BMW X3 · Glovebox</title>
+  <style>
+:root {
+  color-scheme: light dark;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, monospace;
+  --bg: #f3f1ee;
+  --bg-elevated: #faf9f7;
+  --ink: #1a1917;
+  --ink-muted: #5c5854;
+  --ink-faint: #7a7570;
+  --line: #d8d4ce;
+  --line-soft: #e6e2dc;
+  --accent: #4a5d52;
+  --accent-soft: rgba(74, 93, 82, 0.12);
+  --shadow: 0 1px 2px rgba(26, 25, 23, 0.06), 0 8px 24px rgba(26, 25, 23, 0.05);
+  --radius: 12px;
+  --radius-sm: 8px;
+  --space-1: 0.35rem;
+  --space-2: 0.65rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2.25rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.65rem;
+  --text-2xl: clamp(1.55rem, 3vw, 2.05rem);
+  --status-ok-bg: #e8efe9;
+  --status-ok-fg: #2f4a3a;
+  --status-empty-bg: #eceae7;
+  --status-empty-fg: #5c5854;
+  --status-unavailable-bg: #f2e8e6;
+  --status-unavailable-fg: #6b3d38;
+  --status-na-bg: #e6eaef;
+  --status-na-fg: #3d4a56;
+  --callout-bg: #ebe8e3;
+  --star: #6b5e4a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121110;
+    --bg-elevated: #1a1918;
+    --ink: #eceae7;
+    --ink-muted: #b5b0a8;
+    --ink-faint: #8c8680;
+    --line: #2e2c2a;
+    --line-soft: #252322;
+    --accent: #8fa89a;
+    --accent-soft: rgba(143, 168, 154, 0.15);
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 32px rgba(0, 0, 0, 0.28);
+    --status-ok-bg: #1e2e26;
+    --status-ok-fg: #b8d4c4;
+    --status-empty-bg: #252322;
+    --status-empty-fg: #b5b0a8;
+    --status-unavailable-bg: #352826;
+    --status-unavailable-fg: #e8b4ae;
+    --status-na-bg: #242a30;
+    --status-na-fg: #a8b8c8;
+    --callout-bg: #1e1d1c;
+    --star: #c4b69a;
+  }
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+.tabular { font-variant-numeric: tabular-nums; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+}
+.report-shell { max-width: 54rem; margin: 0 auto; padding: var(--space-3) var(--space-3) var(--space-5); }
+.layout { display: block; }
+@media (min-width: 960px) {
+  .layout {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: var(--space-4);
+    align-items: start;
+  }
+  .report-nav {
+    position: sticky;
+    top: var(--space-3);
+  }
+}
+.report-nav {
+  display: none;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: var(--text-sm);
+}
+@media (min-width: 960px) {
+  .report-nav { display: flex; }
+}
+.report-nav a {
+  color: var(--ink-muted);
+  text-decoration: none;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-sm);
+}
+.report-nav a:hover, .report-nav a:focus-visible {
+  color: var(--ink);
+  background: var(--accent-soft);
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+.hero {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.hero-eyebrow {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin: 0 0 var(--space-2);
+}
+.hero-title {
+  font-size: var(--text-2xl);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-1);
+  line-height: 1.15;
+}
+.hero-trim {
+  font-size: var(--text-lg);
+  color: var(--ink-muted);
+  margin: 0 0 var(--space-3);
+  font-weight: 500;
+}
+.vin-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.vin-code {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  padding: 0.4rem 0.65rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.04em;
+}
+.copy-vin {
+  font: inherit;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.45rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink-muted);
+  cursor: pointer;
+}
+.copy-vin:hover, .copy-vin:focus-visible {
+  border-color: var(--accent);
+  color: var(--ink);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.meta-line {
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+  margin: 0 0 var(--space-3);
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+@media (min-width: 640px) {
+  .stat-grid { grid-template-columns: repeat(4, 1fr); }
+}
+.stat-tile {
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-2);
+}
+.stat-label {
+  display: block;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-bottom: 0.25rem;
+}
+.stat-value {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ink);
+}
+.report-section {
+  margin-bottom: var(--space-5);
+  scroll-margin-top: var(--space-3);
+}
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--line-soft);
+}
+.report-section.is-empty .section-body,
+.report-section.is-unavailable .section-body {
+  padding: var(--space-2);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+}
+.section-head h2 {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.status-pill {
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+}
+.status-ok { background: var(--status-ok-bg); color: var(--status-ok-fg); border-color: rgba(47, 74, 58, 0.2); }
+.status-empty { background: var(--status-empty-bg); color: var(--status-empty-fg); border-color: var(--line); }
+.status-unavailable { background: var(--status-unavailable-bg); color: var(--status-unavailable-fg); border-color: rgba(107, 61, 56, 0.25); }
+.status-not_applicable { background: var(--status-na-bg); color: var(--status-na-fg); border-color: var(--line); }
+.def-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-2);
+}
+.def-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2);
+}
+.def-item dt {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  margin: 0 0 0.2rem;
+}
+.def-item dd {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+}
+.card-stack { display: flex; flex-direction: column; gap: var(--space-2); }
+.recall-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: var(--space-3);
+}
+.recall-card h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-base);
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+.recall-meta {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  margin: 0 0 var(--space-2);
+}
+.recall-meta span + span::before { content: " · "; }
+.fold {
+  margin-top: var(--space-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-2);
+  background: var(--bg);
+}
+.fold summary {
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  padding: var(--space-2) 0;
+  color: var(--accent);
+}
+.fold-body {
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+  padding-bottom: var(--space-2);
+  border-top: 1px solid var(--line-soft);
+}
+.bar-chart { display: flex; flex-direction: column; gap: var(--space-2); }
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(5rem, 28%) 1fr auto;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+.bar-label { color: var(--ink-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track {
+  height: 0.55rem;
+  background: var(--line-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 999px;
+  min-width: 2px;
+}
+.bar-value { font-weight: 600; min-width: 2ch; text-align: right; }
+.ratings-block { background: var(--bg-elevated); border: 1px solid var(--line); border-radius: var(--radius); padding: var(--space-3); }
+.star-rating { display: inline-flex; align-items: center; gap: var(--space-1); color: var(--star); flex-wrap: wrap; }
+.star-icon { display: inline-block; vertical-align: middle; }
+.rating-hero { margin-bottom: var(--space-2); }
+.star-text { font-size: var(--text-sm); color: var(--ink-muted); }
+.rating-rows { margin-top: var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+.rating-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.rating-row:last-child { border-bottom: 0; }
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.data-table th, .data-table td {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--line-soft);
+}
+.data-table th {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  background: var(--bg);
+}
+.data-table tr:last-child td { border-bottom: 0; }
+.callout {
+  background: var(--callout-bg);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  padding: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--ink-muted);
+}
+.callout ul { margin: var(--space-2) 0 0; padding-left: 1.2rem; }
+.callout li { margin-bottom: 0.35rem; }
+.note { font-size: var(--text-sm); color: var(--ink-muted); margin-top: var(--space-2); }
+.empty-note { font-size: var(--text-sm); color: var(--ink-muted); font-style: normal; margin: 0; }
+.rating-meta { font-size: var(--text-xs); margin: var(--space-2) 0 0; line-height: 1.45; }
+.section-notice { font-size: var(--text-sm); color: var(--ink-muted); margin-top: var(--space-2); }
+.sources-footer {
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+.sources-footer ul { list-style: none; padding: 0; margin: var(--space-2) 0 0; }
+.sources-footer li { margin-bottom: 0.35rem; word-break: break-all; }
+.sources-footer a { color: var(--accent); }
+.page-footer {
+  margin-top: var(--space-4);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  text-align: center;
+}
+.section-source {
+  margin-top: var(--space-2);
+  font-size: var(--text-xs);
+  word-break: break-all;
+}
+.section-source a { color: var(--accent); }
+@media print {
+  body { background: #fff; color: #000; }
+  .report-nav, .copy-vin { display: none !important; }
+  .hero, .recall-card, .ratings-block, .callout { box-shadow: none; break-inside: avoid; }
+  .report-section { break-inside: avoid-page; }
+  a { color: #000; text-decoration: underline; }
+}
+</style>
+</head>
+<body>
+  <div class="report-shell">
+    <div class="layout">
+      <nav class="report-nav" aria-label="Report sections"><a href="#specs">Specs</a><a href="#recalls">Recalls</a><a href="#complaints">Complaints</a><a href="#ratings">Ratings</a><a href="#investigations">Investigations</a><a href="#coverage">Coverage</a><a href="#sources">Sources</a></nav>
+      <main class="report-main">
+        <header class="hero" id="top">
+          <p class="hero-eyebrow">Glovebox vehicle report</p>
+          <h1 class="hero-title">2011 BMW X3</h1>
+          <p class="hero-trim">xDrive35i</p>
+          <div class="vin-row">
+            <code class="vin-code" id="report-vin">5UXWX7C5*BA</code>
+            <button type="button" class="copy-vin" data-vin="5UXWX7C5*BA" aria-label="Copy VIN to clipboard">Copy VIN</button>
+          </div>
+          <p class="meta-line">Fetched <time datetime="2026-11-22T03:10:17Z">2026-11-22T03:10:17Z</time></p>
+          <div class="stat-grid" aria-label="At a glance"><div class="stat-tile"><span class="stat-label">Recalls</span><span class="stat-value tabular">1</span></div><div class="stat-tile"><span class="stat-label">Complaints</span><span class="stat-value tabular">2</span></div><div class="stat-tile"><span class="stat-label">Overall rating</span><span class="stat-value tabular">No data</span></div><div class="stat-tile"><span class="stat-label">Investigations</span><span class="stat-value tabular">1</span></div></div>
+        </header>
+        <section class="report-section" id="specs" aria-labelledby="specs-head"><div class="section-head" id="specs-head"><h2>Key specifications</h2><span class="status-pill status-ok" role="status"><span class="visually-hidden">Section status: </span>ok</span></div><div class="def-grid" role="list"><div class="def-item"><dt>VIN</dt><dd>5UXWX7C5*BA</dd></div><div class="def-item"><dt>Year</dt><dd>2011</dd></div><div class="def-item"><dt>Make</dt><dd>BMW</dd></div><div class="def-item"><dt>Model</dt><dd>X3</dd></div><div class="def-item"><dt>Trim</dt><dd>xDrive35i</dd></div><div class="def-item"><dt>Body class</dt><dd>Sport Utility Vehicle (SUV)/Multipurpose Vehicle (MPV)</dd></div><div class="def-item"><dt>Drive</dt><dd>AWD/All-Wheel Drive</dd></div><div class="def-item"><dt>Engine</dt><dd>6</dd></div><div class="def-item"><dt>Fuel</dt><dd>Gasoline</dd></div><div class="def-item"><dt>Plant</dt><dd>MUNICH</dd></div><div class="def-item"><dt>Country</dt><dd>GERMANY</dd></div><div class="def-item"><dt>Decode</dt><dd>6 - Incomplete VIN</dd></div></div><p class="section-source"><a href="https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011">https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011</a></p></section>
+        <section class="report-section" id="recalls" aria-labelledby="recalls-head"><div class="section-head" id="recalls-head"><h2>Recalls</h2><span class="status-pill status-ok" role="status"><span class="visually-hidden">Section status: </span>ok</span></div><div class="card-stack"><article class="recall-card"><h3>17V683000</h3><p class="recall-meta"><span>ENGINE AND ENGINE COOLING</span><span>2017-10-30</span></p><p class="note">Fixture campaign summary for a public campaign number observed in research.</p><details class="fold"><summary>Remedy</summary><div class="fold-body"><p>Fixture remedy.</p></div></details></article><p class="note">These are campaigns filed against the model string. They do not show whether a specific VIN was repaired. Confirm an individual vehicle on NHTSA&#x27;s own recall lookup.</p></div><p class="section-source"><a href="https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011">https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></p></section>
+        <section class="report-section" id="complaints" aria-labelledby="complaints-head"><div class="section-head" id="complaints-head"><h2>Complaints by component</h2><span class="status-pill status-ok" role="status"><span class="visually-hidden">Section status: </span>ok</span></div><div class="bar-chart" aria-label="Complaints by component"><div class="bar-row"><span class="bar-label" id="bar-ENGINE">ENGINE</span><div class="bar-track" role="presentation"><div class="bar-fill" style="width:100%" aria-labelledby="bar-ENGINE"></div></div><span class="bar-value tabular">2</span></div></div><p class="note">Counts of consumer reports filed with NHTSA. They are not findings, and owner narratives are not included.</p><p class="section-source"><a href="https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011">https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></p></section>
+        <section class="report-section is-empty" id="ratings" aria-labelledby="ratings-head"><div class="section-head" id="ratings-head"><h2>Safety ratings</h2><span class="status-pill status-empty" role="status"><span class="visually-hidden">Section status: </span>empty</span></div><div class="section-body"><p class="empty-note">NHTSA has no NCAP safety rating on file for 2011 BMW X3.</p></div><p class="section-source"><a href="https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3">https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3</a></p></section>
+        <section class="report-section" id="investigations" aria-labelledby="investigations-head"><div class="section-head" id="investigations-head"><h2>Investigations</h2><span class="status-pill status-ok" role="status"><span class="visually-hidden">Section status: </span>ok</span></div><table class="data-table"><thead><tr><th>ID</th><th>Component</th><th>Subject</th><th>Opened</th><th>Closed</th></tr></thead><tbody><tr><th scope="row">EA15001</th><td>ENGINE</td><td>Fixture subject</td><td class="tabular">20150101</td><td class="tabular"></td></tr></tbody></table><p class="section-source"><a href="https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip">https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip</a></p></section>
+        <section class="report-section" id="coverage" aria-labelledby="coverage-head"><div class="section-head" id="coverage-head"><h2>Coverage limits and disclaimers</h2><span class="status-pill status-ok" role="status"><span class="visually-hidden">Section status: </span>ok</span></div><aside class="callout"><p>Glovebox is not NHTSA. Empty recall or complaint lists are not proof that nothing was filed. Recall campaigns do not show whether a specific VIN was repaired.</p><ul><li><strong>title or branded-title history:</strong> Glovebox does not have title history.</li><li><strong>fuel economy or MPG:</strong> Glovebox does not have fuel economy.</li><li><strong>whether a specific VIN finished recall work or dealer repair status:</strong> Glovebox does not show repair completion for a VIN.</li></ul></aside><p class="section-source"><a href="glovebox://coverage_limits">glovebox://coverage_limits</a></p></section>
+        <footer class="sources-footer" id="sources">
+          <h2 class="visually-hidden">Data sources</h2>
+          <ul><li><span>decode</span> <a href="https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011">https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/5UXWX7C5*BA?format=json&amp;modelyear=2011</a></li><li><span>recalls</span> <a href="https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011">https://api.nhtsa.gov/recalls/recallsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></li><li><span>complaints</span> <a href="https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011">https://api.nhtsa.gov/complaints/complaintsByVehicle?make=BMW&amp;model=X3&amp;modelYear=2011</a></li><li><span>ratings</span> <a href="https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3">https://api.nhtsa.gov/SafetyRatings/modelyear/2011/make/BMW/model/X3</a></li><li><span>investigations</span> <a href="https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip">https://static.nhtsa.gov/odi/ffdd/inv/FLAT_INV.zip</a></li><li><span>coverage_limits</span> <a href="glovebox://coverage_limits">glovebox://coverage_limits</a></li></ul>
+        </footer>
+        <p class="page-footer">Glovebox is not affiliated with NHTSA. Public data, shaped before display.</p>
+      </main>
+    </div>
+  </div>
+  <script>(function () {
+  var btn = document.querySelector('.copy-vin');
+  if (!btn || !navigator.clipboard) return;
+  btn.addEventListener('click', function () {
+    var vin = btn.getAttribute('data-vin') || '';
+    navigator.clipboard.writeText(vin).then(function () {
+      btn.textContent = 'Copied';
+      setTimeout(function () { btn.textContent = 'Copy VIN'; }, 1800);
+    });
+  });
+})();</script>
+</body>
+</html>
