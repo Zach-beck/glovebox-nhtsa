@@ -1,0 +1,275 @@
+{
+  "cases": 40,
+  "tool_selection": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "argument_correctness": {
+    "passed": 39,
+    "total": 40,
+    "rate": 0.975
+  },
+  "field_accuracy": {
+    "passed": 29,
+    "total": 40,
+    "rate": 0.725
+  },
+  "faithfulness": {
+    "passed": 39,
+    "total": 40,
+    "rate": 0.975
+  },
+  "failures": [
+    {
+      "id": "recalls_spelling_miss",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "not proof"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "complaints_x3_counts",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "ENGINE",
+        "crash_reports"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "complaints_component_filter",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "ENGINE"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "complaints_redaction_keys",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "consumer reports"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "investigation_link",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "17V683000"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "investigation_by_vehicle",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "PE14001"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "out_of_scope_title",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "does not have title history"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "out_of_scope_fuel",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "does not have fuel economy"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "out_of_scope_repair",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "does not show repair completion"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    },
+    {
+      "id": "decode_raw_filled_drops_sentinels",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": false,
+      "missing_fields": [
+        "OtherEngineInfo"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [
+        "Not Applicable",
+        "BusType"
+      ],
+      "invented_campaigns": []
+    },
+    {
+      "id": "complaints_unknown_component_is_zero",
+      "tool_selection": true,
+      "argument_correctness": false,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": [
+        "\"count\": 0"
+      ],
+      "leaked_in_tool": [],
+      "leaked_phrases": [],
+      "invented_campaigns": []
+    }
+  ],
+  "case_pass": {
+    "passed": 29,
+    "total": 40,
+    "rate": 0.725
+  },
+  "by_category": {
+    "complaints_redaction": {
+      "passed": 0,
+      "total": 1,
+      "failures": [
+        "complaints_redaction_keys"
+      ]
+    },
+    "complaints_summary": {
+      "passed": 1,
+      "total": 4,
+      "failures": [
+        "complaints_x3_counts",
+        "complaints_component_filter",
+        "complaints_unknown_component_is_zero"
+      ]
+    },
+    "decode_check_digit": {
+      "passed": 1,
+      "total": 1,
+      "failures": []
+    },
+    "decode_invalid": {
+      "passed": 4,
+      "total": 4,
+      "failures": []
+    },
+    "decode_partial": {
+      "passed": 3,
+      "total": 3,
+      "failures": []
+    },
+    "investigation_link": {
+      "passed": 1,
+      "total": 3,
+      "failures": [
+        "investigation_link",
+        "investigation_by_vehicle"
+      ]
+    },
+    "missing_means_unknown": {
+      "passed": 1,
+      "total": 1,
+      "failures": []
+    },
+    "not_applicable_dropped": {
+      "passed": 1,
+      "total": 2,
+      "failures": [
+        "decode_raw_filled_drops_sentinels"
+      ]
+    },
+    "out_of_scope": {
+      "passed": 0,
+      "total": 3,
+      "failures": [
+        "out_of_scope_title",
+        "out_of_scope_fuel",
+        "out_of_scope_repair"
+      ]
+    },
+    "profile_partial": {
+      "passed": 3,
+      "total": 3,
+      "failures": []
+    },
+    "ratings_not_rated": {
+      "passed": 2,
+      "total": 2,
+      "failures": []
+    },
+    "ratings_variant": {
+      "passed": 2,
+      "total": 2,
+      "failures": []
+    },
+    "recalls_hit": {
+      "passed": 6,
+      "total": 6,
+      "failures": []
+    },
+    "recalls_not_repair_status": {
+      "passed": 1,
+      "total": 1,
+      "failures": []
+    },
+    "recalls_spelling": {
+      "passed": 3,
+      "total": 4,
+      "failures": [
+        "recalls_spelling_miss"
+      ]
+    }
+  },
+  "model": "Cursor Grok 4.5 (blind)",
+  "date": "2026-11-21",
+  "data_source": "live",
+  "label": "blinded agent-run eval, not the CI gate"
+}
