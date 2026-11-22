@@ -1,0 +1,192 @@
+{
+  "cases": 40,
+  "cases_all_metrics_pass": {
+    "passed": 28,
+    "total": 40,
+    "rate": 0.7
+  },
+  "tool_selection": {
+    "passed": 40,
+    "total": 40,
+    "rate": 1.0
+  },
+  "argument_correctness": {
+    "passed": 39,
+    "total": 40,
+    "rate": 0.975
+  },
+  "field_accuracy": {
+    "passed": 30,
+    "total": 40,
+    "rate": 0.75
+  },
+  "faithfulness": {
+    "passed": 37,
+    "total": 40,
+    "rate": 0.925
+  },
+  "model": "Cursor Grok 4.6 (this cloud agent session)",
+  "date": "2026-11-22",
+  "data_source": "live NHTSA APIs",
+  "label": "agent-run eval, not the CI gate",
+  "blinding": "blinded; extracted question, id, and category only before answering; scored after answers.jsonl was written",
+  "mcp_registration": "This session's tool catalog did not include Glovebox. Calls went through scripts/run_stdio_calls.py on stdio with GLOVEBOX_FIXTURES empty and GLOVEBOX_INVESTIGATIONS_FILE empty so the live zip was used.",
+  "pytest": {
+    "command": "uv run pytest",
+    "result": "29 passed, 0 failed",
+    "elapsed": "1.24s"
+  },
+  "by_category": {
+    "decode_partial": {"total": 3, "all_pass": 3, "tool_selection": 3, "argument_correctness": 3, "field_accuracy": 3, "faithfulness": 3},
+    "decode_invalid": {"total": 4, "all_pass": 4, "tool_selection": 4, "argument_correctness": 4, "field_accuracy": 4, "faithfulness": 4},
+    "decode_check_digit": {"total": 1, "all_pass": 0, "tool_selection": 1, "argument_correctness": 1, "field_accuracy": 1, "faithfulness": 0},
+    "missing_means_unknown": {"total": 1, "all_pass": 1, "tool_selection": 1, "argument_correctness": 1, "field_accuracy": 1, "faithfulness": 1},
+    "not_applicable_dropped": {"total": 2, "all_pass": 1, "tool_selection": 2, "argument_correctness": 2, "field_accuracy": 1, "faithfulness": 1},
+    "recalls_hit": {"total": 6, "all_pass": 6, "tool_selection": 6, "argument_correctness": 6, "field_accuracy": 6, "faithfulness": 6},
+    "recalls_spelling": {"total": 4, "all_pass": 2, "tool_selection": 4, "argument_correctness": 4, "field_accuracy": 3, "faithfulness": 3},
+    "recalls_not_repair_status": {"total": 1, "all_pass": 1, "tool_selection": 1, "argument_correctness": 1, "field_accuracy": 1, "faithfulness": 1},
+    "complaints_summary": {"total": 4, "all_pass": 1, "tool_selection": 4, "argument_correctness": 3, "field_accuracy": 1, "faithfulness": 4},
+    "complaints_redaction": {"total": 1, "all_pass": 0, "tool_selection": 1, "argument_correctness": 1, "field_accuracy": 0, "faithfulness": 1},
+    "ratings_not_rated": {"total": 2, "all_pass": 2, "tool_selection": 2, "argument_correctness": 2, "field_accuracy": 2, "faithfulness": 2},
+    "ratings_variant": {"total": 2, "all_pass": 2, "tool_selection": 2, "argument_correctness": 2, "field_accuracy": 2, "faithfulness": 2},
+    "profile_partial": {"total": 3, "all_pass": 3, "tool_selection": 3, "argument_correctness": 3, "field_accuracy": 3, "faithfulness": 3},
+    "investigation_link": {"total": 3, "all_pass": 1, "tool_selection": 3, "argument_correctness": 3, "field_accuracy": 1, "faithfulness": 3},
+    "out_of_scope": {"total": 3, "all_pass": 1, "tool_selection": 3, "argument_correctness": 3, "field_accuracy": 1, "faithfulness": 3}
+  },
+  "failures": [
+    {
+      "id": "decode_check_digit",
+      "category": "decode_check_digit",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": true,
+      "faithfulness": false,
+      "leaked_phrases": ["invalid_vin"],
+      "cause": "model_mistake",
+      "why": "The decode was correct (Chevrolet HHR, check-digit warning). The answer used the substring invalid_vin while denying that code, and the rubric forbids that phrase."
+    },
+    {
+      "id": "recalls_spelling_miss",
+      "category": "recalls_spelling",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["not proof"],
+      "cause": "server_bug",
+      "why": "Live NHTSA returned HTTP 400 for BMW NO-SUCH 2011. The server mapped that to upstream_unavailable instead of count 0 plus the spelling notice that contains 'not proof'. Fixtures froze an empty list, not a 400."
+    },
+    {
+      "id": "complaints_x3_counts",
+      "category": "complaints_summary",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["ENGINE", "crash_reports"],
+      "cause": "nhtsa_data_or_server",
+      "why": "Live complaintsByVehicle for 2011 BMW X3 returned HTTP 400. The fixture had a shaped summary with ENGINE and crash_reports. The server did not turn that 400 into an empty summary, so the required strings never appeared in the tool JSON."
+    },
+    {
+      "id": "complaints_component_filter",
+      "category": "complaints_summary",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["ENGINE"],
+      "cause": "nhtsa_data_or_server",
+      "why": "Same live HTTP 400 for 2011 BMW X3 complaints. The engine filter never ran against a complaints body."
+    },
+    {
+      "id": "complaints_redaction_keys",
+      "category": "complaints_redaction",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["consumer reports"],
+      "cause": "nhtsa_data_or_server",
+      "why": "Same live HTTP 400. The complaints note that contains 'consumer reports' is only attached to a shaped summary, not to the error body."
+    },
+    {
+      "id": "investigation_link",
+      "category": "investigation_link",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["17V683000"],
+      "cause": "nhtsa_data_drift",
+      "why": "Live FLAT_INV.zip matched 71004 product rows for EA15001 and returned 20. None of those rows, and none of the 71004 in the local index, carry campaign 17V683000. That campaign string exists only in the frozen investigations sample."
+    },
+    {
+      "id": "investigation_by_vehicle",
+      "category": "investigation_link",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["PE14001"],
+      "cause": "nhtsa_data_drift",
+      "why": "Live search for 2012 ACURA RDX returned count 0. In the live zip, PE14001 is a Toyota Camry Hybrid brake investigation, and ACURA RDX product rows start at 2013. The frozen investigations.txt linked PE14001 to the 2012 RDX."
+    },
+    {
+      "id": "out_of_scope_fuel",
+      "category": "out_of_scope",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["does not have fuel economy"],
+      "cause": "model_mistake",
+      "why": "No tool was called, which is correct. The answer said the server does not include fuel economy instead of the exact rubric phrase 'does not have fuel economy'."
+    },
+    {
+      "id": "out_of_scope_repair",
+      "category": "out_of_scope",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["does not show repair completion"],
+      "cause": "model_mistake",
+      "why": "No tool was called, which is correct. The answer paraphrased the coverage gap and missed the exact rubric phrase 'does not show repair completion'."
+    },
+    {
+      "id": "recalls_reject_mixed_arguments",
+      "category": "recalls_spelling",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": true,
+      "faithfulness": false,
+      "leaked_phrases": ["19V182000"],
+      "invented_campaigns": ["19V182000"],
+      "cause": "model_mistake",
+      "why": "The tool correctly returned invalid_arguments. The answer restated campaign 19V182000 from the question. The scorer treats a campaign number that is absent from the tool JSON as invented."
+    },
+    {
+      "id": "decode_raw_filled_drops_sentinels",
+      "category": "not_applicable_dropped",
+      "tool_selection": true,
+      "argument_correctness": true,
+      "field_accuracy": false,
+      "faithfulness": false,
+      "missing_fields": ["OtherEngineInfo"],
+      "leaked_phrases": ["Not Applicable"],
+      "cause": "nhtsa_data_drift_and_model_mistake",
+      "why": "Live other_filled_fields has no OtherEngineInfo. That key is planted in the frozen decode as 'Fixture only extra field'. Separately the answer used the words Not Applicable while saying sentinels were dropped, which the rubric forbids."
+    },
+    {
+      "id": "complaints_unknown_component_is_zero",
+      "category": "complaints_summary",
+      "tool_selection": true,
+      "argument_correctness": false,
+      "field_accuracy": false,
+      "faithfulness": true,
+      "missing_fields": ["\"count\": 0"],
+      "cause": "model_mistake_and_nhtsa_data_or_server",
+      "why": "The question asked for brake complaints. The model passed component brake; the golden arguments use BRAKES. Independently the live X3 complaints call returned HTTP 400, so the tool JSON never contained '\"count\": 0'."
+    }
+  ]
+}
